@@ -7,7 +7,6 @@ dotenv.config();
 const app = express();
 const port = 3000;
 
-// MySQL 연결 설정
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
@@ -16,7 +15,6 @@ const db = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 
-// MySQL 연결 테스트
 db.connect((err) => {
   if (err) {
     console.error("Database connection failed:", err.stack);
@@ -25,7 +23,6 @@ db.connect((err) => {
   console.log("Connected to MySQL database.");
 });
 
-// 라우터 정의
 const router = express.Router();
 
 router.get("/tests", (req, res) => {
@@ -39,14 +36,11 @@ router.get("/tests", (req, res) => {
   });
 });
 
-// 라우터를 앱에 연결
 app.use("/", router);
-
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-// 서버 실행
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
