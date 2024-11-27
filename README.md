@@ -1,6 +1,11 @@
 ## First ERD
+#old
 <img width="967" alt="Snipaste_2024-11-20_02-17-39" src="https://github.com/user-attachments/assets/92dd9cbf-2a8b-4547-885e-e4883698ed0d">
+#new
+![image](https://github.com/user-attachments/assets/dbfd911d-3239-48ad-9385-7206580548ab)
 ### User
+
+
 
 **Description:** The core table that manages all platform users, including donors, charities, and administrators.  
 **Attributes:**
