@@ -10,26 +10,26 @@ const MainNav = () => {
           </Link>
         </div>
         <nav className="flex gap-5">
-          <Link to="/charities" className="hover:text-gray-300  ">
+          <Link to="/charities" className="hover:text-gray-300">
             Charities Page
           </Link>
-          <Link to="/projects" className="hover:text-gray-300  ">
+          <Link to="/projects" className="hover:text-gray-300">
             Projects Page
           </Link>
-          <Link to="/charity" className="hover:text-gray-300  ">
+          <Link to="/charity" className="hover:text-gray-300">
             Charity Detail
           </Link>
-          <Link to="/project" className="hover:text-gray-300  ">
+          <Link to="/project" className="hover:text-gray-300">
             Project Detail
           </Link>
 
-          <Link to="/doner-p" className="hover:text-gray-300  ">
+          <Link to="/doner-p" className="hover:text-gray-300">
             Doner Profile
           </Link>
-          <Link to="/charity-p" className="hover:text-gray-300  ">
+          <Link to="/charity-p" className="hover:text-gray-300">
             Charity Profile
           </Link>
-          <Link to="/donation" className="hover:text-gray-300  ">
+          <Link to="/donation" className="hover:text-gray-300">
             Donation
           </Link>
         </nav>
