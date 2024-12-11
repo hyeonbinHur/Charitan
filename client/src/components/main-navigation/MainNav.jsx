@@ -22,7 +22,9 @@ const MainNav = () => {
           <Link to="/project" className="hover:text-gray-300">
             Project Detail
           </Link>
-
+          <Link to="/create-project" className="hover:text-gray-300">
+            Create Project
+          </Link>
           <Link to="/doner-p" className="hover:text-gray-300">
             Doner Profile
           </Link>

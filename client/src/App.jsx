@@ -8,6 +8,7 @@ import ProjectDetailPage from "./pages/ProjectDetailPage";
 import DonerPersonalPage from "./pages/DonerPersonalPage";
 import DonationPage from "./pages/DonationPage";
 import MainNav from "./components/main-navigation/MainNav";
+import CreateProjectPage from "./pages/CreateProjectPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/charity-p" element={<CharityPersonalPage />} />
           <Route path="/projects" element={<ProjectPage />} />
           <Route path="/project" element={<ProjectDetailPage />} />
+          <Route path="/create-project" element={<CreateProjectPage />} />
           <Route path="/doner-p" element={<DonerPersonalPage />} />
           <Route path="/donation" element={<DonationPage />} />
         </Routes>
