@@ -1,0 +1,44 @@
+/* Footer.css */
+
+/* General Link Style */
+.footer-link {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 16px;
+    padding-left: 24px; /* To leave space for the icon */
+    position: relative;
+  }
+  
+  /* Social Media Icons */
+  .footer-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  /* Facebook Icon */
+  .footer-link.facebook-icon::before {
+    background-image: url('client/src/assets/facebook.png'); /* Add the path to your Facebook icon */
+  }
+  
+  /* Twitter Icon */
+  .footer-link.twitter-icon::before {
+    background-image: url('/assets/twitter-icon.png'); /* Add the path to your Twitter icon */
+  }
+  
+  /* Instagram Icon */
+  .footer-link.instagram-icon::before {
+    background-image: url('/assets/instagram-icon.png'); /* Add the path to your Instagram icon */
+  }
+  
+  /* Hover Effects */
+  .footer-link:hover::before {
+    opacity: 0.8; /* Slight opacity change when hovering */
+  }
+  
