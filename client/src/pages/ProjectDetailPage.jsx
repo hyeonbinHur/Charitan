@@ -30,6 +30,7 @@ const ProjectDetailPage = () => {
           <div className="w-full">
             <p>{project.description}</p>
           </div>
+
           <div>
             <div>{project.target_amount}</div>
             <div>{project.current_funding}</div>
