@@ -1,7 +1,13 @@
+import CharityProjectList from "@/components/project/CharityProjectList";
 import React from "react";
 
-const ProjectPage = () => {
-  return <div>Project List Page</div>;
+const CharityPage = () => {
+  return (
+    <section>
+      Project Page
+      <CharityProjectList />
+    </section>
+  );
 };
 
-export default ProjectPage;
+export default CharityPage;
