@@ -37,7 +37,7 @@ const create_project = (req, res) => {
     bankaccount,
   } = req.body;
   const query =
-    "INSERT INTO Charity_Project (  charity_id, title, description, category, target_amount, current_funding, status, created_at, updated_at, bankaccount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO Charity_Project ( charity_id, title, description, category, target_amount, current_funding, status, created_at, updated_at, bankaccount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
     charity_id,
     title,
@@ -54,21 +54,54 @@ const create_project = (req, res) => {
     if (err) {
       res.status(500).send("Failed to insert data");
     } else {
-      res.status(201).json({ title, body });
+      res.status(201).json({ title, description });
     }
   });
 };
 
 const update_project = (req, res) => {
   const project_id = req.params.id;
-  const { title } = req.body;
-  const query = "UPDATE Charity_Project SET title = ? WHERE project_id = ?";
-  const values = [title, project_id];
+  const {
+    title,
+    description,
+    category,
+    target_amount,
+    current_funding,
+    status,
+    bankaccount,
+  } = req.body;
+
+  // SQL 쿼리에서 updated_at을 자동으로 현재 시간으로 설정
+  const query = `
+    UPDATE Charity_Project 
+    SET 
+      title = ?, 
+      description = ?, 
+      category = ?, 
+      target_amount = ?, 
+      current_funding = ?, 
+      status = ?, 
+      updated_at = NOW(),
+      bankaccount = ? 
+    WHERE project_id = ?`;
+
+  const values = [
+    title,
+    description,
+    category,
+    target_amount,
+    current_funding,
+    status,
+    bankaccount,
+    project_id,
+  ];
+
   connection.query(query, values, (err, results) => {
     if (err) {
+      console.error(err); // 에러 로그를 콘솔에 출력해 주세요
       res.status(500).send("Failed to update data");
     } else {
-      res.status(201).json({ post_uuid, title });
+      res.status(200).json({ title, description });
     }
   });
 };
