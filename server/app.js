@@ -2,7 +2,15 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000; // 환경 변수 사용
 const projectRouter = require("./routers/project.js");
+const cors = require("cors");
 
+app.use(
+  cors({
+    origin: "http://localhost:5174",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 // 미들웨어
 app.use(express.json());
 
