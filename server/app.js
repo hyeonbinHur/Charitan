@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000; // 환경 변수 사용
 const projectRouter = require("./routers/project.js");
+const charityRouter = require("./routers/charity.js");
 const cors = require("cors");
 
 app.use(
@@ -20,7 +21,7 @@ app.get("/", (req, res) => {
 });
 
 // 라우터
-app.use("/panther-charitan", projectRouter);
+app.use("/panther-charitan", projectRouter, charityRouter);
 
 // 서버 실행
 app.listen(port, () => {
