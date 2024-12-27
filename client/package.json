@@ -21,13 +21,17 @@
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "i": "^0.3.7",
     "lucide-react": "^0.468.0",
+    "npm": "^11.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.0",
+    "react-image-file-resizer": "^0.4.8",
     "react-router-dom": "^7.0.2",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
+    "tinymce": "^7.6.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {

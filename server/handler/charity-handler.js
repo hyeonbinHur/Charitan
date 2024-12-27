@@ -115,9 +115,9 @@ const delete_charity = (req, res) => {
   });
 };
 
-const gets_by_charity = (req, res) => {
+const get_projects_by_charity = (req, res) => {
   const charity_id = req.params.id;
-  const query = "SELECT * FROM Charity WHERE charity_id = ?";
+  const query = "SELECT * FROM Charity_Project WHERE charity_id = ?";
   connection.query(query, [charity_id], (err, results) => {
     if (err) {
       res.status(500).send("Fail data");
@@ -133,5 +133,5 @@ module.exports = {
   create_charity,
   update_charity,
   delete_charity,
-  //   get_projects_by_charity,
+  get_projects_by_charity,
 };
