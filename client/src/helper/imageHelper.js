@@ -29,7 +29,6 @@ export const convertBase64ToImage = (dataurl, fileName) => {
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }
-  const file = new File([u8arr], fileName, { type: mime });
   return new File([u8arr], fileName, { type: mime });
 };
 

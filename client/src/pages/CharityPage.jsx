@@ -4,7 +4,7 @@ const CharityPage = () => {
   return (
     <section>
       Charity Page
-      <SearchBar/>
+      <SearchBar />
       <CharityList />
     </section>
   );
