@@ -1,6 +1,6 @@
 import React from "react";
 
-const CharityProjectItem = ({ project }) => {
+const ProjectItem = ({ project }) => {
   return (
     <div className="hover:shadow-2xl cursor-pointer border h-60 border-stone-500 rounded-lg flex gap-5 p-5">
       <div className="w-[15rem] h-full">
@@ -17,4 +17,4 @@ const CharityProjectItem = ({ project }) => {
   );
 };
 
-export default CharityProjectItem;
+export default ProjectItem;

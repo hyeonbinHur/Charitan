@@ -1,11 +1,11 @@
-import CharityProjectList from "@/components/project/CharityProjectList";
+import ProjectList from "@/components/project/ProjectList";
 import React from "react";
 
 const CharityPage = () => {
   return (
     <section>
       Project Page
-      <CharityProjectList />
+      <ProjectList />
     </section>
   );
 };

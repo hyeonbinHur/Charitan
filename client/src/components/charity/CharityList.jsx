@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import CharityItem from "./CharityItem";
 
+//Read Charities
 const CharityList = () => {
   const {
     data: charities,
@@ -19,7 +20,6 @@ const CharityList = () => {
   };
   return (
     <div>
-      ?
       {charities &&
         charities.map((charity) => (
           <div

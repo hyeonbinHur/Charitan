@@ -1,10 +1,10 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getProjects } from "@/utils/api/charityProject";
-import CharityProjectItem from "./CharityProjectItem";
+import ProjectItem from "./ProjectItem";
 import { useNavigate } from "react-router-dom";
 
-const CharityProjectList = () => {
+const ProjectList = () => {
   const {
     data: projects,
     isLoading,
@@ -29,11 +29,11 @@ const CharityProjectList = () => {
             className="my-5"
             onClick={() => handleNavigateToDetail(e.project_id)}
           >
-            <CharityProjectItem project={e} />
+            <ProjectItem project={e} />
           </div>
         ))}
     </div>
   );
 };
 
-export default CharityProjectList;
+export default ProjectList;
