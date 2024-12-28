@@ -1,37 +1,22 @@
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getProjects } from "@/utils/api/charityProject";
 import ProjectItem from "./ProjectItem";
 import { useNavigate } from "react-router-dom";
 
-const ProjectList = () => {
-  const {
-    data: projects,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["getProjects"],
-    queryFn: () => getProjects(),
-  });
-
+const ProjectList = ({ projects }) => {
   const navigate = useNavigate();
-
-  const handleNavigateToDetail = (projectId) => {
-    navigate(`/project/${projectId}`);
+  const handleNavigateToDetail = (charityId) => {
+    navigate(`/charity/${charityId}`);
   };
-
   return (
     <div>
-      {projects &&
-        projects.map((e, i) => (
-          <div
-            key={i}
-            className="my-5"
-            onClick={() => handleNavigateToDetail(e.project_id)}
-          >
-            <ProjectItem project={e} />
-          </div>
-        ))}
+      {projects.map((e, i) => (
+        <div
+          key={i}
+          className="my-5"
+          onClick={() => handleNavigateToDetail(e.project_id)}
+        >
+          <ProjectItem project={e} />
+        </div>
+      ))}
     </div>
   );
 };

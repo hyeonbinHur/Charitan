@@ -46,4 +46,36 @@ const deleteProject = async (id) => {
   }
 };
 
-export { getProjects, getProject, createProject, updateProject, deleteProject };
+const getProjectsByCharityName = async (charityName) => {
+  try {
+    const response = await axiosInstance.get(
+      `project/search/charity?charityName=${charityName}`
+    );
+    return response.data;
+  } catch (err) {
+    console.log("error while read projects by charity name : ", err);
+    throw err;
+  }
+};
+
+const getProjectsByProjectTitle = async (projectName) => {
+  try {
+    const response = await axiosInstance.get(
+      `project/search/project?projectName=${projectName}`
+    );
+    return response.data;
+  } catch (err) {
+    console.log("error while read projects by project name : ", err);
+    throw err;
+  }
+};
+
+export {
+  getProjects,
+  getProject,
+  createProject,
+  updateProject,
+  deleteProject,
+  getProjectsByCharityName,
+  getProjectsByProjectTitle,
+};

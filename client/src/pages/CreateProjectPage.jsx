@@ -7,7 +7,7 @@ const CreateProjectPage = () => {
   return (
     <main>
       <form className="">
-<Label>Title</Label>
+        <Label>Title</Label>
         <div className="w-10 h-10 border-2 border-red-500 rounded-md"></div>
         <Input type="text" name="title" className="rounded-md" />
 
