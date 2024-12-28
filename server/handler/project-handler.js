@@ -10,6 +10,36 @@ const get_projects = (req, res) => {
   });
 };
 
+const get_projects_by_charity_name = (req, res) => {
+  const { charityName } = req.query;
+  connection.query(
+    "SELECT * FROM Charity_Project WHERE charity_nae LIKE ?",
+    [`%${charityName}%`],
+    (err, results) => {
+      if (err) {
+        res.status(500).send("Fail data");
+      } else {
+        res.json(results);
+      }
+    }
+  );
+};
+const get_projects_by_project_name = (req, res) => {
+  const { projectName } = req.query;
+  console.log(projectName);
+  connection.query(
+    "SELECT * FROM Charity_Project WHERE title LIKE ?",
+    [`%${projectName}%`],
+    (err, results) => {
+      if (err) {
+        res.status(500).send("Fail data");
+      } else {
+        res.json(results);
+      }
+    }
+  );
+};
+
 const get_project = (req, res) => {
   const project_id = req.params.id;
   const query = "SELECT * FROM Charity_Project WHERE project_id = ?";
@@ -138,4 +168,6 @@ module.exports = {
   update_project,
   delete_project,
   get_projects_by_charity,
+  get_projects_by_charity_name,
+  get_projects_by_project_name,
 };
