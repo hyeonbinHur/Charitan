@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 const ProjectList = ({ projects }) => {
   const navigate = useNavigate();
-  const handleNavigateToDetail = (charityId) => {
-    navigate(`/charity/${charityId}`);
+  const handleNavigateToDetail = (project_id) => {
+    navigate(`/project/${project_id}`);
   };
   return (
     <div>

@@ -25,7 +25,6 @@ export default [
     },
     rules: {
       "@typescript-eslint/no-non-null-assertion": "off",
-      "react/prop-types": "off",
       ...js.configs.recommended.rules,
       ...react.configs.recommended.rules,
       ...react.configs["jsx-runtime"].rules,
@@ -35,6 +34,8 @@ export default [
         "warn",
         { allowConstantExport: true },
       ],
+      "react/prop-types": "off",
+      "no-unused-vars": "warn",
     },
   },
 ];
