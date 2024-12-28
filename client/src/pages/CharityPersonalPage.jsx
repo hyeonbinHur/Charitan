@@ -1,7 +1,7 @@
 import React from "react";
 
 const CharityPersonalPage = () => {
-  return <div> Charity Personal Page </div>;
+  return <main> Charity Personal Page </main>;
 };
 
 export default CharityPersonalPage;

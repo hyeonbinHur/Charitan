@@ -73,7 +73,7 @@ function DonationPage() {
   };
 
   return (
-    <div className="donation-page p-4">
+    <main className="donation-page p-4">
       <h1 className="text-3xl font-bold text-center mb-6">Donation Page</h1>
 
       <div className="form-container w-96 p-6 border border-gray-300 rounded-md mb-6">
@@ -253,7 +253,7 @@ function DonationPage() {
           </tbody>
         </table>
       </div>
-    </div>
+    </main>
   );
 }
 

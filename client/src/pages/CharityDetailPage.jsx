@@ -16,10 +16,10 @@ const CharityDetailPage = () => {
   });
 
   return (
-    <section className="flex flex-col items-center">
+    <main className="flex flex-col items-center">
       Charity Detail Page {params.charity_id}
       {charity && <CharityDetail charity={charity} />}
-    </section>
+    </main>
   );
 };
 

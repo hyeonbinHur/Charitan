@@ -14,7 +14,7 @@ const ProjectDetailPage = () => {
     queryFn: () => getProject(params.project_id),
   });
   return (
-    <section className="flex flex-col items-center">
+    <main className="flex flex-col items-center">
       Project Detail Page
       {project && (
         <div>
@@ -38,7 +38,7 @@ const ProjectDetailPage = () => {
           <button>move to donation</button>
         </div>
       )}
-    </section>
+    </main>
   );
 };
 

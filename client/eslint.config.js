@@ -23,6 +23,9 @@ export default [
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
     },
+    globals: {
+      process: "readonly", // process를 읽기 전용으로 설정
+    },
     rules: {
       "@typescript-eslint/no-non-null-assertion": "off",
       ...js.configs.recommended.rules,

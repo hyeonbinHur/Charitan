@@ -31,7 +31,6 @@ const App = () => (
         <Route path="/doner-p" element={<DonerPersonalPage />} />
         <Route path="/donation" element={<DonationPage />} />
       </Routes>
-
       <Footer />
     </BrowserRouter>
   </QueryClientProvider>
