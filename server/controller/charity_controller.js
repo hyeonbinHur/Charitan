@@ -1,48 +1,96 @@
 import charityService from "../service/charity_service.js";
-const get_tests = async (req, res) => {
+
+const get_charities = async (req, res) => {
   try {
-    const tests = await charityService.readAllTest();
+    const tests = await charityService.readAllCharities();
     res.json(tests);
   } catch (err) {
     res.status(500).send(err.message);
   }
 };
-const get_test = async (req, res) => {
+const get_charity = async (req, res) => {
   try {
     const id = req.params.id;
-    const tests = await charityService.readTest(id);
+    const tests = await charityService.readCharity(id);
     res.json(tests);
   } catch (err) {
     res.status(500).send(err.message);
   }
 };
-const create_test = async (req, res) => {
+const create_charity = async (req, res) => {
   try {
-    const { name } = req.body;
-    const tests = await charityService.createTest(name);
+    const {
+      organization_name,
+      description,
+      category,
+      password,
+      avatar,
+      createdAt,
+      updatedAt,
+      country,
+    } = req.body;
+    const newCharity = {
+      organization_name,
+      description,
+      category,
+      password,
+      avatar,
+      createdAt,
+      updatedAt,
+      country,
+    };
+    const tests = await charityService.createCharity(newCharity);
     res.json(tests);
   } catch (err) {
     res.status(500).send(err.message);
   }
 };
-const update_test = async (req, res) => {
+const update_charity = async (req, res) => {
   try {
     const id = req.params.id;
-    const { name } = req.body;
-    const tests = await charityService.updateTest(id, name);
+    const {
+      organization_name,
+      description,
+      category,
+      password,
+      avatar,
+      createdAt,
+      updatedAt,
+      country,
+    } = req.body;
+    const updatedCharity = {
+      organization_name,
+      description,
+      category,
+      password,
+      avatar,
+      createdAt,
+      updatedAt,
+      country,
+    };
+
+    const tests = await charityService.updateCharity(id, updatedCharity);
     res.json(tests);
   } catch (err) {
     res.status(500).send(err.message);
   }
 };
-const delete_test = async (req, res) => {
+const delete_charity = async (req, res) => {
   try {
     const id = req.params.id;
-    const tests = await charityService.deleteTest(id);
+    const tests = await charityService.deleteCharity(id);
     res.json(tests);
   } catch (err) {
     res.status(500).send(err.message);
   }
 };
 
-export default { get_tests, get_test, create_test, delete_test, update_test };
+export default {
+  get_charities,
+  get_charity,
+  create_charity,
+  update_charity,
+  delete_charity,
+};
+
+

@@ -1,10 +1,9 @@
 import express from "express";
-import api from "../handler/charity-handler.js";
+import api from "../controller/charity_controller";
 const router = express.Router();
 
 router.get("/charity", api.get_charities); //read all posts with titles
 router.get("/charity/:id", api.get_charity); // read a specific post
-router.get("/charity/projects/:id", api.get_projects_by_charity); // read all posts which written by an user
 router.post("/charity", api.create_charity); // create new post
 router.put("/charity/:id", api.update_charity); // update post
 router.delete("/charity/:id", api.delete_charity); // delete post
