@@ -1,5 +1,7 @@
-const mysql = require("mysql2");
-const dotenv = require("dotenv");
+// @ts-nocheck
+import mysql from "mysql2";
+import dotenv from "dotenv";
+
 dotenv.config();
 
 const connection = mysql.createPool({
@@ -13,4 +15,4 @@ const connection = mysql.createPool({
   queueLimit: 0, // 대기열 크기
 });
 
-module.exports = connection;
+export default connection;

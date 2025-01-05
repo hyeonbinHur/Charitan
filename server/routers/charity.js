@@ -1,6 +1,6 @@
-const express = require("express");
+import express from "express";
+import api from "../handler/charity-handler.js";
 const router = express.Router();
-const api = require("../handler/charity-handler.js");
 
 router.get("/charity", api.get_charities); //read all posts with titles
 router.get("/charity/:id", api.get_charity); // read a specific post
@@ -9,4 +9,4 @@ router.post("/charity", api.create_charity); // create new post
 router.put("/charity/:id", api.update_charity); // update post
 router.delete("/charity/:id", api.delete_charity); // delete post
 
-module.exports = router;
+export default router;

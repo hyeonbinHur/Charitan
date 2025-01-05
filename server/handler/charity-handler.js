@@ -1,4 +1,4 @@
-const connection = require("../lib/db_info");
+import connection from "../lib/db_info.js";
 
 const get_charities = (req, res) => {
   connection.query("SELECT * FROM Charity", (err, results) => {
@@ -127,7 +127,7 @@ const get_projects_by_charity = (req, res) => {
   });
 };
 
-module.exports = {
+export default {
   get_charities,
   get_charity,
   create_charity,

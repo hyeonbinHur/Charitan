@@ -1,9 +1,10 @@
-const express = require("express");
+import express from "express";
+import projectRouter from "./routers/project.js";
+import charityRouter from "./routers/charity.js";
+import cors from "cors";
+
 const app = express();
 const port = process.env.PORT || 3000; // 환경 변수 사용
-const projectRouter = require("./routers/project.js");
-const charityRouter = require("./routers/charity.js");
-const cors = require("cors");
 
 app.use(
   cors({

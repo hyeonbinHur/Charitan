@@ -1,4 +1,4 @@
-const connection = require("../lib/db_info");
+import connection from "../lib/db_info";
 
 const get_projects = (req, res) => {
   connection.query("SELECT * FROM Charity_Project", (err, results) => {
@@ -26,7 +26,6 @@ const get_projects_by_charity_name = (req, res) => {
 };
 const get_projects_by_project_name = (req, res) => {
   const { projectName } = req.query;
-  console.log(projectName);
   connection.query(
     "SELECT * FROM Charity_Project WHERE title LIKE ?",
     [`%${projectName}%`],
