@@ -41,10 +41,11 @@ const findOneByStatus = (status) => {
   });
 };
 
-const findOneByCharityName = (charityName) => {
+const findOneByCharityName = (charityName, status) => {
   return new Promise((resolve, reject) => {
-    const query = "SELECT * FROM Charity_Project WHERE charity_name LIKE ?";
-    const values = [charityName];
+    const query =
+      "SELECT * FROM Charity_Project WHERE charity_name LIKE ? AND status = ?";
+    const values = [`%${charityName}%`, status];
     connection.query(query, values, (err, results) => {
       if (err) {
         reject(err);
@@ -55,10 +56,11 @@ const findOneByCharityName = (charityName) => {
   });
 };
 
-const findOneByProjectName = (projectName) => {
+const findOneByProjectName = (projectName, status) => {
   return new Promise((resolve, reject) => {
-    const query = "SELECT * FROM Charity_Project WHERE title LIKE ?";
-    const values = [projectName];
+    const query =
+      "SELECT * FROM Charity_Project WHERE title LIKE ? AND status = ?";
+    const values = [`%${projectName}%`, status];
     connection.query(query, values, (err, results) => {
       if (err) {
         reject(err);
@@ -113,14 +115,14 @@ const createOne = (newProject) => {
 
 const updateOne = (id, updatedProject) => {
   return new Promise((resolve, reject) => {
-    const query = `UPDATE Charity_Project SET title = ?, description = ?, category = ?, target_amount = ?, current_funding = ?, status = ?, updated_at = NOW(), bankaccount = ? WHERE project_id = ?`;
+    const query = `UPDATE Charity_Project SET title = ?, description = ?, category = ?, target_amount = ?, status = ?, updated_at = ?, bankaccount = ? WHERE project_id = ?`;
     const values = [
       updatedProject.title,
       updatedProject.description,
       updatedProject.category,
       updatedProject.target_amount,
-      updatedProject.current_funding,
       updatedProject.status,
+      updatedProject.updated_at,
       updatedProject.bankaccount,
       id,
     ];

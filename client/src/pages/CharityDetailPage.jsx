@@ -1,8 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getCharity } from "@/utils/api/charity";
-import CharityDetail from "@/components/charity/CharityDetail";
+import { getCharity } from "../utils/api/charity";
+import CharityDetail from "../components/charity/CharityDetail";
 
 const CharityDetailPage = () => {
   const params = useParams();

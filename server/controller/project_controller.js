@@ -29,7 +29,12 @@ const get_projects_by_status = async (req, res) => {
 const get_projects_by_charity_name = async (req, res) => {
   try {
     const { charityName } = req.query;
-    const tests = await projectService.readProjectByCharityName(charityName);
+    const { status } = req.query;
+
+    const tests = await projectService.readProjectByCharityName(
+      charityName,
+      status
+    );
     res.json(tests);
   } catch (err) {
     res.status(500).send(err.message);
@@ -38,7 +43,12 @@ const get_projects_by_charity_name = async (req, res) => {
 const get_projects_by_project_name = async (req, res) => {
   try {
     const { projectName } = req.query;
-    const tests = await projectService.readProjectByProjectName(projectName);
+    const { status } = req.query;
+    console.log(status);
+    const tests = await projectService.readProjectByProjectName(
+      projectName,
+      status
+    );
     res.json(tests);
   } catch (err) {
     res.status(500).send(err.message);
@@ -98,8 +108,8 @@ const update_project = async (req, res) => {
       description,
       category,
       target_amount,
-      current_funding,
       status,
+      updated_at,
       bankaccount,
     } = req.body;
     const updatedProject = {
@@ -107,8 +117,8 @@ const update_project = async (req, res) => {
       description,
       category,
       target_amount,
-      current_funding,
       status,
+      updated_at,
       bankaccount,
     };
     const tests = await projectService.updateProject(id, updatedProject);

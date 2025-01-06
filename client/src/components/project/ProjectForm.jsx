@@ -23,20 +23,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { optimizeHTMLImage, resizePostImage } from "../../helper/imageHelper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createProject } from "../../utils/api/project";
+import { createProject, updateProject } from "../../utils/api/project";
 import { uploadFileToS3 } from "../../lib/s3Option";
-/** */
-const ProjectForm = () => {
+import { useParams } from "react-router-dom";
+
+const ProjectForm = ({ project = {} }) => {
+  /**
+   * Variable Declaration
+   */
+  const { title = "", description = "", status = "Active" } = project;
   const [projectStatus, setProjectStatus] = useState("Active");
   const [projectCategory, setProjectCategory] = useState("Food");
-  const [title, setTitle] = useState("");
+  // const [title, setTitle] = useState("");
   const [targetAmount, setTargetAmount] = useState("");
   const [thumbnailFile, setThumbnailFile] = useState("");
   const [thumbnatilImg, setThumbnailImg] = useState(null);
   const editorRef = useRef(null);
+  const queryClient = useQueryClient();
+  const params = useParams();
   const {
     register,
     handleSubmit: onSubmit,
@@ -47,11 +54,45 @@ const ProjectForm = () => {
   } = useForm({
     mode: "onSubmit",
     defaultValues: {
-      status: projectStatus,
-      category: projectCategory,
+      ...(project
+        ? { ...project }
+        : { status: projectStatus, category: projectCategory }),
+    },
+  });
+  /**
+   * useEffect for edit project
+   */
+  useEffect(() => {
+    if (project) {
+      setThumbnailImg(project.thumbnail);
+    }
+  }, []);
+
+  /**
+   * Http Requests
+   */
+  const { mutate: mutateCrateProject } = useMutation({
+    mutationFn: ({ newProject }) => {
+      return createProject(newProject);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries("read-projects");
     },
   });
 
+  const { mutate: mutateUpdateProject } = useMutation({
+    mutationFn: ({ updatedProject }) => {
+      return updateProject(updatedProject, params.project_id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries("read-projects");
+      console.log("success");
+    },
+  });
+
+  /**
+   * Event Handler
+   */
   const onChangeThumbnail = async (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -66,38 +107,45 @@ const ProjectForm = () => {
     }
   };
 
-  const queryClient = useQueryClient();
-  const { mutate: mutateCrateProject } = useMutation({
-    mutationFn: ({ newProject }) => {
-      return createProject(newProject);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries("getCertainProjects");
-      console.log("success");
-    },
-  });
-
   const handleSubmit = async (data) => {
-    const newProject = {
-      charity_id: 1,
-      thumbnail: data.thumbnail,
-      title: data.title,
-      description: data.description,
-      category: data.category,
-      target_amount: data.target_amount,
-      current_funding: 0,
-      status: data.status,
-      created_at: new Date(),
-      updated_at: null,
-      bankaccount: "234-567-890",
-      charity_name: "asd",
-    };
-    newProject.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
-    newProject.description = await optimizeHTMLImage(
-      data.description,
-      data.title
-    );
-    mutateCrateProject({ newProject: newProject });
+    if (project.project_id) {
+      const updatedProject = {
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        target_amount: project.target_amount,
+        status: data.status,
+        updated_at: new Date(),
+        bankaccount: project.bankaccount,
+      };
+      updatedProject.description = await optimizeHTMLImage(
+        data.description,
+        data.title
+      );
+      console.log(updatedProject);
+      mutateUpdateProject({ updatedProject: updatedProject });
+    } else {
+      const newProject = {
+        charity_id: 1,
+        thumbnail: data.thumbnail,
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        target_amount: data.target_amount,
+        current_funding: 0,
+        status: data.status,
+        created_at: new Date(),
+        updated_at: null,
+        bankaccount: "234-567-890",
+        charity_name: "asd",
+      };
+      newProject.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
+      newProject.description = await optimizeHTMLImage(
+        data.description,
+        data.title
+      );
+      mutateCrateProject({ newProject: newProject });
+    }
   };
   return (
     <div>
@@ -106,16 +154,18 @@ const ProjectForm = () => {
           <Label>Title</Label>
           <Input type="text" {...register("title")} />
         </section>
-
         <section>
           <Label>Thumbnatil</Label>
-          <Input
-            type="file"
-            accept="image/*"
-            {...register("thumbnail", {
-              onChange: (e) => onChangeThumbnail(e),
-            })}
-          />
+          {!project.project_id && (
+            <Input
+              type="file"
+              accept="image/*"
+              {...register("thumbnail", {
+                onChange: (e) => onChangeThumbnail(e),
+              })}
+            />
+          )}
+
           {thumbnatilImg && (
             <div>
               <img src={thumbnatilImg} />
@@ -180,7 +230,7 @@ const ProjectForm = () => {
                   <SelectGroup>
                     <SelectLabel>Project Category</SelectLabel>
                     <SelectItem value="Active">Active</SelectItem>
-                    <SelectItem value="Halt">Halt</SelectItem>
+                    <SelectItem value="Halted">Halt</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

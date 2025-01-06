@@ -1,8 +1,11 @@
 import { axiosInstance } from "./axiosUtils";
 
-const getProjects = async () => {
+const getProjects = async (status) => {
   try {
-    const response = await axiosInstance.get("project");
+    const response = await axiosInstance.get(
+      `project/search/status?status=${status}`
+    );
+
     return response.data;
   } catch (err) {
     console.log("Error fetching projects:", err);
@@ -30,6 +33,7 @@ const createProject = async (newProject) => {
 const updateProject = async (newPost, id) => {
   try {
     const response = await axiosInstance.put(`project/${id}`, newPost);
+    console.log(response.data);
     return response.data;
   } catch (err) {
     console.log("error while updating project", err);
@@ -46,10 +50,10 @@ const deleteProject = async (id) => {
   }
 };
 
-const getProjectsByCharityName = async (charityName) => {
+const getProjectsByCharityName = async (charityName, status) => {
   try {
     const response = await axiosInstance.get(
-      `project/search/charity?charityName=${charityName}`
+      `project/search/charity?charityName=${charityName}&status=${status}`
     );
     return response.data;
   } catch (err) {
@@ -58,10 +62,10 @@ const getProjectsByCharityName = async (charityName) => {
   }
 };
 
-const getProjectsByProjectTitle = async (projectName) => {
+const getProjectsByProjectTitle = async (projectName, status) => {
   try {
     const response = await axiosInstance.get(
-      `project/search/project?projectName=${projectName}`
+      `project/search/project?projectName=${projectName}&status=${status}`
     );
     return response.data;
   } catch (err) {

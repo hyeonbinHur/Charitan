@@ -26,18 +26,24 @@ const readProjectByStatus = async (status) => {
   }
 };
 
-const readProjectByCharityName = async (charityName) => {
+const readProjectByCharityName = async (charityName, status) => {
   try {
-    const tests = await projectRepository.findOneByCharityName(charityName);
+    const tests = await projectRepository.findOneByCharityName(
+      charityName,
+      status
+    );
     return tests;
   } catch (err) {
     throw new Error("Failed to read data");
   }
 };
 
-const readProjectByProjectName = async (projectName) => {
+const readProjectByProjectName = async (projectName, status) => {
   try {
-    const tests = await projectRepository.findOneByProjectName(projectName);
+    const tests = await projectRepository.findOneByProjectName(
+      projectName,
+      status
+    );
     return tests;
   } catch (err) {
     throw new Error("Failed to read data");

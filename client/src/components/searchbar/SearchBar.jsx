@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { Input } from "../ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "../ui/label";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +11,6 @@ const SearchBar = () => {
   const [searchContent, setSearchContent] = useState("");
   const [searchType, setSearchType] = useState("Project");
   const navigate = useNavigate();
-
   const onKeyDownSearchBar = (e) => {
     if (e.key === "Enter") {
       if (searchContent === "") {
@@ -21,14 +21,12 @@ const SearchBar = () => {
       );
     }
   };
-
   const onChangeSearchContent = useCallback(
     (e) => {
       setSearchContent(e.target.value);
     },
     [searchContent]
   );
-
   return (
     <div
       className={`flex border-[3px] rounded-md shadow-md outline ${
