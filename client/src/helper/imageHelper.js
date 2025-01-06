@@ -42,6 +42,7 @@ export const optimizeHTMLImage = async (htmlString, title) => {
       const resizedImage = await resizePostImage(file);
       if (resizedImage instanceof File) {
         // AWS에 업로드
+        console.log(title);
         const awsURL = await uploadFileToS3(resizedImage, title);
         img.src = awsURL; // 이미지 src 업데이트
       }

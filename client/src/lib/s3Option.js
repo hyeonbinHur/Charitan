@@ -7,7 +7,6 @@ const s3Client = new S3Client({
     secretAccessKey: import.meta.env.VITE_PUBLIC_S3_SECRET_ACCESS,
   },
 });
-
 export const uploadFileToS3 = async (image, postTitle) => {
   if (!image) {
     return;

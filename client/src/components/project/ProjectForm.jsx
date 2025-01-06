@@ -24,9 +24,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRef, useState } from "react";
-import { resizePostImage } from "../../helper/imageHelper";
+import { optimizeHTMLImage, resizePostImage } from "../../helper/imageHelper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProject } from "../../utils/api/project";
+/** */
 const ProjectForm = () => {
   const [projectStatus, setProjectStatus] = useState("Active");
   const [projectCategory, setProjectCategory] = useState("Food");
@@ -75,7 +76,7 @@ const ProjectForm = () => {
     },
   });
 
-  const handleSubmit = (data) => {
+  const handleSubmit = async (data) => {
     const newProject = {
       charity_id: 1,
       title: data.title,
@@ -89,9 +90,12 @@ const ProjectForm = () => {
       bankaccount: "234-567-890",
       charity_name: "asd",
     };
+    newProject.description = await optimizeHTMLImage(
+      data.description,
+      data.title
+    );
     mutateCrateProject({ newProject: newProject });
   };
-
   return (
     <div>
       <form className="flex flex-col gap-5" onSubmit={onSubmit(handleSubmit)}>
