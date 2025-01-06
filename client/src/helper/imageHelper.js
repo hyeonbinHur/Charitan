@@ -1,5 +1,5 @@
 import Resizer from "react-image-file-resizer";
-import { uploadFileToS3 } from "@/lib/s3Option";
+import { uploadFileToS3 } from "../lib/s3Option";
 export const resizePostImage = (file) =>
   new Promise((res) => {
     Resizer.imageFileResizer(
@@ -17,11 +17,9 @@ export const resizePostImage = (file) =>
 export const convertBase64ToImage = (dataurl, fileName) => {
   let arr = dataurl.split(",");
   const mimeMatch = arr[0].match(/:(.*?);/);
-
   if (!mimeMatch) {
     throw new Error("Invalid Base64 data URL: MIME type not found");
   }
-
   const mime = mimeMatch[1];
   let bstr = atob(arr[1]);
   let n = bstr.length;

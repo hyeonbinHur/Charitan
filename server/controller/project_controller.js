@@ -66,6 +66,7 @@ const create_project = async (req, res) => {
       created_at,
       updated_at,
       bankaccount,
+      charity_name,
     } = req.body;
     const newProject = {
       charity_id,
@@ -78,7 +79,9 @@ const create_project = async (req, res) => {
       created_at,
       updated_at,
       bankaccount,
+      charity_name,
     };
+    console.log(newProject);
     const tests = await projectService.createProject(newProject);
     res.json(tests);
   } catch (err) {

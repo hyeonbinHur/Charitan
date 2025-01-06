@@ -18,9 +18,9 @@ const getProject = async (id) => {
     throw err;
   }
 };
-const createProject = async (newPost) => {
+const createProject = async (newProject) => {
   try {
-    const response = await axiosInstance.post("project", newPost);
+    const response = await axiosInstance.post("project", newProject);
     return response.data;
   } catch (err) {
     console.log("error while creating new project", err);

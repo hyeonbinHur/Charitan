@@ -86,7 +86,7 @@ const findOneByCharity = (id) => {
 const createOne = (newProject) => {
   return new Promise((resolve, reject) => {
     const query =
-      "INSERT INTO Charity_Project ( charity_id, title, description, category, target_amount, current_funding, status, created_at, updated_at, bankaccount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO Charity_Project ( charity_id, title, description, category, target_amount, current_funding, status, created_at, updated_at, bankaccount, charity_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
       newProject.charity_id,
       newProject.title,
@@ -98,6 +98,7 @@ const createOne = (newProject) => {
       newProject.created_at,
       newProject.updated_at,
       newProject.bankaccount,
+      newProject.charity_name,
     ];
     connection.query(query, values, (err, results) => {
       if (err) {

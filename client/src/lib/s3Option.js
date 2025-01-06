@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 const s3Client = new S3Client({
   region: "us-east-1",
   credentials: {
-    accessKeyId: process.env.NEXT_PUBLIC_S3_ACCESS,
-    secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_ACCESS,
+    accessKeyId: import.meta.env.VITE_PUBLIC_S3_ACCESS,
+    secretAccessKey: import.meta.env.VITE_PUBLIC_S3_SECRET_ACCESS,
   },
 });
 
