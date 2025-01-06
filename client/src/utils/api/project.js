@@ -1,9 +1,9 @@
 import { axiosInstance } from "./axiosUtils";
 
-const getProjects = async (status) => {
+const getProjects = async (status, category) => {
   try {
     const response = await axiosInstance.get(
-      `project/search/status?status=${status}`
+      `project/search/status?status=${status}&category=${category}`
     );
 
     return response.data;
@@ -50,10 +50,10 @@ const deleteProject = async (id) => {
   }
 };
 
-const getProjectsByCharityName = async (charityName, status) => {
+const getProjectsByCharityName = async (charityName, status, category) => {
   try {
     const response = await axiosInstance.get(
-      `project/search/charity?charityName=${charityName}&status=${status}`
+      `project/search/charity?charityName=${charityName}&status=${status}&category=${category}`
     );
     return response.data;
   } catch (err) {
@@ -62,10 +62,10 @@ const getProjectsByCharityName = async (charityName, status) => {
   }
 };
 
-const getProjectsByProjectTitle = async (projectName, status) => {
+const getProjectsByProjectTitle = async (projectName, status, category) => {
   try {
     const response = await axiosInstance.get(
-      `project/search/project?projectName=${projectName}&status=${status}`
+      `project/search/project?projectName=${projectName}&status=${status}&category=${category}`
     );
     return response.data;
   } catch (err) {

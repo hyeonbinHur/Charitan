@@ -17,20 +17,21 @@ const readProject = async (id) => {
   }
 };
 
-const readProjectByStatus = async (status) => {
+const readProjectByStatus = async (status, category) => {
   try {
-    const tests = await projectRepository.findOneByStatus(status);
+    const tests = await projectRepository.findOneByStatus(status, category);
     return tests;
   } catch (err) {
     throw new Error("Failed to read data");
   }
 };
 
-const readProjectByCharityName = async (charityName, status) => {
+const readProjectByCharityName = async (charityName, status, category) => {
   try {
     const tests = await projectRepository.findOneByCharityName(
       charityName,
-      status
+      status,
+      category
     );
     return tests;
   } catch (err) {
@@ -38,11 +39,12 @@ const readProjectByCharityName = async (charityName, status) => {
   }
 };
 
-const readProjectByProjectName = async (projectName, status) => {
+const readProjectByProjectName = async (projectName, status, category) => {
   try {
     const tests = await projectRepository.findOneByProjectName(
       projectName,
-      status
+      status,
+      category
     );
     return tests;
   } catch (err) {

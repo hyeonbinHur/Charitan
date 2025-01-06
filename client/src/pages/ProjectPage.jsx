@@ -30,17 +30,31 @@ const ProjectPage = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["read-projects", searchQuery, searchTypeQuery, selectedStatus],
+    queryKey: [
+      "read-projects",
+      searchQuery,
+      searchTypeQuery,
+      selectedStatus,
+      selectedCategory,
+    ],
     queryFn: () => {
       if (!searchQuery) {
         console.log("here");
-        return getProjects(selectedStatus);
+        return getProjects(selectedStatus, selectedCategory);
       } else if (searchTypeQuery === "Project") {
         console.log("project");
-        return getProjectsByProjectTitle(searchQuery, selectedStatus);
+        return getProjectsByProjectTitle(
+          searchQuery,
+          selectedStatus,
+          selectedCategory
+        );
       } else {
         console.log("char");
-        return getProjectsByCharityName(searchQuery, selectedStatus);
+        return getProjectsByCharityName(
+          searchQuery,
+          selectedStatus,
+          selectedCategory
+        );
       }
     },
   });
