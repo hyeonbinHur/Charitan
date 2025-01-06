@@ -27,6 +27,7 @@ import { useRef, useState } from "react";
 import { optimizeHTMLImage, resizePostImage } from "../../helper/imageHelper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProject } from "../../utils/api/project";
+import { uploadFileToS3 } from "../../lib/s3Option";
 /** */
 const ProjectForm = () => {
   const [projectStatus, setProjectStatus] = useState("Active");
@@ -79,6 +80,7 @@ const ProjectForm = () => {
   const handleSubmit = async (data) => {
     const newProject = {
       charity_id: 1,
+      thumbnail: data.thumbnail,
       title: data.title,
       description: data.description,
       category: data.category,
@@ -90,6 +92,7 @@ const ProjectForm = () => {
       bankaccount: "234-567-890",
       charity_name: "asd",
     };
+    newProject.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
     newProject.description = await optimizeHTMLImage(
       data.description,
       data.title

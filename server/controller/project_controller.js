@@ -57,6 +57,7 @@ const create_project = async (req, res) => {
   try {
     const {
       charity_id,
+      thumbnail,
       title,
       description,
       category,
@@ -70,6 +71,7 @@ const create_project = async (req, res) => {
     } = req.body;
     const newProject = {
       charity_id,
+      thumbnail,
       title,
       description,
       category,
