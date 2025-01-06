@@ -28,7 +28,6 @@ import { optimizeHTMLImage, resizePostImage } from "../../helper/imageHelper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProject, updateProject } from "../../utils/api/project";
 import { uploadFileToS3 } from "../../lib/s3Option";
-import { useParams } from "react-router-dom";
 
 const ProjectForm = ({ project = {} }) => {
   /**
@@ -43,7 +42,6 @@ const ProjectForm = ({ project = {} }) => {
   const [thumbnatilImg, setThumbnailImg] = useState(null);
   const editorRef = useRef(null);
   const queryClient = useQueryClient();
-  const params = useParams();
   const {
     register,
     handleSubmit: onSubmit,
@@ -82,7 +80,7 @@ const ProjectForm = ({ project = {} }) => {
 
   const { mutate: mutateUpdateProject } = useMutation({
     mutationFn: ({ updatedProject }) => {
-      return updateProject(updatedProject, params.project_id);
+      return updateProject(updatedProject, project.project_id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries("read-projects");
