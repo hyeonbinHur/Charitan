@@ -1,5 +1,6 @@
 import express from "express";
-import api from "../controller/charity_controller";
+import api from "../controller/charity_controller.js";
+
 const router = express.Router();
 
 router.get("/charity", api.get_charities); //read all posts with titles
