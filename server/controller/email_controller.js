@@ -2,6 +2,7 @@ import emailService from "../service/email_service.js";
 
 const send_email = async (req, res) => {
   // set cache
+  console.log("receive");
   try {
     const {
       title,

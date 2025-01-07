@@ -31,7 +31,7 @@ const ProjectDetail = ({ project }) => {
       {project.status === "Halted" && (
         <Button onClick={() => onClickDeleteProject()}>Delete Project</Button>
       )}
-      {isEditting ? (
+      {!isEditting ? (
         <div>
           <p> {project.category} using bread crumb</p>
           <div className="border rounded-lg bg-stone-500">

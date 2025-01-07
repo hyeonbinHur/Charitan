@@ -26,6 +26,7 @@ const nodeMailSender = async (receiverEmail, subject, message) => {
 // 여기서 socket io && email rest api 받아야함
 const sendEmail = async (email) => {
   try {
+    console.log(email);
     await nodeMailSender(email.receiver_email, email.title, email.content);
     const user = await emailRepository.createOne(email);
     // await setUser(user[0].user_id, user[0].user_name);

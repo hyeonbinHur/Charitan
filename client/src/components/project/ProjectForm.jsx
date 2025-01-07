@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // @ts-nocheck
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
@@ -23,11 +24,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { optimizeHTMLImage, resizePostImage } from "../../helper/imageHelper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProject, updateProject } from "../../utils/api/project";
 import { uploadFileToS3 } from "../../lib/s3Option";
+import { sendEmail } from "../../utils/api/email";
+import { UserContext } from "../../context/AuthContext";
 
 const ProjectForm = ({ project = {} }) => {
   /**
@@ -42,6 +45,8 @@ const ProjectForm = ({ project = {} }) => {
   const [thumbnatilImg, setThumbnailImg] = useState(null);
   const editorRef = useRef(null);
   const queryClient = useQueryClient();
+  const { user } = useContext(UserContext);
+
   const {
     register,
     handleSubmit: onSubmit,
@@ -69,11 +74,39 @@ const ProjectForm = ({ project = {} }) => {
   /**
    * Http Requests
    */
-  const { mutate: mutateCrateProject } = useMutation({
-    mutationFn: ({ newProject }) => {
-      return createProject(newProject);
+
+  const { mutate: mutateSendEmail } = useMutation({
+    mutationFn: ({ newEmail }) => {
+      return sendEmail(newEmail);
     },
     onSuccess: () => {
+      console.log("email sent");
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
+
+  const { mutate: mutateCrateProject } = useMutation({
+    mutationFn: async ({ newProject }) => {
+      return createProject(newProject).then(() => newProject);
+    },
+    onSuccess: (newProject) => {
+      console.log("done1");
+      console.log(newProject.title);
+      const newEmail = {
+        title: "New project has been successfully created!",
+        content: `Your project has been successfully created!`,
+        status: "UNREAD",
+        receiver_type: "Charity",
+        receiver_id: user.charity_id,
+        receiver_email: "hhb7201@naver.com",
+        sender: "Admin",
+        created_at: new Date(),
+      };
+      console.log(newEmail);
+      mutateSendEmail({ newEmail: newEmail });
+      console.log("done");
       queryClient.invalidateQueries("read-projects");
     },
   });
@@ -91,6 +124,7 @@ const ProjectForm = ({ project = {} }) => {
   /**
    * Event Handler
    */
+
   const onChangeThumbnail = async (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -145,6 +179,7 @@ const ProjectForm = ({ project = {} }) => {
       mutateCrateProject({ newProject: newProject });
     }
   };
+
   return (
     <div>
       <form className="flex flex-col gap-5" onSubmit={onSubmit(handleSubmit)}>
