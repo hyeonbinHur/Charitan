@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import Footer from "./components/main-navigation/Footer";
@@ -13,7 +12,7 @@ import MainNav from "./components/main-navigation/MainNav";
 import CreateProjectPage from "./pages/CreateProjectPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css"; 
-
+import Inbox from "./components/message/Inbox";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -31,6 +30,7 @@ const App = () => (
         <Route path="/create-project" element={<CreateProjectPage />} />
         <Route path="/doner-p" element={<DonerPersonalPage />} />
         <Route path="/donation" element={<DonationPage />} />
+        <Route path="/inbox" element={<Inbox />} />
       </Routes>
       <Footer />
     </BrowserRouter>

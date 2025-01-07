@@ -9,21 +9,23 @@ export const useAuth = () => {
     const userInfo = {
       email: userEmail,
     };
-    console.log(userType);
     try {
       if (userType === "Charity") {
         const user = await signinCharity(userInfo); // userId로 유저 정보 가져오기
+        user.user_type = userType;
         dispatch({ type: "SIGN-IN", payload: user }); // 유저 정보 저장
         Cookies.set("user_email", userEmail);
         Cookies.set("user_type", "Charity");
       } else if (userType === "Donor") {
         console.log(userInfo);
         const user = await signinDonor(userInfo); // userId로 유저 정보 가져오기
+        user.user_type = userType;
         dispatch({ type: "SIGN-IN", payload: user }); // 유저 정보 저장
         Cookies.set("user_email", userEmail);
         Cookies.set("user_type", "Donor");
       } else if (userType === "Admin") {
         const user = await signinAdmin(userInfo); // userId로 유저 정보 가져오기
+        user.user_type = userType;
         dispatch({ type: "SIGN-IN", payload: user }); // 유저 정보 저장
         Cookies.set("user_email", userEmail);
         Cookies.set("user_type", "Admin");

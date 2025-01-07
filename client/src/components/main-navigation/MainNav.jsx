@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { UserContext } from "../../context/AuthContext";
 import { useAuth } from "../../hooks/useAuth";
 import { Menu, X } from "lucide-react";
+import UserDropDown from "./UserDropDown";
 
 const MainNav = () => {
   const authModal = useRef(null);
@@ -89,6 +90,7 @@ const MainNav = () => {
             <Button onClick={signOut} className="hover:bg-gray-300">
               {user.email}
             </Button>
+            <UserDropDown user={user} />
           ) : (
             <Button onClick={onClickOpenAuthModal} className="hover:bg-gray-300">
               Sign In

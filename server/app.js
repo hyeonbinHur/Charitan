@@ -3,6 +3,7 @@ import projectRouter from "./routers/project.js";
 import charityRouter from "./routers/charity.js";
 import adminRouter from "./routers/admin.js";
 import donorRouter from "./routers/donor.js";
+import emailRouter from "./routers/email.js";
 import cors from "cors";
 
 const app = express();
@@ -29,7 +30,8 @@ app.use(
   adminRouter,
   donorRouter,
   projectRouter,
-  charityRouter
+  charityRouter,
+  emailRouter
 );
 
 // 서버 실행
