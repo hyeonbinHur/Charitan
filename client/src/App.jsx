@@ -12,6 +12,7 @@ import DonationPage from "./pages/DonationPage";
 import MainNav from "./components/main-navigation/MainNav";
 import CreateProjectPage from "./pages/CreateProjectPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "./App.css"; 
 
 const queryClient = new QueryClient();
 
