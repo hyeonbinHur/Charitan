@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import StripePayment from "../components/payment/StripePayment";
 
 function DonationPage() {
   const [donations, setDonations] = useState([]);
@@ -6,9 +7,11 @@ function DonationPage() {
     name: "",
     amount: 0,
     message: "",
-    action: " ",
+    action: "",
   });
   const [editingDonation, setEditingDonation] = useState(null);
+  const [showStripePayment, setShowStripePayment] = useState(false); // Toggle Stripe payment form
+  const [selectedAmount, setSelectedAmount] = useState(0);
 
   // Fetch initial donations (replace with your actual API call)
   useEffect(() => {
@@ -32,6 +35,11 @@ function DonationPage() {
 
   // Create a new donation
   const handleCreate = async () => {
+    if (newDonation.amount <= 0) {
+      alert("Donation amount must be greater than 0.");
+      return;
+    }
+
     try {
       const response = await fetch("/api/donations", {
         method: "POST",
@@ -72,6 +80,16 @@ function DonationPage() {
     }
   };
 
+  // Toggle Stripe Payment Form
+  const toggleStripePayment = (amount) => {
+    if (amount <= 0) {
+      alert("Donation amount must be greater than 0.");
+      return;
+    }
+    setSelectedAmount(amount);
+    setShowStripePayment((prev) => !prev);
+  };
+
   return (
     <main className="donation-page p-4">
       <h1 className="text-3xl font-bold text-center mb-6">Donation Page</h1>
@@ -98,10 +116,36 @@ function DonationPage() {
                       ...editingDonation,
                       name: e.target.value,
                     })
-                : handleChange // Use handleChange for the "Add Donation" form
+                : handleChange
             }
           />
         </div>
+        <div className="form-buttons flex justify-around mt-6">
+          <button
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => toggleStripePayment(newDonation.amount)}
+          >
+            Donate via Stripe
+          </button>
+          {editingDonation && (
+            <button
+              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => setEditingDonation(null)}
+            >
+              Cancel
+            </button>
+          )}
+        </div>
+
+        {/* Stripe Payment Form */}
+        {showStripePayment && (
+          <div className="stripe-container w-96 p-6 border border-gray-300 rounded-md mb-6">
+            <StripePayment
+              amount={selectedAmount * 100} // Stripe expects amounts in cents
+              description="Charity Donation"
+            />
+          </div>
+        )}
         <div className="form-field mb-4">
           {/* Amount field */}
           <label htmlFor="amount" className="block mb-2">
@@ -123,12 +167,12 @@ function DonationPage() {
                       ...editingDonation,
                       amount: parseInt(e.target.value, 10),
                     })
-                : handleChange // Use handleChange for the "Add Donation" form
+                : handleChange
             }
+            min="1" // Prevent amounts less than 1
           />
         </div>
         <div className="form-field mb-4">
-          {/* Message field */}
           <label htmlFor="message" className="block mb-2">
             Message:
           </label>
@@ -147,14 +191,11 @@ function DonationPage() {
                       ...editingDonation,
                       message: e.target.value,
                     })
-                : handleChange // Use handleChange for the "Add Donation" form
+                : handleChange
             }
           />
         </div>
-
         <div className="form-field mb-4">
-          {" "}
-          {/* Action field */}
           <label htmlFor="action" className="block mb-2">
             Action:
           </label>
@@ -181,7 +222,6 @@ function DonationPage() {
             <option value="other">Other</option>
           </select>
         </div>
-
         <div className="form-buttons flex justify-around mt-6">
           {editingDonation ? (
             <button
