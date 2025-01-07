@@ -5,8 +5,9 @@
 // import { toast } from "react-toastify";
 // import { checkPendingStatus } from "../../../utils/util/util";
 // import Spinner from "../../../assets/svgs/loading.svg";
+import React from "react";
 
-export default function SignUpForm({ toSignIn }) {
+const SignUpForm = ({ toSignIn }) => {
   //   const [username, setUsername] = useState("");
   //   const [password, setPassword] = useState("");
   //   const [passwordCheck, setPasswordCheck] = useState("");
@@ -149,6 +150,44 @@ export default function SignUpForm({ toSignIn }) {
     //     </form>
     //   )}
     // </div>
-    <div>Sign up form will be implemented</div>
+    <div>
+      <h2 className="text-2xl font-bold mb-4">Sign Up for Charitan</h2>
+      <form>
+        <input
+          type="text"
+          placeholder="Username"
+          className="border p-2 rounded w-full mb-3"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="border p-2 rounded w-full mb-3"
+        />
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          className="border p-2 rounded w-full mb-3"
+        />
+        <button
+          type="submit"
+          className="bg-blue-500 text-white py-2 px-4 rounded w-full"
+        >
+          Sign Up
+        </button>
+      </form>
+      <div className="mt-4 text-center">
+        <p className="text-sm">
+          Already have an account?{" "}
+          <button
+            onClick={toSignIn}
+            className="text-blue-500 underline hover:text-blue-700"
+          >
+            Sign In
+          </button>
+        </p>
+      </div>
+    </div>
   );
 }
+
+export default SignUpForm;

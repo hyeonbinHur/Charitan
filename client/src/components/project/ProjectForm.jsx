@@ -243,20 +243,21 @@ const ProjectForm = ({ project = {} }) => {
             control={control}
             render={({ field }) => (
               <Editor
-                id="my-custom-editor"
-                apiKey={import.meta.env.VITE_PUBLIC_TINY_MCE_API}
-                init={editorConfig}
-                onInit={(e, editor) => (editorRef.current = editor)}
-                onEditorChange={(newValue) => {
-                  field.onChange(newValue);
+                apiKey="your-tinymce-api-key"
+                init={{
+                  height: 300, // Adjusted to a suitable size
                 }}
-                value={getValues("description")}
+                className="tinymce-editor-container"
+                onEditorChange={(content) => field.onChange(content)}
+                value={field.value}
               />
             )}
           />
         </section>
 
-        <Button type="submit"> save</Button>
+        <Button type="submit" className="confirm-button">
+          Confirm Create Project
+        </Button>
       </form>
     </div>
   );
