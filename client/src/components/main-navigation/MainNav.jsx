@@ -1,6 +1,16 @@
-import React from "react";
 import { Link } from "react-router-dom";
+import AuthModal from "../modal/AuthModal";
+import { useContext, useRef } from "react";
+import { Button } from "../ui/button";
+import { UserContext } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 const MainNav = () => {
+  const authModal = useRef(null);
+  const { user } = useContext(UserContext);
+  const { signOut } = useAuth();
+  const onClickOpenAuthModal = () => {
+    authModal.current.open();
+  };
   return (
     <header className="px-5 py-5 text-black  w-full border-2">
       <div className="flex justify-around items-center ">
@@ -34,8 +44,14 @@ const MainNav = () => {
           <Link to="/donation" className="hover:text-gray-300">
             Donation
           </Link>
+          {user ? (
+            <Button onClick={() => signOut()}>{user.email}</Button>
+          ) : (
+            <Button onClick={() => onClickOpenAuthModal()}>Auth</Button>
+          )}
         </nav>
       </div>
+      <AuthModal ref={authModal} />
     </header>
   );
 };

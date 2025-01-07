@@ -5,7 +5,6 @@ const getProjects = async (status, category) => {
     const response = await axiosInstance.get(
       `project/search/status?status=${status}&category=${category}`
     );
-
     return response.data;
   } catch (err) {
     console.log("Error fetching projects:", err);
