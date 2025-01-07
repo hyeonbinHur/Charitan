@@ -3,11 +3,11 @@ import AuthModal from "../modal/AuthModal";
 import { useContext, useRef } from "react";
 import { Button } from "../ui/button";
 import { UserContext } from "../../context/AuthContext";
-import { useAuth } from "../../hooks/useAuth";
+import UserDropDown from "./UserDropDown";
+
 const MainNav = () => {
   const authModal = useRef(null);
   const { user } = useContext(UserContext);
-  const { signOut } = useAuth();
   const onClickOpenAuthModal = () => {
     authModal.current.open();
   };
@@ -45,7 +45,7 @@ const MainNav = () => {
             Donation
           </Link>
           {user ? (
-            <Button onClick={() => signOut()}>{user.email}</Button>
+            <UserDropDown user={user} />
           ) : (
             <Button onClick={() => onClickOpenAuthModal()}>Auth</Button>
           )}

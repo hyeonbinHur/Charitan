@@ -29,14 +29,15 @@ export const AuthContext = ({ children }) => {
         try {
           if (userType === "Charity") {
             const user = await signinCharity(userInfo);
-
+            user.user_type = userType;
             dispatch({ type: "SIGN-IN", payload: user });
           } else if (userType === "Donor") {
             const user = await signinDonor(userInfo);
-            console.log(user);
+            user.user_type = userType;
             dispatch({ type: "SIGN-IN", payload: user });
           } else if (userType === "Admin") {
             const user = await signinAdmin(userInfo);
+            user.user_type = userType;
             dispatch({ type: "SIGN-IN", payload: user });
           }
         } catch (err) {
