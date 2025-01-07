@@ -14,6 +14,23 @@ const findOneByEmail = (email) => {
   });
 };
 
+
+// Find donors who have opted for monthly donations
+const findMonthlyDonors = async () => {
+  try {
+    const query = `SELECT donorId, monthlyDonationAmount
+                   FROM donors
+                   WHERE monthlyDonationAmount > 0`;  // Assuming donors with a set monthly amount are opted in
+    const result = await connection .query(query);
+    return result.rows;
+  } catch (err) {
+    throw new Error("Failed to find monthly donors: " + err.message);
+  }
+};
+
 export default {
   findOneByEmail,
+  findMonthlyDonors,
 };
+
+
