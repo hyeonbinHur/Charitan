@@ -91,7 +91,6 @@ const signin_charity = async (req, res) => {
   // set cache
   try {
     const { email } = req.body;
-    console.log(email)
     const user = await charityService.signInUser(email);
     res.json(user);
   } catch (err) {
