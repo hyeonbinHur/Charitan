@@ -84,6 +84,20 @@ const delete_charity = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+/**
+ * simple auth api
+ */
+const signin_charity = async (req, res) => {
+  // set cache
+  try {
+    const { email } = req.body;
+    console.log(email)
+    const user = await charityService.signInUser(email);
+    res.json(user);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
 
 export default {
   get_charities,
@@ -91,6 +105,7 @@ export default {
   create_charity,
   update_charity,
   delete_charity,
+  signin_charity,
 };
 
 

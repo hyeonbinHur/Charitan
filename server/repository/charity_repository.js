@@ -98,4 +98,25 @@ const deleteOne = (id) => {
   });
 };
 
-export default { findAll, findOne, deleteOne, createOne, updateOne };
+const findOneByEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM Charity WHERE email = ?";
+    const values = [email];
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
+
+export default {
+  findAll,
+  findOne,
+  deleteOne,
+  createOne,
+  updateOne,
+  findOneByEmail,
+};

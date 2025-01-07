@@ -1,6 +1,8 @@
 import express from "express";
 import projectRouter from "./routers/project.js";
 import charityRouter from "./routers/charity.js";
+import adminRouter from "./routers/admin.js";
+import donorRouter from "./routers/donor.js";
 import cors from "cors";
 
 const app = express();
@@ -22,7 +24,13 @@ app.get("/", (req, res) => {
 });
 
 // 라우터
-app.use("/panther-charitan", projectRouter, charityRouter);
+app.use(
+  "/panther-charitan",
+  adminRouter,
+  donorRouter,
+  projectRouter,
+  charityRouter
+);
 
 // 서버 실행
 app.listen(port, () => {
