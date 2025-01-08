@@ -18,13 +18,18 @@ const readAllProjects = async () => {
 };
 const readProject = async (id) => {
   try {
-    const tests = await projectRepository.findOne(id);
-    return tests;
+    const cacheVal = await getProjectFromCache(id);
+    if (Object.keys(cacheVal).length > 0) {
+      const tests = await projectRepository.findOne(id);
+      await setProjectFromCache(tests[0].project_id, tests[0]);
+      return tests;
+    } else {
+      return [cacheVal];
+    }
   } catch (err) {
     throw new Error("Failed to read data");
   }
 };
-
 const readProjectByStatus = async (status, category) => {
   try {
     const tests = await projectRepository.findOneByStatus(status, category);
@@ -33,7 +38,6 @@ const readProjectByStatus = async (status, category) => {
     throw new Error("Failed to read data");
   }
 };
-
 const readProjectByCharityName = async (
   charityName,
   status,
@@ -112,8 +116,6 @@ const readProjectByCharity = async (id) => {
 
 const createProject = async (newProject) => {
   try {
-    console.log("new Project from service");
-    console.log(newProject);
     const tests = await projectRepository.createOne(newProject);
     return tests;
   } catch (err) {
@@ -124,6 +126,7 @@ const createProject = async (newProject) => {
 const updateProject = async (id, updatedProject) => {
   try {
     const tests = await projectRepository.updateOne(id, updatedProject);
+    await updateProjectFromCache(id, updatedProject);
     return tests;
   } catch (err) {
     throw new Error("Failed to read data");
