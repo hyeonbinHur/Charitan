@@ -49,10 +49,15 @@ const deleteProject = async (id) => {
   }
 };
 
-const getProjectsByCharityName = async (charityName, status, category) => {
+const getProjectsByCharityName = async (
+  charityName,
+  status,
+  category,
+  country
+) => {
   try {
     const response = await axiosInstance.get(
-      `project/search/charity?charityName=${charityName}&status=${status}&category=${category}`
+      `project/search/charity?charityName=${charityName}&status=${status}&category=${category}&country=${country}`
     );
     return response.data;
   } catch (err) {
@@ -61,11 +66,17 @@ const getProjectsByCharityName = async (charityName, status, category) => {
   }
 };
 
-const getProjectsByProjectTitle = async (projectName, status, category) => {
+const getProjectsByProjectTitle = async (
+  projectName,
+  status,
+  category,
+  country
+) => {
   try {
     const response = await axiosInstance.get(
-      `project/search/project?projectName=${projectName}&status=${status}&category=${category}`
+      `project/search/project?projectName=${projectName}&status=${status}&category=${category}&country=${country}`
     );
+
     return response.data;
   } catch (err) {
     console.log("error while read projects by project name : ", err);
