@@ -1,14 +1,26 @@
 // subscription_repository.js
-import db from "../lib/db_info.js";
+import connection from "../lib/db_info.js";  // MySQL connection
 
-const createSubscription = async (subscription) => {
-  try {
-    const query = `INSERT INTO subscriptions (donorId, category, region, subscribedAt)
-                   VALUES ($1, $2, $3, $4)`;
-    await db.query(query, [subscription.donorId, subscription.category, subscription.region, subscription.subscribedAt]);
-  } catch (err) {
-    throw new Error("Failed to create subscription: " + err.message);
-  }
+// Create a new subscription record using promise-based query
+const createSubscription = (subscription) => {
+  return new Promise((resolve, reject) => {
+    const query = `INSERT INTO Subscription (donor_id, category, region, created_at, donation_id)
+                   VALUES (?, ?, ?, ?, ?)`;
+
+    connection.query(query, [
+      subscription.donorId,
+      subscription.category,
+      subscription.region,
+      subscription.created_at,
+      subscription.donationId
+    ])
+    .then(([results]) => {
+      resolve(results);  // Resolving the promise with query results
+    })
+    .catch((err) => {
+      reject(new Error("Failed to create subscription: " + err.message));  // Rejecting on error
+    });
+  });
 };
 
 export default { createSubscription };

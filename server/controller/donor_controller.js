@@ -12,34 +12,41 @@ const signin_donor = async (req, res) => {
   }
 };
 
-// Controller for subscribing to new projects
+
+// Subscribe a donor to a new project
 const subscribeToNewProjects = async (req, res) => {
   try {
-    const { donorId, category, region } = req.body;
-    const response = await donorService.subscribeToNewProjects(donorId, category, region);
-    res.status(200).json(response);  // Respond with success
+    const { donorId, category, region, donationId } = req.body;
+
+    if (!donorId || !category || !region || !donationId) {
+      return res.status(400).json({ message: "Donor ID, category, region, and donation ID are required." });
+    }
+
+    // Subscribe the donor using the service layer
+    const result = await donorService.subscribeToNewProjects(donorId, category, region, donationId);
+    res.status(200).json({ message: 'Subscription successful.', data: result });
   } catch (err) {
-    res.status(500).send(err.message);  // Error handling
+    res.status(500).json({ message: err.message });
   }
 };
 
-// Controller for processing monthly donations
+// Process monthly donations
 const processMonthlyDonations = async (req, res) => {
   try {
-    await donorService.processMonthlyDonations();
-    res.status(200).send('Monthly donations processed successfully');
+    const response = await donorService.processMonthlyDonations();
+    res.status(200).json(response);
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ message: err.message });
   }
 };
 
-// Controller for fetching top donors of the month
+// Get top donors for the current month
 const getTopDonors = async (req, res) => {
   try {
     const topDonors = await donorService.getTopDonors();
     res.status(200).json(topDonors);
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ message: err.message });
   }
 };
 

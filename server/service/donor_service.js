@@ -18,51 +18,62 @@ const signInUser = async (email) => {
   }
 };
 
-// Subscribe donor to new projects based on category and region
-const subscribeToNewProjects = async (donorId, category, region) => {
+// Subscribe a donor to a new project
+const subscribeToNewProjects = async (donorId, category, region, donationId) => {
   try {
+    // Ensure the donation exists for the donor
+    const [donations] = await donationRepository.getDonationsByDonor(donorId);
+
+    if (!donations || donations.length === 0) {
+      throw new Error("No donation found for this donor.");
+    }
+
+    // Create subscription if valid donation exists
     const subscription = {
       donorId,
       category,
       region,
-      subscribedAt: new Date(),  // Timestamp for when the subscription occurs
+      created_at: new Date(),
+      donationId,  // Use the donation_id from the Donation table
     };
-    await subscriptionRepository.createSubscription(subscription);  // Save subscription in database
-    return { message: 'Subscription successful' };
+
+    const result = await subscriptionRepository.createSubscription(subscription);
+    return result;  // Return the result of the subscription creation
   } catch (err) {
-    throw new Error("Failed to subscribe to projects: " + err.message);
+    throw new Error("Error subscribing to project: " + err.message);
   }
 };
 
-// Process monthly donations for donors
+// Process monthly donations for all donors who have opted in
 const processMonthlyDonations = async () => {
   try {
-    const monthlyDonors = await donorRepository.findMonthlyDonors();
+    // Fetch all donors who have made donations
+    const [monthlyDonors] = await donationRepository.getTopDonorsByMonth();
+
     for (const donor of monthlyDonors) {
-      const donationAmount = donor.monthlyDonationAmount;
+      const donationAmount = donor.total_amount;
       await donationRepository.createDonation({
-        donorId: donor.donorId,
+        donor_id: donor.donor_id,
         amount: donationAmount,
-        donationDate: new Date(),
+        email_id: donor.email_id,
+        donation_date: new Date(),
       });
     }
+
+    return { message: 'Monthly donations processed successfully.' };
   } catch (err) {
     throw new Error("Failed to process monthly donations: " + err.message);
   }
 };
 
-
-
+// Get top donors of the current month
 const getTopDonors = async () => {
   try {
-    const topDonors = await donationRepository.getTopDonorsByMonth();  // Get top donors by donation amount
+    const [topDonors] = await donationRepository.getTopDonorsByMonth();
     return topDonors;
   } catch (err) {
     throw new Error("Failed to fetch top donors: " + err.message);
   }
 };
-
-
-
 
 export default { signInUser, subscribeToNewProjects, processMonthlyDonations, getTopDonors };
