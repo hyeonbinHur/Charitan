@@ -34,7 +34,6 @@ const readProjectByCharityName = async (
 ) => {
   try {
     const charities = await charityRepository.findManyByCountry(country);
-
     const tests = await projectRepository.findOneByCharityName(
       charityName,
       status,

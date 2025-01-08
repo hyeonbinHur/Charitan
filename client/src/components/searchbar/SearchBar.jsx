@@ -15,10 +15,11 @@ const SearchBar = () => {
     if (e.key === "Enter") {
       if (searchContent === "") {
         navigate(`/projects`);
+      } else {
+        navigate(
+          `/projects?searchType=${searchType}&searchQuery=${searchContent}`
+        );
       }
-      navigate(
-        `/projects?searchType=${searchType}&searchQuery=${searchContent}`
-      );
     }
   };
   const onChangeSearchContent = useCallback(

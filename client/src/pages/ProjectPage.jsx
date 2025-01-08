@@ -24,7 +24,7 @@ const ProjectPage = () => {
   const searchTypeQuery = searchParams.get("searchType");
   const [selectedStatus, setSelectedStatus] = useState("Active");
   const [selectedCountry, setSelectedCountry] = useState("Vietnam");
-  const [selectedCategory, setSelectedCategory] = useState("Food");
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
 
   const { data: projects } = useQuery({
     queryKey: [
