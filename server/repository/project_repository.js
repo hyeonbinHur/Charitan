@@ -71,6 +71,20 @@ const findOneByProjectName = (projectName, status, category) => {
     });
   });
 };
+const findManyByCountry = (charities, status, category) => {
+  return new Promise((resolve, reject) => {
+    const query =
+      "SELECT * FROM Charity_Project WHERE charity_id IN (?) AND status = ? AND category = ?";
+    const values = [charities, status, category];
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
 
 const findOneByCharity = (id) => {
   return new Promise((resolve, reject) => {
@@ -158,6 +172,7 @@ export default {
   findOneByCharityName,
   findOneByProjectName,
   findOneByCharity,
+  findManyByCountry,
   deleteOne,
   createOne,
   updateOne,

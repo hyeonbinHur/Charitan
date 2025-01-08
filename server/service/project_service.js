@@ -1,5 +1,5 @@
 import projectRepository from "../repository/project_repository.js";
-
+import charityRepository from "../repository/charity_repository.js";
 const readAllProjects = async () => {
   try {
     const tests = await projectRepository.findAll();
@@ -51,7 +51,19 @@ const readProjectByProjectName = async (projectName, status, category) => {
     throw new Error("Failed to read data");
   }
 };
-
+const readProjectByCountry = async (country, status, category) => {
+  try {
+    const charities = await charityRepository.findManyByCountry(country);
+    const tests = await projectRepository.findManyByCountry(
+      charities,
+      status,
+      category
+    );
+    return tests;
+  } catch (err) {
+    throw new Error("Failed to read data");
+  }
+};
 const readProjectByCharity = async (id) => {
   try {
     const tests = await projectRepository.findOneByCharity(id);
@@ -96,6 +108,7 @@ export default {
   readProjectByStatus,
   readProjectByCharityName,
   readProjectByProjectName,
+  readProjectByCountry,
   readProjectByCharity,
   createProject,
   updateProject,

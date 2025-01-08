@@ -59,6 +59,21 @@ const get_projects_by_project_name = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+const get_projects_by_country = async (req, res) => {
+  try {
+    const { country } = req.query;
+    const { status } = req.query;
+    const { category } = req.query;
+    const tests = await projectService.readProjectByCountry(
+      country,
+      status,
+      category
+    );
+    res.json(tests);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
 const get_projects_by_charity = async (req, res) => {
   try {
     const id = req.params.id;
@@ -148,6 +163,7 @@ export default {
   get_projects_by_status,
   get_projects_by_charity_name,
   get_projects_by_project_name,
+  get_projects_by_country,
   get_projects_by_charity,
   create_project,
   update_project,

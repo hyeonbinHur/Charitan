@@ -72,6 +72,17 @@ const getProjectsByProjectTitle = async (projectName, status, category) => {
     throw err;
   }
 };
+const getProjectsByCountry = async (country, status, category) => {
+  try {
+    const response = await axiosInstance.get(
+      `project/search/project?county=${country}&status=${status}&category=${category}`
+    );
+    return response.data;
+  } catch (err) {
+    console.log("error while read projects by project name : ", err);
+    throw err;
+  }
+};
 
 export {
   getProjects,
@@ -81,4 +92,5 @@ export {
   deleteProject,
   getProjectsByCharityName,
   getProjectsByProjectTitle,
+  getProjectsByCountry,
 };

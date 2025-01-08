@@ -17,6 +17,15 @@ const get_charity = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+const get_charities_by_country = (req, res) => {
+  try {
+    const { country } = req.query;
+    const projects = charityService.readProjectByCountry(country);
+    res.json(projects);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
 const create_charity = async (req, res) => {
   try {
     const {
@@ -101,6 +110,7 @@ const signin_charity = async (req, res) => {
 export default {
   get_charities,
   get_charity,
+  get_charities_by_country,
   create_charity,
   update_charity,
   delete_charity,

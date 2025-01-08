@@ -12,6 +12,21 @@ const findAll = () => {
     });
   });
 };
+
+const findManyByCountry = (country) => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT charity_id FROM Charity where country = ?";
+    const values = [country];
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
+
 const findOne = (id) => {
   return new Promise((resolve, reject) => {
     const query = "SELECT * FROM Charity WHERE charity_id = ?";
@@ -29,7 +44,6 @@ const createOne = (newCharity) => {
   return new Promise((resolve, reject) => {
     const query =
       "INSERT INTO Charity ( organization_name, description, category, password, avatar, createdAt, updatedAt, country) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
     const values = [
       newCharity.organization_name,
       newCharity.description,
@@ -115,6 +129,7 @@ const findOneByEmail = (email) => {
 export default {
   findAll,
   findOne,
+  findManyByCountry,
   deleteOne,
   createOne,
   updateOne,
