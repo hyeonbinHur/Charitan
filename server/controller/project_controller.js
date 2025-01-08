@@ -2,6 +2,7 @@ import projectService from "../service/project_service.js";
 
 const get_projects = async (req, res) => {
   try {
+    console.log("here");
     const tests = await projectService.readAllProjects();
     res.json(tests);
   } catch (err) {
@@ -21,6 +22,7 @@ const get_projects_by_status = async (req, res) => {
   try {
     const { status } = req.query;
     const { category } = req.query;
+    console.log(status, category);
     const tests = await projectService.readProjectByStatus(status, category);
     res.json(tests);
   } catch (err) {
@@ -33,7 +35,6 @@ const get_projects_by_charity_name = async (req, res) => {
     const { status } = req.query;
     const { category } = req.query;
     const { country } = req.query;
-
     const tests = await projectService.readProjectByCharityName(
       charityName,
       status,
@@ -52,6 +53,7 @@ const get_projects_by_project_name = async (req, res) => {
     const { status } = req.query;
     const { category } = req.query;
     const { country } = req.query;
+    console.log(country, status, category);
     const tests = await projectService.readProjectByProjectName(
       projectName,
       status,
@@ -68,6 +70,7 @@ const get_projects_by_country = async (req, res) => {
     const { country } = req.query;
     const { status } = req.query;
     const { category } = req.query;
+    console.log(country, status, category);
     const tests = await projectService.readProjectByCountry(
       country,
       status,

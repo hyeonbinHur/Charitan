@@ -44,6 +44,7 @@ const findOneByStatus = (status, category) => {
   });
 };
 
+
 const findOneByCharityName = (charityName, status, category, charities) => {
   return new Promise((resolve, reject) => {
     const query =
