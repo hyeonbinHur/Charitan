@@ -1,7 +1,7 @@
-import connection from "../lib/db_info.js";
+// donor_repository.js
+import connection from "../lib/db_info.js";  // MySQL connection pool
 
-// Create a new donor
-// Create a new donor
+// Create a new donor record using promise-based query
 const createDonor = (donor) => {
   return new Promise((resolve, reject) => {
     const query = `INSERT INTO Donor (total_donations, donation_count, password, phone_number, address, avatar, created_at, updated_at, name, paymentDetail, donor_type, introduction_video, email_verified, email)
@@ -24,23 +24,25 @@ const createDonor = (donor) => {
       donor.email,
     ], (err, results) => {
       if (err) {
-        reject(err);  // Reject if error occurs
+        reject(new Error("Failed to create donor: " + err.message));  // Reject on error
       } else {
-        resolve(results);  // Resolve with the result
+        resolve(results);  // Resolve with query results
       }
     });
   });
 };
 
+// Find donor by email
 const findOneByEmail = (email) => {
   return new Promise((resolve, reject) => {
     const query = "SELECT * FROM Donor WHERE email = ?";
     const values = [email];
+
     connection.query(query, values, (err, results) => {
       if (err) {
-        reject(err);
+        reject(new Error("Failed to find donor by email: " + err.message));  // Reject on error
       } else {
-        resolve(results);
+        resolve(results);  // Resolve with query results
       }
     });
   });
@@ -53,9 +55,9 @@ const findMonthlyDonors = () => {
 
     connection.query(query, (err, results) => {
       if (err) {
-        reject(err);  // Reject if error occurs
+        reject(new Error("Failed to find monthly donors: " + err.message));  // Reject on error
       } else {
-        resolve(results);  // Return results
+        resolve(results);  // Resolve with query results
       }
     });
   });
@@ -64,6 +66,5 @@ const findMonthlyDonors = () => {
 export default {
   findOneByEmail,
   findMonthlyDonors,
+  createDonor
 };
-
-

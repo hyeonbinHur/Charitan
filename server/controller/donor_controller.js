@@ -14,9 +14,9 @@ const signin_donor = async (req, res) => {
 // Subscribe a donor to a new project
 const subscribeToNewProjects = async (req, res) => {
   try {
-    const { donorId, category, region, donationId } = req.body;
+    const { donor_id, category, region, donation_id } = req.body;
 
-    if (!donorId || !category || !region || !donationId) {
+    if (!donor_id || !category || !region || !donation_id) {
       return res.status(400).json({
         message: "Donor ID, category, region, and donation ID are required.",
       });
@@ -24,10 +24,10 @@ const subscribeToNewProjects = async (req, res) => {
 
     // Subscribe the donor using the service layer
     const result = await donorService.subscribeToNewProjects(
-      donorId,
+      donor_id,
       category,
       region,
-      donationId
+      donation_id
     );
     res.status(200).json({ message: "Subscription successful.", data: result });
   } catch (err) {

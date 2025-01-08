@@ -1,5 +1,5 @@
 // subscription_repository.js
-import connection from "../lib/db_info.js";  // MySQL connection
+import connection from "../lib/db_info.js";  // MySQL connection pool
 
 // Create a new subscription record using promise-based query
 const createSubscription = (subscription) => {
@@ -8,17 +8,17 @@ const createSubscription = (subscription) => {
                    VALUES (?, ?, ?, ?, ?)`;
 
     connection.query(query, [
-      subscription.donorId,
+      subscription.donor_id,
       subscription.category,
       subscription.region,
       subscription.created_at,
-      subscription.donationId
-    ])
-    .then(([results]) => {
-      resolve(results);  // Resolving the promise with query results
-    })
-    .catch((err) => {
-      reject(new Error("Failed to create subscription: " + err.message));  // Rejecting on error
+      subscription.donation_id
+    ], (err, results) => {
+      if (err) {
+        reject(new Error("Failed to create subscription: " + err.message));  // Reject on error
+      } else {
+        resolve(results);  // Resolve with query results
+      }
     });
   });
 };

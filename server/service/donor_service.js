@@ -20,10 +20,10 @@ const signInUser = async (email) => {
 };
 
 // Subscribe a donor to a new project
-const subscribeToNewProjects = async (donorId, category, region, donationId) => {
+const subscribeToNewProjects = async (donor_id, category, region, donation_id) => {
   try {
     // Ensure the donation exists for the donor
-    const [donations] = await donationRepository.getDonationsByDonor(donorId);
+    const [donations] = await donationRepository.getDonationsByDonor(donor_id);
 
     if (!donations || donations.length === 0) {
       throw new Error("No donation found for this donor.");
@@ -31,15 +31,16 @@ const subscribeToNewProjects = async (donorId, category, region, donationId) => 
 
     // Create subscription if valid donation exists
     const subscription = {
-      donorId,
+      donor_id,
       category,
       region,
       created_at: new Date(),
-      donationId,  // Use the donation_id from the Donation table
+      donation_id,  // Use the donation_id from the Donation table
     };
 
     const result = await subscriptionRepository.createSubscription(subscription);
     return result;  // Return the result of the subscription creation
+
   } catch (err) {
     console.error(err)
     throw new Error("Error subscribing to project: " + err.message);

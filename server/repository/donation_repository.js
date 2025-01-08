@@ -1,5 +1,5 @@
 // donation_repository.js
-import connection from "../lib/db_info.js";  // MySQL connection
+import connection from "../lib/db_info.js";  // MySQL connection pool
 
 // Create a new donation record using promise-based query
 const createDonation = (donation) => {
@@ -12,12 +12,12 @@ const createDonation = (donation) => {
       donation.amount,
       donation.email_id,
       donation.donation_date
-    ])
-    .then(([results]) => {
-      resolve(results);  // Resolving the promise with query results
-    })
-    .catch((err) => {
-      reject(new Error("Failed to create donation: " + err.message));  // Rejecting if query fails
+    ], (err, results) => {
+      if (err) {
+        reject(new Error("Failed to create donation: " + err.message));  // Reject on error
+      } else {
+        resolve(results);  // Resolve with query results
+      }
     });
   });
 };
@@ -27,12 +27,12 @@ const getDonationsByDonor = (donor_id) => {
   return new Promise((resolve, reject) => {
     const query = `SELECT * FROM Donation WHERE donor_id = ?`;
 
-    connection.query(query, [donor_id])
-    .then(([results]) => {
-      resolve(results);  // Resolving with query results
-    })
-    .catch((err) => {
-      reject(new Error("Failed to get donations by donor: " + err.message));  // Rejecting on error
+    connection.query(query, [donor_id], (err, results) => {
+      if (err) {
+        reject(new Error("Failed to get donations by donor: " + err.message));  // Reject on error
+      } else {
+        resolve(results);  // Resolve with query results
+      }
     });
   });
 };
@@ -47,12 +47,12 @@ const getTopDonorsByMonth = () => {
                    ORDER BY total_amount DESC
                    LIMIT 10`;
 
-    connection.query(query)
-    .then(([results]) => {
-      resolve(results);  // Resolving with query results
-    })
-    .catch((err) => {
-      reject(new Error("Failed to get top donors for this month: " + err.message));  // Rejecting on error
+    connection.query(query, (err, results) => {
+      if (err) {
+        reject(new Error("Failed to get top donors for this month: " + err.message));  // Reject on error
+      } else {
+        resolve(results);  // Resolve with query results
+      }
     });
   });
 };
