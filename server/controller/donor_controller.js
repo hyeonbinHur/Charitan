@@ -1,22 +1,15 @@
 import donorService from "../service/donor_service.js";
-import dotenv from "dotenv";
-dotenv.config();
-
 
 const signin_donor = async (req, res) => {
-  console.log(process.env.DB_HOST);
   // set cache
   try {
     const { email } = req.body;
-
     const user = await donorService.signInUser(email);
-    console.log(user);
     res.json(user);
   } catch (err) {
     res.status(500).send(err.message);
   }
 };
-
 
 // Subscribe a donor to a new project
 const subscribeToNewProjects = async (req, res) => {
@@ -24,12 +17,19 @@ const subscribeToNewProjects = async (req, res) => {
     const { donorId, category, region, donationId } = req.body;
 
     if (!donorId || !category || !region || !donationId) {
-      return res.status(400).json({ message: "Donor ID, category, region, and donation ID are required." });
+      return res.status(400).json({
+        message: "Donor ID, category, region, and donation ID are required.",
+      });
     }
 
     // Subscribe the donor using the service layer
-    const result = await donorService.subscribeToNewProjects(donorId, category, region, donationId);
-    res.status(200).json({ message: 'Subscription successful.', data: result });
+    const result = await donorService.subscribeToNewProjects(
+      donorId,
+      category,
+      region,
+      donationId
+    );
+    res.status(200).json({ message: "Subscription successful.", data: result });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

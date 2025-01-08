@@ -1,4 +1,5 @@
 import connection from "../lib/db_info.js";
+
 const findAll = () => {
   return new Promise((resolve, reject) => {
     const query = "SELECT * FROM Charity";
@@ -11,14 +12,18 @@ const findAll = () => {
     });
   });
 };
+
 const findManyByCountry = (country) => {
   return new Promise((resolve, reject) => {
-    const query = "SELECT charity_id FROM Charity where country = ?";
+    const query = "SELECT charity_id FROM Charity WHERE country = ?";
     const values = [country];
+    // @ts-ignore
     connection.query(query, values, (err, results) => {
       if (err) {
+        console.error(err);
         reject(err);
       } else {
+        console.error(results);
         resolve(results);
       }
     });
