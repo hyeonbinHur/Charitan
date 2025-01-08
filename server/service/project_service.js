@@ -1,5 +1,13 @@
 import projectRepository from "../repository/project_repository.js";
 import charityRepository from "../repository/charity_repository.js";
+import {
+  setProjectFromCache,
+  getProjectFromCache,
+  deleteProjectFromCache,
+  updateProjectFromCache,
+} from "../generator/redis_generator.js";
+
+
 const readAllProjects = async () => {
   try {
     const tests = await projectRepository.findAll();
