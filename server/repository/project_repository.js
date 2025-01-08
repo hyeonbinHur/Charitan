@@ -26,17 +26,21 @@ const findOne = (id) => {
   });
 };
 
-const findOneByStatus = async (status, category) => {
-  try {
+const findOneByStatus = (status, category) => {
+  return new Promise((resolve, reject) => {
     const query =
       "SELECT * FROM Charity_Project WHERE status = ? AND category = ?";
     const values = [status, category];
-    const [results] = await connection.execute(query, values);
-    return results;
-  } catch (error) {
-    throw error;
-  }
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
 };
+
 
 const findOneByCharityName = (charityName, status, category, charities) => {
   return new Promise((resolve, reject) => {

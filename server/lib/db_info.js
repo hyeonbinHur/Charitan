@@ -15,7 +15,4 @@ const connection = mysql.createPool({
   queueLimit: 0, // 대기열 크기
 });
 
-// Enable promise support for queries
-const promiseConnection = connection.promise();
-
-export default promiseConnection;
+export default connection;

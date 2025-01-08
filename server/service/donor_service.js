@@ -9,10 +9,12 @@ import subscriptionRepository from "../repository/subscription_repository.js"; /
  */
 const signInUser = async (email) => {
   try {
+    console.log("here");
     const user = await donorRepository.findOneByEmail(email);
     // await setUser(user[0].user_id, user[0].user_name);
     return user;
   } catch (err) {
+    console.error(err);
     throw new Error("Failed to read data");
   }
 };

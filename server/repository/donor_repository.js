@@ -46,7 +46,6 @@ const findOneByEmail = (email) => {
   });
 };
 
-
 // Find donors who have opted for monthly donations
 const findMonthlyDonors = () => {
   return new Promise((resolve, reject) => {
