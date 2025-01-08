@@ -9,6 +9,8 @@ import { sendMessage, readMessages } from "../../utils/api/message";
 import { ScrollArea } from "../ui/scroll-area";
 import { UserContext } from "../../context/AuthContext";
 import { isInputOver } from "../../helper/inputHelper";
+import { createDeletedProject } from "../../utils/api/delete_shard";
+
 const ProjectDetail = ({ project }) => {
   const [isEditting, setIsEditting] = useState(false);
   const [testMessage, setTestMessage] = useState("");
@@ -23,14 +25,25 @@ const ProjectDetail = ({ project }) => {
     queryKey: [`read-project-message-${project.project_id}`],
     queryFn: () => readMessages(project.project_id),
   });
-  const { mutate: mutateDeleteProject } = useMutation({
-    mutationFn: ({ projectId }) => {
-      return deleteProject(projectId);
+
+  const { mutate: mutateCreateShard } = useMutation({
+    mutationFn: ({ newProject }) => {
+      return createDeletedProject(newProject);
     },
     onSuccess: () => {
       queryClient.invalidateQueries("read-projects");
     },
   });
+
+  const { mutate: mutateDeleteProject } = useMutation({
+    mutationFn: ({ projectId }) => {
+      return deleteProject(projectId);
+    },
+    onSuccess: () => {
+      mutateCreateShard({ newProject: project });
+    },
+  });
+
   const { mutate: mutateSendMessage } = useMutation({
     mutationFn: ({ newMessage }) => {
       return sendMessage(newMessage);
