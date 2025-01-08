@@ -4,6 +4,7 @@ import charityRouter from "./routers/charity.js";
 import adminRouter from "./routers/admin.js";
 import donorRouter from "./routers/donor.js";
 import emailRouter from "./routers/email.js";
+import messageRouter from "./routers/message.js";
 import cors from "cors";
 
 const app = express();
@@ -31,7 +32,8 @@ app.use(
   donorRouter,
   projectRouter,
   charityRouter,
-  emailRouter
+  emailRouter,
+  messageRouter
 );
 
 // 서버 실행

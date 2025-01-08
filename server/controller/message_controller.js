@@ -12,8 +12,9 @@ const read_message = async (req, res) => {
 
 const create_message = async (req, res) => {
   try {
-    const { email } = req.body;
-    const user = await messageService.createMessage(email);
+    const { project_id, donataion_id, donor_email, content } = req.body;
+    const newMessage = { project_id, donataion_id, donor_email, content };
+    const user = await messageService.createMessage(newMessage);
     res.json(user);
   } catch (err) {
     res.status(500).send(err.message);

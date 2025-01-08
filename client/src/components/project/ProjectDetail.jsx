@@ -1,40 +1,46 @@
 // @ts-nocheck
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import ProjectForm from "./ProjectForm";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { deleteProject } from "../../utils/api/project";
 import { Textarea } from "../ui/textarea";
 import { sendMessage, readMessages } from "../../utils/api/message";
+import { ScrollArea } from "../ui/scroll-area";
+import { UserContext } from "../../context/AuthContext";
 
 const ProjectDetail = ({ project }) => {
   const [isEditting, setIsEditting] = useState(false);
   const [testMessage, setTestMessage] = useState("");
   const queryClient = useQueryClient();
+  const { user } = useContext(UserContext);
 
   /**
    * Http Requests
    */
+
+  const { data: messages } = useQuery({
+    queryKey: [`read-project-message-${project.project_id}`],
+    queryFn: () => readMessages(project.project_id),
+  });
   const { mutate: mutateDeleteProject } = useMutation({
     mutationFn: ({ projectId }) => {
       return deleteProject(projectId);
     },
     onSuccess: () => {
-      console.log("delete success");
       queryClient.invalidateQueries("read-projects");
     },
   });
-
   const { mutate: mutateSendMessage } = useMutation({
     mutationFn: ({ newMessage }) => {
       return sendMessage(newMessage);
     },
     onSuccess: () => {
-      console.log("send mesage successfully");
-      queryClient.invalidateQueries("read-projects");
+      queryClient.invalidateQueries(
+        `read-project-message-${project.project_id}`
+      );
     },
   });
-
   /**
    * Basic function & event handler
    */
@@ -48,7 +54,12 @@ const ProjectDetail = ({ project }) => {
     setTestMessage(e.target.value);
   };
   const onClickSendMessage = () => {
-    const newMessage = {};
+    const newMessage = {
+      project_id: project.project_id,
+      donataion_id: user ? user.donor_id : null,
+      donor_email: user ? user.email : null,
+      content: testMessage,
+    };
     mutateSendMessage({ newMessage: newMessage });
   };
 
@@ -85,6 +96,13 @@ const ProjectDetail = ({ project }) => {
             <Button onClick={() => onClickSendMessage()}>
               Submit test message
             </Button>
+
+            <ScrollArea>
+              {messages &&
+                messages.map((e, i) => (
+                  <div key={`message-key-${i}`}>{e.content} </div>
+                ))}
+            </ScrollArea>
           </div>
         </div>
       ) : (
