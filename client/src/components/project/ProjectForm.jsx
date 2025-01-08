@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // @ts-nocheck
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
@@ -23,11 +24,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { optimizeHTMLImage, resizePostImage } from "../../helper/imageHelper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProject, updateProject } from "../../utils/api/project";
 import { uploadFileToS3 } from "../../lib/s3Option";
+import { sendEmail } from "../../utils/api/email";
+import { UserContext } from "../../context/AuthContext";
+import { useError } from "../../context/ErrorContext";
 
 const ProjectForm = ({ project = {} }) => {
   /**
@@ -42,6 +46,9 @@ const ProjectForm = ({ project = {} }) => {
   const [thumbnatilImg, setThumbnailImg] = useState(null);
   const editorRef = useRef(null);
   const queryClient = useQueryClient();
+  const { user } = useContext(UserContext);
+  const { setError } = useError();
+
   const {
     register,
     handleSubmit: onSubmit,
@@ -69,11 +76,34 @@ const ProjectForm = ({ project = {} }) => {
   /**
    * Http Requests
    */
-  const { mutate: mutateCrateProject } = useMutation({
-    mutationFn: ({ newProject }) => {
-      return createProject(newProject);
+  const { mutate: mutateSendEmail } = useMutation({
+    mutationFn: ({ newEmail }) => {
+      return sendEmail(newEmail);
     },
     onSuccess: () => {
+      console.log("email sent");
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
+
+  const { mutate: mutateCrateProject } = useMutation({
+    mutationFn: async ({ newProject }) => {
+      return createProject(newProject).then(() => newProject);
+    },
+    onSuccess: (newProject) => {
+      const newEmail = {
+        title: "New project has been successfully created!",
+        content: `Your project has been successfully created!`,
+        status: "UNREAD",
+        receiver_type: "Charity",
+        receiver_id: user.charity_id,
+        receiver_email: "uncle_hb@gmail.com",
+        sender: "Admin",
+        created_at: new Date(),
+      };
+      mutateSendEmail({ newEmail: newEmail });
       queryClient.invalidateQueries("read-projects");
     },
   });
@@ -91,6 +121,7 @@ const ProjectForm = ({ project = {} }) => {
   /**
    * Event Handler
    */
+
   const onChangeThumbnail = async (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -120,7 +151,6 @@ const ProjectForm = ({ project = {} }) => {
         data.description,
         data.title
       );
-      console.log(updatedProject);
       mutateUpdateProject({ updatedProject: updatedProject });
     } else {
       const newProject = {
@@ -138,13 +168,19 @@ const ProjectForm = ({ project = {} }) => {
         charity_name: "asd",
       };
       newProject.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
-      newProject.description = await optimizeHTMLImage(
+      const optimizedHTML = await optimizeHTMLImage(
         data.description,
         data.title
       );
-      mutateCrateProject({ newProject: newProject });
+      if (optimizedHTML === false) {
+        setError(new Error("The content must not contain more than 15 images"));
+      } else {
+        newProject.description = optimizedHTML;
+        mutateCrateProject({ newProject: newProject });
+      }
     }
   };
+
   return (
     <div>
       <form className="flex flex-col gap-5" onSubmit={onSubmit(handleSubmit)}>
@@ -244,19 +280,20 @@ const ProjectForm = ({ project = {} }) => {
             render={({ field }) => (
               <Editor
                 id="my-custom-editor"
+                onInit={(e, editor) => (editorRef.current = editor)}
                 apiKey={import.meta.env.VITE_PUBLIC_TINY_MCE_API}
                 init={editorConfig}
-                onInit={(e, editor) => (editorRef.current = editor)}
-                onEditorChange={(newValue) => {
-                  field.onChange(newValue);
-                }}
+                className="tinymce-editor-container"
+                onEditorChange={(content) => field.onChange(content)}
                 value={getValues("description")}
               />
             )}
           />
         </section>
 
-        <Button type="submit"> save</Button>
+        <Button type="submit" className="confirm-button">
+          Confirm Create Project
+        </Button>
       </form>
     </div>
   );

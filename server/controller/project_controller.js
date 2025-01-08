@@ -32,11 +32,13 @@ const get_projects_by_charity_name = async (req, res) => {
     const { charityName } = req.query;
     const { status } = req.query;
     const { category } = req.query;
+    const { country } = req.query;
 
     const tests = await projectService.readProjectByCharityName(
       charityName,
       status,
-      category
+      category,
+      country
     );
     res.json(tests);
   } catch (err) {
@@ -45,12 +47,29 @@ const get_projects_by_charity_name = async (req, res) => {
 };
 const get_projects_by_project_name = async (req, res) => {
   try {
+    console.log("here");
     const { projectName } = req.query;
     const { status } = req.query;
     const { category } = req.query;
-
+    const { country } = req.query;
     const tests = await projectService.readProjectByProjectName(
       projectName,
+      status,
+      category,
+      country
+    );
+    res.json(tests);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+const get_projects_by_country = async (req, res) => {
+  try {
+    const { country } = req.query;
+    const { status } = req.query;
+    const { category } = req.query;
+    const tests = await projectService.readProjectByCountry(
+      country,
       status,
       category
     );
@@ -98,7 +117,6 @@ const create_project = async (req, res) => {
       bankaccount,
       charity_name,
     };
-    console.log(newProject);
     const tests = await projectService.createProject(newProject);
     res.json(tests);
   } catch (err) {
@@ -148,6 +166,7 @@ export default {
   get_projects_by_status,
   get_projects_by_charity_name,
   get_projects_by_project_name,
+  get_projects_by_country,
   get_projects_by_charity,
   create_project,
   update_project,

@@ -8,7 +8,7 @@ import {
   getProjectsByCharityName,
   getProjectsByProjectTitle,
 } from "../utils/api/project";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -24,36 +24,33 @@ const ProjectPage = () => {
   const searchTypeQuery = searchParams.get("searchType");
   const [selectedStatus, setSelectedStatus] = useState("Active");
   const [selectedCountry, setSelectedCountry] = useState("Vietnam");
-  const [selectedCategory, setSelectedCategory] = useState("Food");
-  const {
-    data: projects,
-    isLoading,
-    error,
-  } = useQuery({
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+
+  const { data: projects } = useQuery({
     queryKey: [
       "read-projects",
       searchQuery,
       searchTypeQuery,
       selectedStatus,
       selectedCategory,
+      selectedCountry,
     ],
     queryFn: () => {
       if (!searchQuery) {
-        console.log("here");
         return getProjects(selectedStatus, selectedCategory);
       } else if (searchTypeQuery === "Project") {
-        console.log("project");
         return getProjectsByProjectTitle(
           searchQuery,
           selectedStatus,
-          selectedCategory
+          selectedCategory,
+          selectedCountry
         );
       } else {
-        console.log("char");
         return getProjectsByCharityName(
           searchQuery,
           selectedStatus,
-          selectedCategory
+          selectedCategory,
+          selectedCountry
         );
       }
     },

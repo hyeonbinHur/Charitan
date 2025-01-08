@@ -5,7 +5,6 @@ const getProjects = async (status, category) => {
     const response = await axiosInstance.get(
       `project/search/status?status=${status}&category=${category}`
     );
-
     return response.data;
   } catch (err) {
     console.log("Error fetching projects:", err);
@@ -50,10 +49,15 @@ const deleteProject = async (id) => {
   }
 };
 
-const getProjectsByCharityName = async (charityName, status, category) => {
+const getProjectsByCharityName = async (
+  charityName,
+  status,
+  category,
+  country
+) => {
   try {
     const response = await axiosInstance.get(
-      `project/search/charity?charityName=${charityName}&status=${status}&category=${category}`
+      `project/search/charity?charityName=${charityName}&status=${status}&category=${category}&country=${country}`
     );
     return response.data;
   } catch (err) {
@@ -62,10 +66,27 @@ const getProjectsByCharityName = async (charityName, status, category) => {
   }
 };
 
-const getProjectsByProjectTitle = async (projectName, status, category) => {
+const getProjectsByProjectTitle = async (
+  projectName,
+  status,
+  category,
+  country
+) => {
   try {
     const response = await axiosInstance.get(
-      `project/search/project?projectName=${projectName}&status=${status}&category=${category}`
+      `project/search/project?projectName=${projectName}&status=${status}&category=${category}&country=${country}`
+    );
+
+    return response.data;
+  } catch (err) {
+    console.log("error while read projects by project name : ", err);
+    throw err;
+  }
+};
+const getProjectsByCountry = async (country, status, category) => {
+  try {
+    const response = await axiosInstance.get(
+      `project/search/project?county=${country}&status=${status}&category=${category}`
     );
     return response.data;
   } catch (err) {
@@ -82,4 +103,5 @@ export {
   deleteProject,
   getProjectsByCharityName,
   getProjectsByProjectTitle,
+  getProjectsByCountry,
 };

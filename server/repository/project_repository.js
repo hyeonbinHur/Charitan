@@ -1,5 +1,4 @@
 import connection from "../lib/db_info.js";
-
 const findAll = () => {
   return new Promise((resolve, reject) => {
     const query = "SELECT * FROM Charity_Project";
@@ -29,9 +28,12 @@ const findOne = (id) => {
 
 const findOneByStatus = (status, category) => {
   return new Promise((resolve, reject) => {
-    const query =
-      "SELECT * FROM Charity_Project WHERE status = ? AND category = ?";
-    const values = [status, category];
+    let query = "SELECT * FROM Charity_Project WHERE status = ?";
+    let values = [status];
+    if (category !== "All Categories") {
+      values.push(category);
+      query += " AND category = ?";
+    }
     connection.query(query, values, (err, results) => {
       if (err) {
         reject(err);
@@ -42,11 +44,12 @@ const findOneByStatus = (status, category) => {
   });
 };
 
-const findOneByCharityName = (charityName, status, category) => {
+const findOneByCharityName = (charityName, status, category, charities) => {
   return new Promise((resolve, reject) => {
     const query =
-      "SELECT * FROM Charity_Project WHERE charity_name LIKE ? AND status = ? AND category = ?";
-    const values = [`%${charityName}%`, status, category];
+      "SELECT * FROM Charity_Project WHERE charity_name LIKE ? AND status = ? AND category = ? AND charity_id IN (?)";
+    console.log(category);
+    const values = [`%${charityName}%`, status, category, charities];
     connection.query(query, values, (err, results) => {
       if (err) {
         reject(err);
@@ -57,11 +60,29 @@ const findOneByCharityName = (charityName, status, category) => {
   });
 };
 
-const findOneByProjectName = (projectName, status, category) => {
+const findOneByProjectName = (projectName, status, category, charities) => {
+  return new Promise((resolve, reject) => {
+    console.log(projectName, status, category, charities.join(","));
+    const query =
+      "SELECT * FROM Charity_Project WHERE title LIKE ? AND status = ? AND category = ? AND charity_id IN (?)";
+    console.log(category);
+
+    const values = [`%${projectName}%`, status, category, charities.join(",")];
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
+
+const findManyByCountry = (charities, status, category) => {
   return new Promise((resolve, reject) => {
     const query =
-      "SELECT * FROM Charity_Project WHERE title LIKE ? AND status = ? AND category = ?";
-    const values = [`%${projectName}%`, status, category];
+      "SELECT * FROM Charity_Project WHERE charity_id IN (?) AND status = ? AND category = ?";
+    const values = [charities, status, category];
     connection.query(query, values, (err, results) => {
       if (err) {
         reject(err);
@@ -158,6 +179,7 @@ export default {
   findOneByCharityName,
   findOneByProjectName,
   findOneByCharity,
+  findManyByCountry,
   deleteOne,
   createOne,
   updateOne,

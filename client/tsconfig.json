@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "allowJs": true, // JavaScript 파일 허용
+    "outDir": "./dist" // 출력 경로 지정
+  },
+  "exclude": ["node_modules", "eslint.config.js"]
+}

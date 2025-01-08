@@ -1,5 +1,11 @@
 /* Footer.css */
 
+footer {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
 /* General Link Style */
 .footer-link {
     display: inline-block;

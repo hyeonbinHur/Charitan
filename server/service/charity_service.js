@@ -16,6 +16,15 @@ const readCharity = async (id) => {
     throw new Error("Failed to read data");
   }
 };
+
+const readProjectByCountry = async (country) => {
+  try {
+    const data = await charityRepository.findManyByCountry(country);
+    return data;
+  } catch (err) {
+    throw new Error("Failed to read data", err);
+  }
+};
 const createCharity = async (newCharity) => {
   try {
     const tests = await charityRepository.createOne(newCharity);
@@ -40,11 +49,25 @@ const deleteCharity = async (id) => {
     throw new Error("Failed to read data");
   }
 };
+/**
+ * sample auth api 
+ */
+const signInUser = async (email) => {
+  try {
+    const user = await charityRepository.findOneByEmail(email);
+    // await setUser(user[0].user_id, user[0].user_name);
+    return user;
+  } catch (err) {
+    throw new Error("Failed to read data");
+  }
+};
 
 export default {
   readAllCharities,
   readCharity,
+  readProjectByCountry,
   createCharity,
   updateCharity,
   deleteCharity,
+  signInUser,
 };

@@ -9,6 +9,7 @@ export default defineConfig({
     open: true,
   },
   resolve: {
+    extensions: [".js", ".jsx"],
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },

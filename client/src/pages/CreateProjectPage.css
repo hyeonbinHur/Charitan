@@ -1,0 +1,98 @@
+/* CreateProjectPage.css */
+
+/* Main Container Styles */
+.create-project-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: calc(100vh - 120px);
+    /* Adjust height to prevent overlap */
+    box-sizing: border-box;
+}
+
+/* Back Button */
+.back-button {
+    display: inline-block;
+    margin-bottom: 20px;
+    background-color: var(--cyan);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    font-size: 16px;
+}
+
+
+/* Description Section Editor Container */
+.tinymce-editor-container {
+    min-height: 50px;
+    /* Adjusted to a larger, suitable size */
+    max-width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Confirm Button */
+.confirm-button {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: var(--cyan);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    text-align: center;
+}
+
+.confirm-button:hover {
+    background-color: #008ba3;
+}
+
+
+.back-button:hover {
+    background-color: #008ba3;
+}
+
+/* Form Field Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+form input,
+form select,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* Editor Container */
+.tinymce-editor-container {
+    min-height: 200px;
+}
+
+/* Footer Spacing */
+footer {
+    margin-top: 20px;
+}

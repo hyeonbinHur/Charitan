@@ -1,5 +1,5 @@
 import projectRepository from "../repository/project_repository.js";
-
+import charityRepository from "../repository/charity_repository.js";
 const readAllProjects = async () => {
   try {
     const tests = await projectRepository.findAll();
@@ -26,32 +26,73 @@ const readProjectByStatus = async (status, category) => {
   }
 };
 
-const readProjectByCharityName = async (charityName, status, category) => {
+const readProjectByCharityName = async (
+  charityName,
+  status,
+  category,
+  country
+) => {
   try {
+    const charities = await charityRepository.findManyByCountry(country);
     const tests = await projectRepository.findOneByCharityName(
       charityName,
       status,
-      category
+      category,
+      charities
     );
+
     return tests;
   } catch (err) {
+    console.error(err);
     throw new Error("Failed to read data");
   }
 };
 
-const readProjectByProjectName = async (projectName, status, category) => {
+const readProjectByProjectName = async (
+  projectName,
+  status,
+  category,
+  country
+) => {
   try {
-    const tests = await projectRepository.findOneByProjectName(
-      projectName,
-      status,
-      category
-    );
-    return tests;
+    const charities = await charityRepository.findManyByCountry(country);
+    if (charities.length > 0) {
+      const charitiesId = charities.map((item) => item.charity_id);
+      console.log(charitiesId);
+      const tests = await projectRepository.findOneByProjectName(
+        projectName,
+        status,
+        category,
+        charitiesId
+      );
+      console.log(tests);
+      return tests;
+    } else {
+      return [];
+    }
+  } catch (err) {
+    console.error(err);
+
+    throw new Error("Failed to read data");
+  }
+};
+const readProjectByCountry = async (country, status, category) => {
+  try {
+    const charities = await charityRepository.findManyByCountry(country);
+    if (charities.length > 0) {
+      const tests = await projectRepository.findManyByCountry(
+        charities,
+        status,
+        category
+      );
+      return tests;
+    } else {
+      return [];
+    }
   } catch (err) {
     throw new Error("Failed to read data");
   }
 };
-
 const readProjectByCharity = async (id) => {
   try {
     const tests = await projectRepository.findOneByCharity(id);
@@ -96,6 +137,7 @@ export default {
   readProjectByStatus,
   readProjectByCharityName,
   readProjectByProjectName,
+  readProjectByCountry,
   readProjectByCharity,
   createProject,
   updateProject,

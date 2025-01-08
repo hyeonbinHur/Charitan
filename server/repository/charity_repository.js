@@ -1,9 +1,21 @@
 import connection from "../lib/db_info.js";
-
 const findAll = () => {
   return new Promise((resolve, reject) => {
     const query = "SELECT * FROM Charity";
     connection.query(query, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
+const findManyByCountry = (country) => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT charity_id FROM Charity where country = ?";
+    const values = [country];
+    connection.query(query, values, (err, results) => {
       if (err) {
         reject(err);
       } else {
@@ -29,7 +41,6 @@ const createOne = (newCharity) => {
   return new Promise((resolve, reject) => {
     const query =
       "INSERT INTO Charity ( organization_name, description, category, password, avatar, createdAt, updatedAt, country) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
     const values = [
       newCharity.organization_name,
       newCharity.description,
@@ -97,5 +108,26 @@ const deleteOne = (id) => {
     });
   });
 };
+const findOneByEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM Charity WHERE email = ?";
+    const values = [email];
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
 
-export default { findAll, findOne, deleteOne, createOne, updateOne };
+export default {
+  findAll,
+  findOne,
+  findManyByCountry,
+  deleteOne,
+  createOne,
+  updateOne,
+  findOneByEmail,
+};

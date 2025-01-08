@@ -1,9 +1,8 @@
 // src/components/Footer.js
-import React from "react";
 import "./Footer.css";
 
 const Footer = () => (
-  <footer className="bg-gray-800 text-white py-3 fixed bottom-0 w-full ">
+  <footer className="bg-gray-800 text-white py-3 bottom-0 w-full ">
     <div className="container mx-auto text-center">
       {/* Copyright Section */}
       <p>&copy; 2024 Charitan. All rights reserved.</p>

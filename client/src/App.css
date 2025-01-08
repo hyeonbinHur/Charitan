@@ -7,7 +7,30 @@
   box-sizing: border-box;
 }
 
-/* MainNav Styles */
+/* Color Theme */
+:root {
+  --cyan: #00bcd4;
+  /* --yellow-sand: #f4de8e; */
+}
+
+/* Global Styles */
+body {
+  background-color: var(--yellow-sand);
+  font-family: Arial, sans-serif;
+  color: var(--cyan);
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  padding: 20px;
+  background-color: var(--yellow-sand);
+  color: var(--cyan);
+}
+
+/* Header Styles */
 header {
   background-color: #333;
   color: white;
@@ -28,12 +51,7 @@ nav {
   gap: 20px;
 }
 
-/* Information Section Styles */
-section {
-  background-color: #f8f9fa;
-  padding: 50px 0;
-}
-
+/* Card Styles */
 section .grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -47,6 +65,7 @@ section .card {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: var(--cyan);
 }
 
 section .card h3 {
@@ -56,6 +75,20 @@ section .card h3 {
 
 section .card p {
   color: #555;
+}
+
+/* Button Styles */
+.button-primary {
+  background-color: var(--cyan);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-primary:hover {
+  background-color: #008ba3;
 }
 
 /* Footer Styles */

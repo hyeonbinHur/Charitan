@@ -17,6 +17,15 @@ const get_charity = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+const get_charities_by_country = (req, res) => {
+  try {
+    const { country } = req.query;
+    const projects = charityService.readProjectByCountry(country);
+    res.json(projects);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
 const create_charity = async (req, res) => {
   try {
     const {
@@ -84,13 +93,28 @@ const delete_charity = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+/**
+ * simple auth api
+ */
+const signin_charity = async (req, res) => {
+  // set cache
+  try {
+    const { email } = req.body;
+    const user = await charityService.signInUser(email);
+    res.json(user);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
 
 export default {
   get_charities,
   get_charity,
+  get_charities_by_country,
   create_charity,
   update_charity,
   delete_charity,
+  signin_charity,
 };
 
 
