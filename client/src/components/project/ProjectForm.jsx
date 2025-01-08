@@ -31,6 +31,7 @@ import { createProject, updateProject } from "../../utils/api/project";
 import { uploadFileToS3 } from "../../lib/s3Option";
 import { sendEmail } from "../../utils/api/email";
 import { UserContext } from "../../context/AuthContext";
+import { useError } from "../../context/ErrorContext";
 
 const ProjectForm = ({ project = {} }) => {
   /**
@@ -46,6 +47,7 @@ const ProjectForm = ({ project = {} }) => {
   const editorRef = useRef(null);
   const queryClient = useQueryClient();
   const { user } = useContext(UserContext);
+  const { setError } = useError();
 
   const {
     register,
@@ -149,7 +151,6 @@ const ProjectForm = ({ project = {} }) => {
         data.description,
         data.title
       );
-      console.log(updatedProject);
       mutateUpdateProject({ updatedProject: updatedProject });
     } else {
       const newProject = {
@@ -167,11 +168,16 @@ const ProjectForm = ({ project = {} }) => {
         charity_name: "asd",
       };
       newProject.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
-      newProject.description = await optimizeHTMLImage(
+      const optimizedHTML = await optimizeHTMLImage(
         data.description,
         data.title
       );
-      mutateCrateProject({ newProject: newProject });
+      if (optimizedHTML === false) {
+        setError(new Error("The content must not contain more than 15 images"));
+      } else {
+        newProject.description = optimizedHTML;
+        mutateCrateProject({ newProject: newProject });
+      }
     }
   };
 
@@ -273,13 +279,13 @@ const ProjectForm = ({ project = {} }) => {
             control={control}
             render={({ field }) => (
               <Editor
-                apiKey="your-tinymce-api-key"
-                init={{
-                  height: 300, // Adjusted to a suitable size
-                }}
+                id="my-custom-editor"
+                onInit={(e, editor) => (editorRef.current = editor)}
+                apiKey={import.meta.env.VITE_PUBLIC_TINY_MCE_API}
+                init={editorConfig}
                 className="tinymce-editor-container"
                 onEditorChange={(content) => field.onChange(content)}
-                value={field.value}
+                value={getValues("description")}
               />
             )}
           />

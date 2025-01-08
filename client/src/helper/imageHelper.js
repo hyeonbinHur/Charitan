@@ -34,6 +34,9 @@ export const optimizeHTMLImage = async (htmlString, title) => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, "text/html");
   const imgElements = Array.from(doc.getElementsByTagName("img"));
+  if (imgElements.length > 15) {
+    return false;
+  }
   for (const img of imgElements) {
     if (img.src.startsWith("data:image")) {
       // base64 이미지 src를 file 형태로 변경

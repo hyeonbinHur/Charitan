@@ -8,7 +8,7 @@ import { Textarea } from "../ui/textarea";
 import { sendMessage, readMessages } from "../../utils/api/message";
 import { ScrollArea } from "../ui/scroll-area";
 import { UserContext } from "../../context/AuthContext";
-
+import { isInputOver } from "../../helper/inputHelper";
 const ProjectDetail = ({ project }) => {
   const [isEditting, setIsEditting] = useState(false);
   const [testMessage, setTestMessage] = useState("");
@@ -51,7 +51,9 @@ const ProjectDetail = ({ project }) => {
     setIsEditting((prev) => !prev);
   };
   const onChangeTestMessage = (e) => {
-    setTestMessage(e.target.value);
+    if (!isInputOver(e.target.value, 250)) {
+      setTestMessage(e.target.value);
+    }
   };
   const onClickSendMessage = () => {
     const newMessage = {
