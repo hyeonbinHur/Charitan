@@ -51,7 +51,10 @@ const MainNav = () => {
               {user.email}
             </Button>
           ) : (
-            <Button onClick={onClickOpenAuthModal} className="hover:bg-gray-300">
+            <Button
+              onClick={onClickOpenAuthModal}
+              className="hover:bg-gray-300"
+            >
               Sign In
             </Button>
           )}
@@ -89,10 +92,13 @@ const MainNav = () => {
           {user ? (
             <Button onClick={signOut} className="hover:bg-gray-300">
               {user.email}
+              <UserDropDown user={user} />
             </Button>
-            <UserDropDown user={user} />
           ) : (
-            <Button onClick={onClickOpenAuthModal} className="hover:bg-gray-300">
+            <Button
+              onClick={onClickOpenAuthModal}
+              className="hover:bg-gray-300"
+            >
               Sign In
             </Button>
           )}

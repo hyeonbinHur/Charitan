@@ -39,17 +39,14 @@ const ProjectPage = () => {
     ],
     queryFn: () => {
       if (!searchQuery) {
-        console.log("here");
         return getProjects(selectedStatus, selectedCategory);
       } else if (searchTypeQuery === "Project") {
-        console.log("project");
         return getProjectsByProjectTitle(
           searchQuery,
           selectedStatus,
           selectedCategory
         );
       } else {
-        console.log("char");
         return getProjectsByCharityName(
           searchQuery,
           selectedStatus,

@@ -4,12 +4,14 @@ import { Button } from "../ui/button";
 import ProjectForm from "./ProjectForm";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteProject } from "../../utils/api/project";
+import { Textarea } from "../ui/textarea";
+import { sendMessage, readMessages } from "../../utils/api/message";
+
 const ProjectDetail = ({ project }) => {
   const [isEditting, setIsEditting] = useState(false);
-  const onClickEditButton = () => {
-    setIsEditting((prev) => !prev);
-  };
+  const [testMessage, setTestMessage] = useState("");
   const queryClient = useQueryClient();
+
   /**
    * Http Requests
    */
@@ -22,9 +24,34 @@ const ProjectDetail = ({ project }) => {
       queryClient.invalidateQueries("read-projects");
     },
   });
+
+  const { mutate: mutateSendMessage } = useMutation({
+    mutationFn: ({ newMessage }) => {
+      return sendMessage(newMessage);
+    },
+    onSuccess: () => {
+      console.log("send mesage successfully");
+      queryClient.invalidateQueries("read-projects");
+    },
+  });
+
+  /**
+   * Basic function & event handler
+   */
   const onClickDeleteProject = () => {
     mutateDeleteProject({ projectId: project.project_id });
   };
+  const onClickEditButton = () => {
+    setIsEditting((prev) => !prev);
+  };
+  const onChangeTestMessage = (e) => {
+    setTestMessage(e.target.value);
+  };
+  const onClickSendMessage = () => {
+    const newMessage = {};
+    mutateSendMessage({ newMessage: newMessage });
+  };
+
   return (
     <div className="w-1/2">
       <Button onClick={() => onClickEditButton()}>Edit</Button>
@@ -48,7 +75,17 @@ const ProjectDetail = ({ project }) => {
             <div>{project.target_amount}</div>
             <div>{project.current_funding}</div>
           </div>
-          <button>move to donation</button>
+          <Button>move to donation</Button>
+          <div className="m-3 flex flex-col gap-3 border-black-500 border-2 p-2">
+            <Textarea
+              type="text"
+              value={testMessage}
+              onChange={onChangeTestMessage}
+            />
+            <Button onClick={() => onClickSendMessage()}>
+              Submit test message
+            </Button>
+          </div>
         </div>
       ) : (
         <ProjectForm project={project} />

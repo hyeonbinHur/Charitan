@@ -22,7 +22,7 @@ const AuthModal = forwardRef(function AuthModal(props, ref) {
     <div>
       <dialog
         ref={modal}
-        className="bg-white text-gray-500 rounded-lg p-6 shadow-lg w-full max-w-md"
+        className="top-[50%] z-50 left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white text-gray-500 rounded-lg p-6 shadow-lg w-full max-w-md"
       >
         <div className="flex justify-end">
           <button
@@ -42,7 +42,9 @@ const AuthModal = forwardRef(function AuthModal(props, ref) {
         <section className="mt-6 text-center">
           {isSignIn ? (
             <div>
-              <h3 className="text-gray-700 mb-2">Don't have an account?</h3>
+              <h3 className="text-gray-700 mb-2">
+                Don&apos;t have an account?
+              </h3>
               <Button onClick={toggleForm} className="bg-blue-500 text-white">
                 Sign Up
               </Button>

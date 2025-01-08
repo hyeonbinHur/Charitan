@@ -74,7 +74,6 @@ const ProjectForm = ({ project = {} }) => {
   /**
    * Http Requests
    */
-
   const { mutate: mutateSendEmail } = useMutation({
     mutationFn: ({ newEmail }) => {
       return sendEmail(newEmail);
@@ -92,21 +91,17 @@ const ProjectForm = ({ project = {} }) => {
       return createProject(newProject).then(() => newProject);
     },
     onSuccess: (newProject) => {
-      console.log("done1");
-      console.log(newProject.title);
       const newEmail = {
         title: "New project has been successfully created!",
         content: `Your project has been successfully created!`,
         status: "UNREAD",
         receiver_type: "Charity",
         receiver_id: user.charity_id,
-        receiver_email: "hhb7201@naver.com",
+        receiver_email: "uncle_hb@gmail.com",
         sender: "Admin",
         created_at: new Date(),
       };
-      console.log(newEmail);
       mutateSendEmail({ newEmail: newEmail });
-      console.log("done");
       queryClient.invalidateQueries("read-projects");
     },
   });
