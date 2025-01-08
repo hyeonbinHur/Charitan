@@ -40,6 +40,7 @@ const subscribeToNewProjects = async (donorId, category, region, donationId) => 
     const result = await subscriptionRepository.createSubscription(subscription);
     return result;  // Return the result of the subscription creation
   } catch (err) {
+    console.error(err)
     throw new Error("Error subscribing to project: " + err.message);
   }
 };
