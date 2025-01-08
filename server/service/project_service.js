@@ -1,5 +1,13 @@
 import projectRepository from "../repository/project_repository.js";
 import charityRepository from "../repository/charity_repository.js";
+import {
+  setProjectFromCache,
+  getProjectFromCache,
+  deleteProjectFromCache,
+  updateProjectFromCache,
+} from "../generator/redis_generator.js";
+
+
 const readAllProjects = async () => {
   try {
     const tests = await projectRepository.findAll();
@@ -10,22 +18,29 @@ const readAllProjects = async () => {
 };
 const readProject = async (id) => {
   try {
-    const tests = await projectRepository.findOne(id);
-    return tests;
+    const cacheVal = await getProjectFromCache(id);
+    if (Object.keys(cacheVal).length > 0) {
+      const tests = await projectRepository.findOne(id);
+      await setProjectFromCache(tests[0].project_id, tests[0]);
+      return tests;
+    } else {
+      return [cacheVal];
+    }
   } catch (err) {
     throw new Error("Failed to read data");
   }
 };
-
 const readProjectByStatus = async (status, category) => {
   try {
+    console.log("service");
     const tests = await projectRepository.findOneByStatus(status, category);
+    console.log(tests);
     return tests;
   } catch (err) {
+    console.error(err);
     throw new Error("Failed to read data");
   }
 };
-
 const readProjectByCharityName = async (
   charityName,
   status,
@@ -56,23 +71,22 @@ const readProjectByProjectName = async (
 ) => {
   try {
     const charities = await charityRepository.findManyByCountry(country);
+    console.log(charities);
     if (charities.length > 0) {
       const charitiesId = charities.map((item) => item.charity_id);
-      console.log(charitiesId);
       const tests = await projectRepository.findOneByProjectName(
         projectName,
         status,
         category,
         charitiesId
       );
-      console.log(tests);
       return tests;
     } else {
+      console.log("show nothing");
       return [];
     }
   } catch (err) {
     console.error(err);
-
     throw new Error("Failed to read data");
   }
 };
@@ -104,8 +118,6 @@ const readProjectByCharity = async (id) => {
 
 const createProject = async (newProject) => {
   try {
-    console.log("new Project from service");
-    console.log(newProject);
     const tests = await projectRepository.createOne(newProject);
     return tests;
   } catch (err) {
@@ -116,6 +128,7 @@ const createProject = async (newProject) => {
 const updateProject = async (id, updatedProject) => {
   try {
     const tests = await projectRepository.updateOne(id, updatedProject);
+    await updateProjectFromCache(id, updatedProject);
     return tests;
   } catch (err) {
     throw new Error("Failed to read data");
