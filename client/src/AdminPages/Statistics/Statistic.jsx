@@ -1,4 +1,6 @@
 import React, {useState} from "react";
+import projectIcon from "../../../public/img/project-2.png";
+import donationIcon from "../../../public/img/fundraising.png";
 
 const Statistic = () => {
     const [searchCharity, setSearchCharity] = useState('');
@@ -46,14 +48,14 @@ const Statistic = () => {
             <div className="flex flex-row h-auto w-5/6 p-2 md:space-x-12 space-x-2 lg:w-4/6">
                 <div className="flex flex-col justify-center items-center p-4 bg-white rounded-lg w-1/2 space-y-4 shadow-md">
                     <div className="flex justify-end w-full">
-                        <img src="img/project-2.png" alt="" className="h-16 w-16" />
+                        <img src={projectIcon} alt="" className="h-16 w-16" />
                     </div>
                     <h1 className="font-bold text-4xl w-full text-black">Project</h1>
                     <h1 className="text-gray-600 text-2xl w-full">29</h1>
                 </div>
                 <div className="flex flex-col items-center justify-center p-4 bg-white rounded-lg w-1/2 space-y-4 shadow-md">
                     <div className="flex justify-end w-full">
-                        <img src="img/fundraising.png" alt="" className="h-16 w-16" />
+                        <img src={donationIcon} alt="" className="h-16 w-16" />
                     </div>
                     <h1 className="font-bold text-4xl w-full text-black">Donate Value</h1>
                     <h1 className="text-gray-600 text-2xl w-full">77231.45 $</h1>
