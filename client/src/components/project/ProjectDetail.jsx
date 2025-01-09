@@ -114,7 +114,6 @@ const ProjectDetail = ({ project }) => {
             <Button onClick={() => onClickSendMessage()}>
               Submit test message
             </Button>
-
             <ScrollArea>
               {messages &&
                 messages.map((e, i) => (

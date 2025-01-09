@@ -1,16 +1,11 @@
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getProjectsByCharity } from "@/utils/api/charity";
+import { getProjectsByCharity } from "../../utils/api/charity";
 import ProjectItem from "../project/ProjectItem";
 import { useNavigate } from "react-router-dom";
-import SkeletonCharityDetail from "../../skeleton/SkeletonCharityDetail";
 
 const CharityProjectList = ({ chairty_id }) => {
-  const {
-    data: projects,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: projects } = useQuery({
     queryKey: [`get-project-by-charity-${chairty_id}`],
     queryFn: () => getProjectsByCharity(chairty_id),
   });
@@ -21,7 +16,7 @@ const CharityProjectList = ({ chairty_id }) => {
   }, [projects]);
 
   const handleNavigateToDetail = (charityId) => {
-    navigate(`/charity/${charityId}`);
+    navigate(`/project/${charityId}`);
   };
   return (
     <div>
@@ -32,7 +27,7 @@ const CharityProjectList = ({ chairty_id }) => {
             className="my-5"
             onClick={() => handleNavigateToDetail(e.project_id)}
           >
-            <ProjectItem project={e || <SkeletonCharityDetail />} />
+            <ProjectItem project={e} />
           </div>
         ))}
     </div>

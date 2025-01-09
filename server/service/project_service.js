@@ -117,6 +117,7 @@ const readProjectByCharity = async (id) => {
 
 const createProject = async (newProject) => {
   try {
+    console.log(newProject);
     const tests = await projectRepository.createOne(newProject);
     return tests;
   } catch (err) {

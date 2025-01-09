@@ -47,7 +47,9 @@ const MainNav = () => {
             Donation
           </Link>
           {user ? (
-            <Button className="hover:bg-gray-300">{user.email}</Button>
+            <Button className="hover:bg-gray-300">
+              <UserDropDown user={user} />
+            </Button>
           ) : (
             <Button
               onClick={onClickOpenAuthModal}
