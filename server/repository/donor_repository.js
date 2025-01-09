@@ -32,6 +32,20 @@ const createDonor = (donor) => {
   });
 };
 
+const updateMonthlyDonation = (donorId, isMonthly) => {
+  return new Promise((resolve, reject) => {
+    const query = `UPDATE Donor SET is_monthly_donation = ? WHERE donor_id = ?`;
+    const values = [isMonthly, donorId];
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
+
 // Find donor by email
 const findOneByEmail = (email) => {
   return new Promise((resolve, reject) => {
@@ -43,6 +57,20 @@ const findOneByEmail = (email) => {
         reject(new Error("Failed to find donor by email: " + err.message));  // Reject on error
       } else {
         resolve(results);  // Resolve with query results
+      }
+    });
+  });
+};
+
+// Find donor by ID
+const findDonorById = (donor_id) => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM Donor WHERE donor_id = ?";
+    connection.query(query, [donor_id], (err, result) => {
+      if (err) {
+        reject(new Error("Failed to find donor: " + err.message));
+      } else {
+        resolve(result[0]);  // Return the donor's data
       }
     });
   });
@@ -63,8 +91,38 @@ const findMonthlyDonors = () => {
   });
 };
 
+
+// Cancel Monthly Donation
+const cancelMonthlyDonation = (donor_id) => {
+  return new Promise((resolve, reject) => {
+    // Find if the donor has an active monthly donation subscription
+    subscriptionRepository.findSubscriptionByDonor(donor_id)
+      .then((subscription) => {
+        if (!subscription) {
+          return reject(new Error("No active subscription found for this donor."));
+        }
+
+        // Now remove the subscription from the Subscription table (or mark as canceled)
+        const query = "DELETE FROM Subscription WHERE donor_id = ?";
+        connection.query(query, [donor_id], (err, result) => {
+          if (err) {
+            reject(new Error("Failed to cancel subscription: " + err.message));
+          } else if (result.affectedRows === 0) {
+            reject(new Error("No active subscription found for this donor."));
+          } else {
+            resolve({ message: "Monthly donation subscription cancelled successfully." });
+          }
+        });
+      })
+      .catch((err) => reject(new Error("Failed to find subscription: " + err.message)));
+  });
+};
+
 export default {
   findOneByEmail,
+  findDonorById,
+  updateMonthlyDonation,
   findMonthlyDonors,
+  cancelMonthlyDonation,
   createDonor
 };

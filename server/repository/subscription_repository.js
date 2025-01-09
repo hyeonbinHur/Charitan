@@ -23,4 +23,36 @@ const createSubscription = (subscription) => {
   });
 };
 
-export default { createSubscription };
+// Find subscription by donor ID
+const findSubscriptionByDonor = (donor_id) => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM Subscription WHERE donor_id = ?";
+    connection.query(query, [donor_id], (err, result) => {
+      if (err) {
+        reject(new Error("Failed to find subscription: " + err.message));  // Reject on error
+      } else {
+        resolve(result.length > 0 ? result[0] : null);  // Resolve with query result if no error
+      }
+    });
+  });
+};
+
+// Cancel a subscription
+const cancelSubscription = (donor_id) => {
+  return new Promise((resolve, reject) => {
+    const query = "DELETE FROM Subscription WHERE donor_id = ?";
+    connection.query(query, [donor_id], (err, result) => {
+      if (err) {
+        reject(new Error("Failed to cancel subscription: " + err.message));  // Reject on error
+      } else if (result.affectedRows === 0) {
+        reject(new Error("No active subscription found for this donor."));  // Reject if no rows affected
+      } else {
+        resolve({ message: "Subscription cancelled successfully." });  // Resolve with success message
+      }
+    });
+  });
+};
+
+
+
+export default { createSubscription,findSubscriptionByDonor, cancelSubscription};
