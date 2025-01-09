@@ -7,7 +7,6 @@ import {
   updateProjectFromCache,
 } from "../generator/redis_generator.js";
 
-
 const readAllProjects = async () => {
   try {
     const tests = await projectRepository.findAll();
@@ -19,7 +18,7 @@ const readAllProjects = async () => {
 const readProject = async (id) => {
   try {
     const cacheVal = await getProjectFromCache(id);
-    if (Object.keys(cacheVal).length > 0) {
+    if (Object.keys(cacheVal).length === 0) {
       const tests = await projectRepository.findOne(id);
       await setProjectFromCache(tests[0].project_id, tests[0]);
       return tests;

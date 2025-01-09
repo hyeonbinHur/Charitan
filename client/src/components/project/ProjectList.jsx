@@ -1,6 +1,5 @@
 import ProjectItem from "./ProjectItem";
 import { useNavigate } from "react-router-dom";
-import SkeletonProjectItem from "../../skeleton/SkeletonProjectItem";
 
 const ProjectList = ({ projects }) => {
   const navigate = useNavigate();
@@ -15,7 +14,7 @@ const ProjectList = ({ projects }) => {
           className="my-5"
           onClick={() => handleNavigateToDetail(e.project_id)}
         >
-          <SkeletonProjectItem project={e} />
+          {/* <SkeletonProjectItem project={e} /> */}
           <ProjectItem project={e} />
         </div>
       ))}

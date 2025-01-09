@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import { COUNTRIES, CATEGORIES } from "../utils/Global/GlobalVariables";
+import ProjectItemSkeleton from "../components/project/skeletons/ProjectItemSkeleton";
 
 const ProjectPage = () => {
   const [searchParams] = useSearchParams();
@@ -26,7 +27,7 @@ const ProjectPage = () => {
   const [selectedCountry, setSelectedCountry] = useState("Vietnam");
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
 
-  const { data: projects } = useQuery({
+  const { data: projects, isLoading } = useQuery({
     queryKey: [
       "read-projects",
       searchQuery,
@@ -55,10 +56,12 @@ const ProjectPage = () => {
       }
     },
   });
+  if (isLoading) {
+    console.log("loading");
+  }
 
   return (
     <section>
-      Project Page
       <SearchBar />
       {/* project status selector */}
       <div className="flex my-3">
@@ -119,7 +122,17 @@ const ProjectPage = () => {
           </Select>
         </div>
       </div>
-      {projects && <ProjectList projects={projects} />}
+      {isLoading ? (
+        <div>
+          {Array(7)
+            .fill(0)
+            .map((e, i) => (
+              <ProjectItemSkeleton key={`blog-post-skeleton-${i}`} />
+            ))}
+        </div>
+      ) : (
+        <div>{projects && <ProjectList projects={projects} />}</div>
+      )}
     </section>
   );
 };

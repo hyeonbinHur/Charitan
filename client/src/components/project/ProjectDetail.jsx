@@ -10,6 +10,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { UserContext } from "../../context/AuthContext";
 import { isInputOver } from "../../helper/inputHelper";
 import { createDeletedProject } from "../../utils/api/delete_shard";
+import ProjectDetailSkeleton from "./skeletons/ProjectDetailSkeleton";
 
 const ProjectDetail = ({ project }) => {
   const [isEditting, setIsEditting] = useState(false);
@@ -79,7 +80,7 @@ const ProjectDetail = ({ project }) => {
   };
 
   return (
-    <div className="w-1/2">
+    <div className="">
       <Button onClick={() => onClickEditButton()}>Edit</Button>
       {project.status === "Halted" && (
         <Button onClick={() => onClickDeleteProject()}>Delete Project</Button>
@@ -87,8 +88,11 @@ const ProjectDetail = ({ project }) => {
       {!isEditting ? (
         <div>
           <p> {project.category} using bread crumb</p>
-          <div className="border rounded-lg bg-stone-500">
-            <img className="w-[40rem]" src={project.thumbnail} />
+          <div className="border rounded-lg bg-stone-500 ">
+            <img
+              className="w-[40rem] border-2 border-red-500"
+              src={project.thumbnail}
+            />
           </div>
           <div className="border"> {project.title}</div>
           <div>
