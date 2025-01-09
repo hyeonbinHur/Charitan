@@ -11,7 +11,7 @@ import { createPaymentIntent } from "../../utils/api/payment";
 //https://docs.stripe.com/testing
 //test card
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(import.meta.env.REACT_APP_STRIPE_PUBLIC_KEY);
 const StripePayment = ({ amount, description, onSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
