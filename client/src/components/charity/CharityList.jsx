@@ -4,7 +4,7 @@ import { getCharities } from "@/utils/api/charity";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import CharityItem from "./CharityItem";
-import SkeletonCharityItem from "../../skeletons/SkeletonCharityItem";
+import SkeletonCharityItem from "../../skeleton/SkeletonCharityItem";
 
 //Read Charities
 const CharityList = () => {

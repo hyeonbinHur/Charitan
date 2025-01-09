@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getProject } from "../utils/api/project";
 import ProjectDetail from "../components/project/ProjectDetail";
-import SkeletonProjectDetail from "../skeletons/SkeletonProjectDetail";
+import SkeletonProjectDetail from "../skeleton/SkeletonProjectDetail";
 
 const ProjectDetailPage = () => {
   const params = useParams();

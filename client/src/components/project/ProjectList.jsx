@@ -1,6 +1,6 @@
 import ProjectItem from "./ProjectItem";
 import { useNavigate } from "react-router-dom";
-import SkeletonProjectItem from "../../skeletons/SkeletonProjectItem";
+import SkeletonProjectItem from "../../skeleton/SkeletonProjectItem";
 
 const ProjectList = ({ projects }) => {
   const navigate = useNavigate();

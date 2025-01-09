@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProjectsByCharity } from "@/utils/api/charity";
 import ProjectItem from "../project/ProjectItem";
 import { useNavigate } from "react-router-dom";
-import SkeletonCharityDetail from "../../skeletons/SkeletonCharityDetail";
+import SkeletonCharityDetail from "../../skeleton/SkeletonCharityDetail";
 
 const CharityProjectList = ({ chairty_id }) => {
   const {
