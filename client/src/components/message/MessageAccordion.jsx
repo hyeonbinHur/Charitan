@@ -7,7 +7,6 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { readMessages } from "../../utils/api/message";
 import DonationMessageCard from "./DonationMessageCard";
-
 const MessageAccordion = ({ project_id }) => {
   /**
    * Http Requests
@@ -16,7 +15,6 @@ const MessageAccordion = ({ project_id }) => {
     queryKey: [`read-project-message-${project_id}`],
     queryFn: () => readMessages(project_id),
   });
-
   return (
     <div>
       <Accordion type="single" collapsible>

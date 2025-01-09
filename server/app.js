@@ -7,6 +7,7 @@ import emailRouter from "./routers/email.js";
 import messageRouter from "./routers/message.js";
 import deletedShardRouter from "./routers/deleted_shard.js";
 import completedShardRouter from "./routers/completed_shard.js";
+import languageRouter from "./routers/language.js";
 import cors from "cors";
 
 const app = express();
@@ -37,7 +38,8 @@ app.use(
   emailRouter,
   messageRouter,
   deletedShardRouter,
-  completedShardRouter
+  completedShardRouter,
+  languageRouter
 );
 
 // 서버 실행

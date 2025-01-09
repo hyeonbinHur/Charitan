@@ -28,7 +28,6 @@ const MainNav = () => {
             Charitan
           </Link>
         </div>
-
         {/* Desktop Navigation */}
         <nav className="hidden md:flex gap-5">
           <Link to="/charities" className="hover:text-gray-700">
@@ -36,12 +35,6 @@ const MainNav = () => {
           </Link>
           <Link to="/projects" className="hover:text-gray-700">
             Projects Page
-          </Link>
-          <Link to="/doner-p" className="hover:text-gray-700">
-            Donor Profile
-          </Link>
-          <Link to="/charity-p" className="hover:text-gray-700">
-            Charity Profile
           </Link>
           <Link to="/donation" className="hover:text-gray-700">
             Donation
