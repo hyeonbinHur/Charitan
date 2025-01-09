@@ -12,7 +12,7 @@ const stripePromise = loadStripe(
   "pk_test_51QeL5O4Ne6mg9jNgZzduw7QncvxsTd65kdIPB9MiWN0L6zjGtLN0GB4DKJeH2e0Wi7JfbH2wWTF3U4SSttWMjmzg00G1sOMH1Q"
 );
 
-const StripePayment = ({ amount, description }) => {
+const StripePayment = ({ amount, description, onSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -20,25 +20,17 @@ const StripePayment = ({ amount, description }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!stripe || !elements) return;
+    if (!stripe || !elements || isProcessing) return;
 
     setIsProcessing(true);
+    setMessage("");
 
     try {
-      console.log(
-        "Initiating payment for amount:",
-        amount,
-        "Description:",
-        description
-      );
-
       const { clientSecret } = await createPaymentIntent({
         amount,
         currency: "usd",
         description,
       });
-
-      console.log("Response from server (PaymentIntent):", clientSecret);
 
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
@@ -47,39 +39,65 @@ const StripePayment = ({ amount, description }) => {
       });
 
       if (result.error) {
-        console.error("Payment failed:", result.error);
         setMessage(`Payment failed: ${result.error.message}`);
       } else if (result.paymentIntent.status === "succeeded") {
         setMessage("Payment successful!");
+        await onSuccess();
       }
     } catch (error) {
       console.error("Error processing payment:", error);
       setMessage("Payment failed. Please try again.");
+    } finally {
+      setIsProcessing(false);
     }
-
-    setIsProcessing(false);
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <CardElement className="border p-2 rounded-md" />
+        <CardElement
+          className="border p-2 rounded-md"
+          options={{
+            style: {
+              base: {
+                fontSize: "16px",
+                color: "#424770",
+                "::placeholder": {
+                  color: "#aab7c4",
+                },
+              },
+              invalid: {
+                color: "#9e2146",
+              },
+            },
+          }}
+        />
         <button
           type="submit"
           disabled={!stripe || isProcessing}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+          className={`${
+            isProcessing ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
+          } text-white px-4 py-2 rounded-md transition-colors`}
         >
-          {isProcessing ? "Processing..." : "Pay Now"}
+          {isProcessing ? "Processing..." : `Pay $${(amount / 100).toFixed(2)}`}
         </button>
       </form>
-      {message && <p>{message}</p>}
+      {message && (
+        <p
+          className={`mt-2 ${
+            message.includes("failed") ? "text-red-500" : "text-green-500"
+          }`}
+        >
+          {message}
+        </p>
+      )}
     </div>
   );
 };
 
-const StripePaymentWrapper = ({ amount, description }) => (
+const StripePaymentWrapper = (props) => (
   <Elements stripe={stripePromise}>
-    <StripePayment amount={amount} description={description} />
+    <StripePayment {...props} />
   </Elements>
 );
 

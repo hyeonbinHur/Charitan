@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import StripePaymentWrapper from "../payment/StripePayment";
 
 const DonationForm = ({
   newDonation,
@@ -8,6 +9,44 @@ const DonationForm = ({
   handleUpdate,
   setEditingDonation,
 }) => {
+  const [showStripePayment, setShowStripePayment] = useState(false);
+
+  const handleDonateClick = () => {
+    if (newDonation.amount <= 0) {
+      alert("Donation amount must be greater than 0");
+      return;
+    }
+    setShowStripePayment(true);
+  };
+
+  const handlePaymentSuccess = async () => {
+    try {
+      await handleCreate();
+      setShowStripePayment(false);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error creating donation:", error);
+    }
+  };
+
+  if (showStripePayment) {
+    return (
+      <div>
+        <button
+          className="mb-4 text-blue-500"
+          onClick={() => setShowStripePayment(false)}
+        >
+          ← Back to donation details
+        </button>
+        <StripePaymentWrapper
+          amount={newDonation.amount * 100}
+          description={`Donation from ${newDonation.name}`}
+          onSuccess={handlePaymentSuccess}
+        />
+      </div>
+    );
+  }
+
   return (
     <form className="flex flex-col gap-4">
       <div>
@@ -21,7 +60,11 @@ const DonationForm = ({
           value={editingDonation ? editingDonation.name : newDonation.name}
           onChange={
             editingDonation
-              ? (e) => setEditingDonation({ ...editingDonation, name: e.target.value })
+              ? (e) =>
+                  setEditingDonation({
+                    ...editingDonation,
+                    name: e.target.value,
+                  })
               : handleChange
           }
         />
@@ -53,10 +96,16 @@ const DonationForm = ({
           name="message"
           placeholder="Message"
           className="border p-2 rounded w-full"
-          value={editingDonation ? editingDonation.message : newDonation.message}
+          value={
+            editingDonation ? editingDonation.message : newDonation.message
+          }
           onChange={
             editingDonation
-              ? (e) => setEditingDonation({ ...editingDonation, message: e.target.value })
+              ? (e) =>
+                  setEditingDonation({
+                    ...editingDonation,
+                    message: e.target.value,
+                  })
               : handleChange
           }
         />
@@ -70,7 +119,11 @@ const DonationForm = ({
           value={editingDonation ? editingDonation.action : newDonation.action}
           onChange={
             editingDonation
-              ? (e) => setEditingDonation({ ...editingDonation, action: e.target.value })
+              ? (e) =>
+                  setEditingDonation({
+                    ...editingDonation,
+                    action: e.target.value,
+                  })
               : handleChange
           }
         >
@@ -102,9 +155,9 @@ const DonationForm = ({
           <button
             type="button"
             className="bg-green-500 text-white py-2 px-4 rounded"
-            onClick={handleCreate}
+            onClick={handleDonateClick}
           >
-            Add
+            Donate Via Stripe
           </button>
         )}
       </div>

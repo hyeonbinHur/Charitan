@@ -8,6 +8,7 @@ import messageRouter from "./routers/message.js";
 import deletedShardRouter from "./routers/deleted_shard.js";
 import completedShardRouter from "./routers/completed_shard.js";
 import donationRouter from "./routers/donation.js";
+import paymentRouter from "./routers/payment.js";
 import cors from "cors";
 
 const app = express();
@@ -39,7 +40,8 @@ app.use(
   messageRouter,
   deletedShardRouter,
   completedShardRouter,
-  donationRouter
+  donationRouter,
+  paymentRouter
 );
 
 // 서버 실행

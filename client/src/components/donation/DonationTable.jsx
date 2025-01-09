@@ -21,12 +21,6 @@ const DonationTable = ({ donations, setEditingDonation, handleDelete }) => {
               <td className="border px-4 py-2">{donation.message}</td>
               <td className="border px-4 py-2">{donation.action}</td>
               <td className="border px-4 py-2">
-                {/* <button
-                  className="bg-yellow-500 text-white py-1 px-2 rounded mr-2"
-                  onClick={() => setEditingDonation(donation)}
-                >
-                  Edit
-                </button> */}
                 <button
                   className="bg-red-500 text-white py-1 px-2 rounded"
                   onClick={() => handleDelete(donation.donation_id)}
