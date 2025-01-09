@@ -10,7 +10,6 @@ import { ScrollArea } from "../ui/scroll-area";
 import { UserContext } from "../../context/AuthContext";
 import { isInputOver } from "../../helper/inputHelper";
 import { createDeletedProject } from "../../utils/api/delete_shard";
-import ProjectDetailSkeleton from "./skeletons/ProjectDetailSkeleton";
 
 const ProjectDetail = ({ project }) => {
   const [isEditting, setIsEditting] = useState(false);

@@ -47,9 +47,7 @@ const MainNav = () => {
             Donation
           </Link>
           {user ? (
-            <Button onClick={signOut} className="hover:bg-gray-300">
-              {user.email}
-            </Button>
+            <Button className="hover:bg-gray-300">{user.email}</Button>
           ) : (
             <Button
               onClick={onClickOpenAuthModal}
