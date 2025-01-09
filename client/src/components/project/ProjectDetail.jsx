@@ -10,6 +10,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { UserContext } from "../../context/AuthContext";
 import { isInputOver } from "../../helper/inputHelper";
 import { createDeletedProject } from "../../utils/api/delete_shard";
+import MessageAccordion from "../message/MessageAccordion";
 
 const ProjectDetail = ({ project }) => {
   const [isEditting, setIsEditting] = useState(false);
@@ -121,6 +122,7 @@ const ProjectDetail = ({ project }) => {
                 ))}
             </ScrollArea>
           </div>
+          <MessageAccordion project_id={project.project_id} />
         </div>
       ) : (
         <ProjectForm project={project} />
