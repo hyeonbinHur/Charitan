@@ -30,7 +30,7 @@ const EditProjectPage = () => {
       paymentMethod,
       goal,
     };
-    navigate(`/project/${id}`);
+    navigate(`/admin/project/${id}`);
   };
 
   return (
@@ -68,7 +68,7 @@ const EditProjectPage = () => {
           <textarea value={goal} onChange={(e) => setGoal(e.target.value)} />
 
           <button type="button" onClick={handleSave}>Save</button>
-          <button type="button" onClick={()=>navigate(`/project/${id}`)}>Cancel</button>
+          <button type="button" onClick={()=>navigate(`/admin/project/${id}`)}>Cancel</button>
         </form>
       </div>
     </div>

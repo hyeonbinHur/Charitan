@@ -67,7 +67,7 @@ const ProjectList = ({ projects, highlightedProjects, toggleHighlight }) => {
                 <td className="border border-gray-300 px-4 py-2">{project.region}</td>
                 <td className="border border-gray-300 px-4 py-2">{project.status}</td>
                 <td className="border border-gray-300 px-4 py-2">
-                  <Link to={`/project/${project.id}`}>
+                  <Link to={`/admin/project/${project.id}`}>
                     <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
                       Info
                     </button>

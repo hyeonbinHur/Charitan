@@ -102,10 +102,10 @@ const AdminProjectDetailPage = () => {
             <button className="yellow" onClick={handleHalt}>
             Halt
             </button>
-            <Link to={`/edit-project/${project.id}`}>
+            <Link to={`/admin/edit-project/${project.id}`}>
             <button>Edit</button>
             </Link>
-            <button type="button" onClick={()=>navigate(`/page3`)}>Back</button>
+            <button type="button" onClick={()=>navigate(`/admin/page3`)}>Back</button>
         </div>
 
         {/* Halt reason modal */}
