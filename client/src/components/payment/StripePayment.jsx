@@ -8,10 +8,10 @@ import {
 } from "@stripe/react-stripe-js";
 import { createPaymentIntent } from "../../utils/api/payment";
 
-const stripePromise = loadStripe(
-  "pk_test_51QeL5O4Ne6mg9jNgZzduw7QncvxsTd65kdIPB9MiWN0L6zjGtLN0GB4DKJeH2e0Wi7JfbH2wWTF3U4SSttWMjmzg00G1sOMH1Q"
-);
+//https://docs.stripe.com/testing
+//test card
 
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 const StripePayment = ({ amount, description, onSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
