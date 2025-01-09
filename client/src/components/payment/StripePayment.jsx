@@ -6,8 +6,8 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { createPaymentIntent } from "../../utils/api/payment";
 
-// Load Stripe using your Publishable Key
 const stripePromise = loadStripe(
   "pk_test_51QeL5O4Ne6mg9jNgZzduw7QncvxsTd65kdIPB9MiWN0L6zjGtLN0GB4DKJeH2e0Wi7JfbH2wWTF3U4SSttWMjmzg00G1sOMH1Q"
 );
@@ -25,22 +25,21 @@ const StripePayment = ({ amount, description }) => {
     setIsProcessing(true);
 
     try {
-      // Call backend to create PaymentIntent
       console.log(
         "Initiating payment for amount:",
         amount,
         "Description:",
         description
-      ); // Log payment details
-      const response = await fetch("http://localhost:3000/api/payment-intent", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount, currency: "usd", description }),
+      );
+
+      const { clientSecret } = await createPaymentIntent({
+        amount,
+        currency: "usd",
+        description,
       });
 
-      const { clientSecret } = await response.json();
       console.log("Response from server (PaymentIntent):", clientSecret);
-      // Confirm Card Payment
+
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: elements.getElement(CardElement),
@@ -78,7 +77,6 @@ const StripePayment = ({ amount, description }) => {
   );
 };
 
-// Wrap the component in Elements
 const StripePaymentWrapper = ({ amount, description }) => (
   <Elements stripe={stripePromise}>
     <StripePayment amount={amount} description={description} />

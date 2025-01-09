@@ -2,31 +2,39 @@ import React, { useState, useEffect } from "react";
 import DonationForm from "../components/donation/DonationForm";
 import DonationTable from "../components/donation/DonationTable";
 import DonationModal from "../components/donation/DonationModal";
-
+import { useParams } from "react-router-dom";
+import { axiosInstance } from "../utils/api/axiosUtils";
 const DonationPage = () => {
+  const { project_id } = useParams();
   const [donations, setDonations] = useState([]);
   const [newDonation, setNewDonation] = useState({
-    name: "",
+    donor_id: null,
     amount: 0,
+    name: "",
     message: "",
-    action: "",
+    action: "Donate",
+    project_id: project_id,
   });
   const [editingDonation, setEditingDonation] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const fetchDonations = async () => {
+    try {
+      console.log("Fetching donations for project_id:", project_id);
+      const response = await axiosInstance.get(
+        `/donations/project/${project_id}`
+      );
+      console.log("Fetched donations:", response.data);
+      setDonations(response.data);
+    } catch (error) {
+      console.error("Error fetching donations:", error);
+    }
+  };
   useEffect(() => {
-    const fetchDonations = async () => {
-      try {
-        const response = await fetch("/api/donations");
-        const data = await response.json();
-        setDonations(data);
-      } catch (error) {
-        console.error("Error fetching donations:", error);
-      }
-    };
-
-    fetchDonations();
-  }, []);
+    if (project_id) {
+      fetchDonations();
+    }
+  }, [project_id]);
 
   const handleChange = (e) => {
     setNewDonation({ ...newDonation, [e.target.name]: e.target.value });
@@ -34,14 +42,20 @@ const DonationPage = () => {
 
   const handleCreate = async () => {
     try {
-      const response = await fetch("/api/donations", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newDonation),
+      const response = await axiosInstance.post(
+        `donations/project/${project_id}`,
+        newDonation
+      );
+      setDonations(response.data);
+      console.log("Donation created:", response.data);
+      setNewDonation({
+        donor_id: null,
+        amount: 0,
+        name: "",
+        message: "",
+        action: "Donate",
+        project_id: project_id,
       });
-      const data = await response.json();
-      setDonations(data);
-      setNewDonation({ name: "", amount: 0, message: "", action: "" });
       setIsModalOpen(false);
     } catch (error) {
       console.error("Error creating donation:", error);
@@ -66,8 +80,9 @@ const DonationPage = () => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`/api/donations/${id}`, { method: "DELETE" });
-      setDonations(donations.filter((d) => d.id !== id));
+      await axiosInstance.delete(`/donations/${id}`);
+      console.log("Donation deleted:", id);
+      await fetchDonations(); // Refresh donations after delete
     } catch (error) {
       console.error("Error deleting donation:", error);
     }
@@ -98,7 +113,7 @@ const DonationPage = () => {
           setEditingDonation(donation);
           setIsModalOpen(true);
         }}
-        handleDelete={handleDelete}
+        handleDelete={(id) => handleDelete(id)} // Pass the id properly
       />
     </main>
   );
