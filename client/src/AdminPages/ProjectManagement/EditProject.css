@@ -1,0 +1,45 @@
+.edit-project {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .edit-project h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .edit-project form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .edit-project label {
+    margin: 10px 0 5px;
+  }
+  
+  .edit-project input,
+  .edit-project textarea {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .edit-project button {
+    margin-top: 20px;
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  
+  .edit-project button:hover {
+    background-color: #218838;
+  }
