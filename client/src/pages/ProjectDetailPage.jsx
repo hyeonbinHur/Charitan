@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getProject } from "../utils/api/project";
 import ProjectDetail from "../components/project/ProjectDetail";
+import SkeletonProjectDetail from "../skeletons/SkeletonProjectDetail";
 
 const ProjectDetailPage = () => {
   const params = useParams();
@@ -15,6 +16,7 @@ const ProjectDetailPage = () => {
   });
   return (
     <main className="flex flex-col items-center">
+      <SkeletonProjectDetail />
       Project Detail Page
       {project && <ProjectDetail project={project} />}
     </main>

@@ -1,8 +1,9 @@
-import  { useEffect } from "react";
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getProjectsByCharity } from "@/utils/api/charity";
 import ProjectItem from "../project/ProjectItem";
 import { useNavigate } from "react-router-dom";
+import SkeletonCharityDetail from "../../skeletons/SkeletonCharityDetail";
 
 const CharityProjectList = ({ chairty_id }) => {
   const {
@@ -31,7 +32,7 @@ const CharityProjectList = ({ chairty_id }) => {
             className="my-5"
             onClick={() => handleNavigateToDetail(e.project_id)}
           >
-            <ProjectItem project={e} />
+            <ProjectItem project={e || <SkeletonCharityDetail />} />
           </div>
         ))}
     </div>
