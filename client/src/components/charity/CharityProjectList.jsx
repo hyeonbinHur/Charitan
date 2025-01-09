@@ -1,11 +1,15 @@
-import { useEffect } from "react";
+import  { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getProjectsByCharity } from "../../utils/api/charity";
+import { getProjectsByCharity } from "@/utils/api/charity";
 import ProjectItem from "../project/ProjectItem";
 import { useNavigate } from "react-router-dom";
 
 const CharityProjectList = ({ chairty_id }) => {
-  const { data: projects } = useQuery({
+  const {
+    data: projects,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: [`get-project-by-charity-${chairty_id}`],
     queryFn: () => getProjectsByCharity(chairty_id),
   });
@@ -16,7 +20,7 @@ const CharityProjectList = ({ chairty_id }) => {
   }, [projects]);
 
   const handleNavigateToDetail = (charityId) => {
-    navigate(`/project/${charityId}`);
+    navigate(`/charity/${charityId}`);
   };
   return (
     <div>

@@ -1,3 +1,5 @@
+import React from "react";
+
 const CharityItem = ({ charity }) => {
   return (
     <div className="hover:shadow-2xl cursor-pointer border h-60 border-stone-500 rounded-lg flex gap-5 p-5">

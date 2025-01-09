@@ -32,13 +32,11 @@ import { uploadFileToS3 } from "../../lib/s3Option";
 import { sendEmail } from "../../utils/api/email";
 import { UserContext } from "../../context/AuthContext";
 import { useError } from "../../context/ErrorContext";
-import { useParams } from "react-router-dom";
 
 const ProjectForm = ({ project = {} }) => {
   /**
    * Variable Declaration
    */
-  const params = useParams();
   const { title = "", description = "", status = "Active" } = project;
   const [projectStatus, setProjectStatus] = useState("Active");
   const [projectCategory, setProjectCategory] = useState("Food");
@@ -156,7 +154,7 @@ const ProjectForm = ({ project = {} }) => {
       mutateUpdateProject({ updatedProject: updatedProject });
     } else {
       const newProject = {
-        charity_id: params.charity_id,
+        charity_id: 1,
         thumbnail: data.thumbnail,
         title: data.title,
         description: data.description,

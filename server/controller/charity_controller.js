@@ -107,16 +107,6 @@ const signin_charity = async (req, res) => {
   }
 };
 
-// Get top charities based on donation amount
-const getTopCharities = async (req, res) => {
-  try {
-    const topCharities = await charityService.getTopCharities();
-    res.status(200).json(topCharities);  // Send response with name, logo, and donation amount
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
 export default {
   get_charities,
   get_charity,
@@ -125,7 +115,6 @@ export default {
   update_charity,
   delete_charity,
   signin_charity,
-  getTopCharities,
 };
 
 

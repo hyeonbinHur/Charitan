@@ -14,7 +14,6 @@ const ProjectList = ({ projects }) => {
           className="my-5"
           onClick={() => handleNavigateToDetail(e.project_id)}
         >
-          {/* <SkeletonProjectItem project={e} /> */}
           <ProjectItem project={e} />
         </div>
       ))}

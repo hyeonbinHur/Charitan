@@ -62,16 +62,6 @@ const signInUser = async (email) => {
   }
 };
 
-// Fetch top 10 charities based on donation amount
-const getTopCharities = async () => {
-  try {
-    const topCharities = await charityRepository.getTopCharitiesByDonation();
-    return topCharities;  // Return the results (logo, name, donation amount)
-  } catch (err) {
-    throw new Error("Failed to fetch top charities: " + err.message);
-  }
-};
-
 export default {
   readAllCharities,
   readCharity,
@@ -80,5 +70,4 @@ export default {
   updateCharity,
   deleteCharity,
   signInUser,
-  getTopCharities,
 };
