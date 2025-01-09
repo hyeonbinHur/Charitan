@@ -3,7 +3,6 @@ import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import SignInForm from "../auth/SiginInForm";
 import SignUpForm from "../auth/SignUpForm";
-import { Button } from "../ui/button";
 
 const AuthModal = forwardRef(function AuthModal(props, ref) {
   const modal = useRef(null);
@@ -34,28 +33,12 @@ const AuthModal = forwardRef(function AuthModal(props, ref) {
         </div>
         <section className="mt-4">
           {isSignIn ? (
-            <SignInForm close={() => ref.current?.close()} />
+            <SignInForm
+              close={() => ref.current?.close()}
+              toggleForm={toggleForm}
+            />
           ) : (
-            <SignUpForm toSignIn={toggleForm} />
-          )}
-        </section>
-        <section className="mt-6 text-center">
-          {isSignIn ? (
-            <div>
-              <h3 className="text-gray-700 mb-2">
-                Don&apos;t have an account?
-              </h3>
-              <Button onClick={toggleForm} className="bg-blue-500 text-white">
-                Sign Up
-              </Button>
-            </div>
-          ) : (
-            <div>
-              <h3 className="text-gray-700 mb-2">Already have an account?</h3>
-              <Button onClick={toggleForm} className="bg-blue-500 text-white">
-                Sign In
-              </Button>
-            </div>
+            <SignUpForm toSignIn={toggleForm} toggleForm={toggleForm} />
           )}
         </section>
       </dialog>
