@@ -7,8 +7,12 @@ import emailRouter from "./routers/email.js";
 import messageRouter from "./routers/message.js";
 import deletedShardRouter from "./routers/deleted_shard.js";
 import completedShardRouter from "./routers/completed_shard.js";
+<<<<<<< HEAD
 import donationRouter from "./routers/donation.js";
 import paymentRouter from "./routers/payment.js";
+=======
+import languageRouter from "./routers/language.js";
+>>>>>>> main
 import cors from "cors";
 
 const app = express();
@@ -40,8 +44,12 @@ app.use(
   messageRouter,
   deletedShardRouter,
   completedShardRouter,
+<<<<<<< HEAD
   donationRouter,
   paymentRouter
+=======
+  languageRouter
+>>>>>>> main
 );
 
 // 서버 실행
