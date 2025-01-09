@@ -127,6 +127,28 @@ const findOneByEmail = (email) => {
   });
 };
 
+// Get top 10 charities based on donation amount
+const getTopCharitiesByDonation = () => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT C.charity_id, C.organization_name, C.avatar, SUM(Do.amount) AS total_donations
+      FROM Charity C
+      JOIN Donation Do ON C.charity_id = Do.charity_id
+      GROUP BY C.charity_id
+      ORDER BY total_donations DESC
+      LIMIT 10
+    `;
+
+    connection.query(query, (err, results) => {
+      if (err) {
+        reject(new Error("Failed to fetch top charities: " + err.message));  // Reject on error
+      } else {
+        resolve(results);  // Resolve with query results (name, logo, donation amount)
+      }
+    });
+  });
+};
+
 export default {
   findAll,
   findOne,
@@ -135,4 +157,6 @@ export default {
   createOne,
   updateOne,
   findOneByEmail,
+  getTopCharitiesByDonation,
+
 };
