@@ -10,12 +10,15 @@ import { ScrollArea } from "../ui/scroll-area";
 import { UserContext } from "../../context/AuthContext";
 import { isInputOver } from "../../helper/inputHelper";
 import { createDeletedProject } from "../../utils/api/delete_shard";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ProjectDetail = ({ project }) => {
   const [isEditting, setIsEditting] = useState(false);
   const [testMessage, setTestMessage] = useState("");
   const queryClient = useQueryClient();
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+  const { project_id } = useParams();
 
   /**
    * Http Requests
@@ -77,7 +80,10 @@ const ProjectDetail = ({ project }) => {
     };
     mutateSendMessage({ newMessage: newMessage });
   };
-
+  const handleDonationClick = () => {
+    console.log(project_id);
+    navigate(`/donation/${project_id}`);
+  };
   return (
     <div className="w-1/2">
       <Button onClick={() => onClickEditButton()}>Edit</Button>
@@ -101,7 +107,7 @@ const ProjectDetail = ({ project }) => {
             <div>{project.target_amount}</div>
             <div>{project.current_funding}</div>
           </div>
-          <Button>move to donation</Button>
+          <Button onClick={handleDonationClick}>Donate Now</Button>
           <div className="m-3 flex flex-col gap-3 border-black-500 border-2 p-2">
             <Textarea
               type="text"
