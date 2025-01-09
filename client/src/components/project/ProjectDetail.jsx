@@ -10,11 +10,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { UserContext } from "../../context/AuthContext";
 import { isInputOver } from "../../helper/inputHelper";
 import { createDeletedProject } from "../../utils/api/delete_shard";
-<<<<<<< HEAD
 import { useNavigate, useParams } from "react-router-dom";
-=======
-import MessageAccordion from "../message/MessageAccordion";
->>>>>>> main
 
 const ProjectDetail = ({ project }) => {
   const [isEditting, setIsEditting] = useState(false);
@@ -89,7 +85,7 @@ const ProjectDetail = ({ project }) => {
     navigate(`/donation/${project_id}`);
   };
   return (
-    <div className="">
+    <div className="w-1/2">
       <Button onClick={() => onClickEditButton()}>Edit</Button>
       {project.status === "Halted" && (
         <Button onClick={() => onClickDeleteProject()}>Delete Project</Button>
@@ -97,11 +93,8 @@ const ProjectDetail = ({ project }) => {
       {!isEditting ? (
         <div>
           <p> {project.category} using bread crumb</p>
-          <div className="border rounded-lg bg-stone-500 ">
-            <img
-              className="w-[40rem] border-2 border-red-500"
-              src={project.thumbnail}
-            />
+          <div className="border rounded-lg bg-stone-500">
+            <img className="w-[40rem]" src={project.thumbnail} />
           </div>
           <div className="border"> {project.title}</div>
           <div>
@@ -124,6 +117,7 @@ const ProjectDetail = ({ project }) => {
             <Button onClick={() => onClickSendMessage()}>
               Submit test message
             </Button>
+
             <ScrollArea>
               {messages &&
                 messages.map((e, i) => (
@@ -131,7 +125,6 @@ const ProjectDetail = ({ project }) => {
                 ))}
             </ScrollArea>
           </div>
-          <MessageAccordion project_id={project.project_id} />
         </div>
       ) : (
         <ProjectForm project={project} />
