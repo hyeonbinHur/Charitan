@@ -7,6 +7,7 @@ import { deleteProject } from "../../utils/api/project";
 import { createDeletedProject } from "../../utils/api/delete_shard";
 import { useNavigate, useParams } from "react-router-dom";
 import MessageAccordion from "../message/MessageAccordion";
+import ProjectContent from "./ProjectContent";
 const ProjectDetail = ({ project }) => {
   const [isEditting, setIsEditting] = useState(false);
   const queryClient = useQueryClient();
@@ -87,7 +88,7 @@ const ProjectDetail = ({ project }) => {
 
           {/* Description Section */}
           <div className=" text-base mt-4">
-            <p>{project.description}</p>
+            <ProjectContent htmlContent={project.description} />
           </div>
 
           {/* Funding Progress */}

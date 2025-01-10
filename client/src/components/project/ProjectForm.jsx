@@ -33,6 +33,7 @@ import { sendEmail } from "../../utils/api/email";
 import { UserContext } from "../../context/AuthContext";
 import { useError } from "../../context/ErrorContext";
 import { useParams } from "react-router-dom";
+import ProjectVideoForm from "./ProjectVideoForm";
 
 const ProjectForm = ({ project = {} }) => {
   /**
@@ -292,7 +293,9 @@ const ProjectForm = ({ project = {} }) => {
             )}
           />
         </section>
-
+        <section>
+          <ProjectVideoForm />
+        </section>
         <Button type="submit" className="confirm-button">
           Confirm Create Project
         </Button>
