@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import DonationForm from "../components/donation/DonationForm";
 import DonationTable from "../components/donation/DonationTable";
 import DonationModal from "../components/donation/DonationModal";
 import { useParams } from "react-router-dom";
 import { axiosInstance } from "../utils/api/axiosUtils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { sendEmail } from "../utils/api/email";
+
 const DonationPage = () => {
   const { project_id } = useParams();
   const [donations, setDonations] = useState([]);
@@ -30,6 +33,7 @@ const DonationPage = () => {
       console.error("Error fetching donations:", error);
     }
   };
+
   useEffect(() => {
     if (project_id) {
       fetchDonations();
@@ -40,6 +44,19 @@ const DonationPage = () => {
     setNewDonation({ ...newDonation, [e.target.name]: e.target.value });
   };
 
+  const { mutate: mutateSendEmail } = useMutation({
+    mutationFn: ({ newEmail }) => {
+      return sendEmail(newEmail);
+    },
+    onSuccess: () => {
+      console.log("email sent");
+      setIsModalOpen(false);
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
+
   const handleCreate = async () => {
     try {
       const response = await axiosInstance.post(
@@ -48,6 +65,17 @@ const DonationPage = () => {
       );
       setDonations(response.data);
       console.log("Donation created:", response.data);
+
+      const newEmail = {
+        title: "Your Donation has been successfully made!",
+        content: `Thank you for you donattion!`,
+        status: "UNREAD",
+        receiver_type: "Donor",
+        receiver_id: newDonation.donor_id,
+        receiver_email: "hhb7201@naver.com",
+        sender: "Admin",
+        created_at: new Date(),
+      };
       setNewDonation({
         donor_id: null,
         amount: 0,
@@ -56,7 +84,7 @@ const DonationPage = () => {
         action: "Donate",
         project_id: project_id,
       });
-      setIsModalOpen(false);
+      mutateSendEmail({ newEmail: newEmail });
     } catch (error) {
       console.error("Error creating donation:", error);
     }
