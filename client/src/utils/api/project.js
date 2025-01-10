@@ -95,6 +95,56 @@ const getProjectsByCountry = async (country, status, category) => {
   }
 };
 
+// Function to subscribe to a project
+const subscribeToNewProjects = async ({ donor_id, category, region, donation_id }) => {
+  try {
+    const response = await axiosInstance.post("/subscribe/donor", {
+      donor_id,
+      category,
+      region,
+      donation_id,
+    });
+    return response.data;  // Return subscription response
+  } catch (err) {
+    console.error("Error subscribing to new projects:", err);
+    throw err;  // Handle error in frontend
+  }
+};
+
+// Function to get subscriptions for a donor
+const getDonorSubscriptions = async (donor_id) => {
+  try {
+    // Make a GET request to fetch the subscriptions for the specific donor
+    const response = await axiosInstance.get(`/subscriptions/${donor_id}`);
+    return response.data; // Return the response data containing subscriptions
+  } catch (err) {
+    console.error("Error fetching donor subscriptions:", err);
+    throw err;
+  }
+};
+
+// Function to process monthly donations
+const processMonthlyDonation = async (donorData) => {
+  try {
+    const response = await axiosInstance.post("/monthly-donation/donor", donorData); // Correct endpoint
+    return response.data;
+  } catch (err) {
+    console.log("Error processing monthly donation:", err);
+    throw err;
+  }
+};
+
+// Function to cancel monthly donations
+const cancelMonthlyDonation = async (donorData) => {
+  try {
+    const response = await axiosInstance.post("/cancel-monthly-donation/donor", donorData); // Correct endpoint
+    return response.data;
+  } catch (err) {
+    console.log("Error canceling monthly donation:", err);
+    throw err;
+  }
+};
+
 export {
   getProjects,
   getProject,
@@ -104,4 +154,8 @@ export {
   getProjectsByCharityName,
   getProjectsByProjectTitle,
   getProjectsByCountry,
+  subscribeToNewProjects,
+  getDonorSubscriptions,
+  processMonthlyDonation,
+  cancelMonthlyDonation
 };
