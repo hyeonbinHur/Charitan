@@ -11,7 +11,15 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
+		fontFamily: {
+			fancy: ['"Pacifico"', 'cursive'],
+			cookie: ['Cookie', 'cursive'],
+		},
   		colors: {
+			'custom-blue': '#6096B4',
+			'custom-blue-1': '#93BFCF',
+			'custom-blue-2': '#BDCDD6',
+			'custom-white': '#EEE9DA',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
