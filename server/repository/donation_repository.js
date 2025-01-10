@@ -62,12 +62,13 @@ const getDonationsByProject = (project_id) => {
 // Get top donors based on donation amounts for the current month
 const getTopDonorsByMonth = () => {
   return new Promise((resolve, reject) => {
-    const query = `SELECT donor_id, project_id, SUM(amount) AS total_amount
-                   FROM Donation
-                   WHERE EXTRACT(MONTH FROM donation_date) = EXTRACT(MONTH FROM CURRENT_DATE)
-                   GROUP BY donor_id, project_id
-                   ORDER BY total_amount DESC
-                   LIMIT 10`;
+    const query = `    SELECT d.donor_id, d.name, SUM(dt.amount) AS total_amount
+                       FROM Donation dt
+                       INNER JOIN Donor d ON dt.donor_id = d.donor_id
+                       WHERE dt.donation_date >= CURDATE() - INTERVAL 1 MONTH
+                       GROUP BY d.donor_id
+                       ORDER BY total_amount DESC
+                       LIMIT 10;`;
 
     connection.query(query, (err, results) => {
       if (err) {

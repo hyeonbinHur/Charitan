@@ -24,10 +24,10 @@ const createSubscription = (subscription) => {
 };
 
 // Find subscription by donor ID
-const findSubscriptionByDonor = (donor_id) => {
+const findSubscriptionByDonor = (subscription_id) => {
   return new Promise((resolve, reject) => {
-    const query = "SELECT * FROM Subscription WHERE donor_id = ?";
-    connection.query(query, [donor_id], (err, result) => {
+    const query = "SELECT * FROM Subscription WHERE subscription_id  = ?";
+    connection.query(query, [subscription_id], (err, result) => {
       if (err) {
         reject(new Error("Failed to find subscription: " + err.message));  // Reject on error
       } else {
@@ -52,7 +52,19 @@ const cancelSubscription = (donor_id) => {
     });
   });
 };
+const getAllSubscriptions = () => {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT * FROM Subscription`;  // Fetch all subscriptions
+    connection.query(query, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);  // Return all subscription records
+      }
+    });
+  });
+};
 
 
 
-export default { createSubscription,findSubscriptionByDonor, cancelSubscription};
+export default { createSubscription,findSubscriptionByDonor, cancelSubscription, getAllSubscriptions};

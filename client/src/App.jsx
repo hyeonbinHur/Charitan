@@ -15,7 +15,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
 import Inbox from "./components/message/Inbox";
 
-import SubscriptionPage from "./pages/SubscriptionPage"; // Import the new SubscriptionPage
 
 const queryClient = new QueryClient();
 
@@ -43,7 +42,6 @@ const App = () => (
         <Route path="/donation/:project_id" element={<DonationPage />} />
         <Route path="/inbox" element={<Inbox />} />
 
-        <Route path="/subscriptions" element={<SubscriptionPage />} />
 
 
       </Routes>
