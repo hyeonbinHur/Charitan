@@ -174,4 +174,14 @@ const getTopDonors = async () => {
   }
 };
 
-export default { signInUser, subscribeToNewProjects, cancelMonthlyDonation, processMonthlyDonations, getTopDonors };
+const getSubscriptionsByDonor = async (donor_id) => {
+  try {
+    // Assuming you have a method in your repository to fetch subscriptions by donor_id
+    const subscriptions = await subscriptionRepository.findSubscriptionByDonor(donor_id);
+    return subscriptions;
+  } catch (err) {
+    throw new Error("Failed to fetch subscriptions: " + err.message);
+  }
+};
+
+export default { signInUser, subscribeToNewProjects, cancelMonthlyDonation, processMonthlyDonations, getTopDonors, getSubscriptionsByDonor };

@@ -35,7 +35,7 @@ const getDonationsByDonor = (donor_id) => {
   return new Promise((resolve, reject) => {
     const query = `SELECT d.*, p.title as project_title 
                     FROM Donation d
-                    JOIN Project p ON d.project_id = p.project_id 
+                    JOIN Charity_Project p ON d.project_id = p.project_id
                     WHERE d.donor_id = ?`;
 
     connection.query(query, [donor_id], (err, results) => {

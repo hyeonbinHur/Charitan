@@ -7,6 +7,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { Menu, X } from "lucide-react";
 import UserDropDown from "./UserDropDown";
 
+
 const MainNav = () => {
   const authModal = useRef(null);
   const { user } = useContext(UserContext);
@@ -38,6 +39,9 @@ const MainNav = () => {
           </Link>
           <Link to="/donation" className="hover:text-gray-700">
             Donation
+          </Link>
+          <Link to="/subscriptions" className="hover:text-gray-700"> {/* Added Subscription Page Link */}
+            Your Subscriptions
           </Link>
           {user ? (
             <Button className="hover:bg-gray-300">
@@ -81,6 +85,9 @@ const MainNav = () => {
           </Link>
           <Link to="/donation" className="hover:text-gray-700">
             Donation
+          </Link>
+          <Link to="/subscriptions" className="hover:text-gray-700"> {/* Added Subscription Page Link */}
+            Your Subscriptions
           </Link>
           {user ? (
             <Button onClick={signOut} className="hover:bg-gray-300">
