@@ -31,8 +31,8 @@ const createOne = (newProject) => {
 
 const findMany = () => {
   return new Promise((resolve, reject) => {
-    const query = "SELECT * FROM Charity_Project_Shard WHERE status = Deleted";
-    connection.query(query, (err, results) => {
+    const query = "SELECT * FROM Charity_Project_Shard WHERE status = ?";
+    connection.query(query, ["Deleted"], (err, results) => {
       if (err) {
         reject(err);
       } else {

@@ -11,6 +11,18 @@ const findAll = () => {
     });
   });
 };
+const findHaltedAll = () => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM Charity_Project WHERE status = ?";
+    connection.query(query, ["Halted"], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
 
 const findOne = (id) => {
   return new Promise((resolve, reject) => {
@@ -43,7 +55,6 @@ const findOneByStatus = (status, category) => {
     });
   });
 };
-
 
 const findOneByCharityName = (charityName, status, category, charities) => {
   return new Promise((resolve, reject) => {
@@ -176,6 +187,7 @@ const deleteOne = (id) => {
 export default {
   findAll,
   findOne,
+  findHaltedAll,
   findOneByStatus,
   findOneByCharityName,
   findOneByProjectName,

@@ -18,6 +18,15 @@ const get_project = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+const get_halted_project = async (req, res) => {
+  try {
+    console.log("here1");
+    const tests = await projectService.readHaltedProject();
+    res.json(tests);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
 const get_projects_by_status = async (req, res) => {
   try {
     const { status } = req.query;
@@ -166,6 +175,7 @@ const delete_project = async (req, res) => {
 export default {
   get_projects,
   get_project,
+  get_halted_project,
   get_projects_by_status,
   get_projects_by_charity_name,
   get_projects_by_project_name,

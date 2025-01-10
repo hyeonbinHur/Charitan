@@ -29,7 +29,9 @@ const UserDropDown = ({ user }) => {
             <DropdownMenuItem>Donor Page</DropdownMenuItem>
           )}
           {user.user_type === "Admin" && (
-            <DropdownMenuItem>Admin Page</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to={`/admin`}>Admin Page</Link>
+            </DropdownMenuItem>
           )}
           <DropdownMenuItem onClick={() => signOut()}>
             Sign Out

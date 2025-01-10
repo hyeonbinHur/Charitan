@@ -11,7 +11,6 @@ const getDeletedProject = async () => {
 
 const createDeletedProject = async (newProject) => {
   try {
-    console.log(newProject);
     const response = await axiosInstance.post("shard/deleted", newProject);
     return response.data;
   } catch (err) {

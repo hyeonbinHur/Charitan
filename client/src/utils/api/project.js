@@ -20,6 +20,16 @@ const getProject = async (id) => {
     throw err;
   }
 };
+const getHaltedProject = async () => {
+  try {
+    console.log("here");
+    const response = await axiosInstance.get(`project/admin/halted`);
+    return response.data;
+  } catch (err) {
+    console.log("Error get one project", err);
+    throw err;
+  }
+};
 const createProject = async (newProject) => {
   try {
     const response = await axiosInstance.post("project", newProject);
@@ -98,6 +108,7 @@ const getProjectsByCountry = async (country, status, category) => {
 export {
   getProjects,
   getProject,
+  getHaltedProject,
   createProject,
   updateProject,
   deleteProject,
