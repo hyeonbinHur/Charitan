@@ -8,10 +8,13 @@ router.post("/signin/donor", api.signin_donor);
 router.post('/subscribe/donor', api.subscribeToNewProjects);
 
 // Route for processing monthly donations
-router.post('/monthly-donation/donor', api.processMonthlyDonations);
+router.post('/monthly-donation/donor', api.processMonthlyDonation);
 
 // Route for fetching top donors of the month
 router.get('/top-donors/donor', api.getTopDonors);
+
+router.post("/cancel-monthly-donation/donor", api.cancelMonthlyDonation);
+
 
 
 export default router;

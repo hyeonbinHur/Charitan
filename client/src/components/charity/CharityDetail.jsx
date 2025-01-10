@@ -1,5 +1,3 @@
-import CharityProjectList from "./CharityProjectList";
-
 const CharityDetail = ({ charity }) => {
   return (
     <div>
@@ -18,7 +16,6 @@ const CharityDetail = ({ charity }) => {
         <p>{charity.email}</p>
       </div>
       <button>create charity</button>
-      <CharityProjectList chairty_id={charity.charity_id} />
     </div>
   );
 };

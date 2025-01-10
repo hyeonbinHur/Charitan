@@ -47,7 +47,7 @@ const deleteCharity = async (id) => {
 };
 const getProjectsByCharity = async (id) => {
   try {
-    const response = await axiosInstance.get(`charity/projects/${id}`);
+    const response = await axiosInstance.get(`project/user/${id}`);
     return response.data;
   } catch (err) {
     console.log("error while deleting Charity", err);
