@@ -120,7 +120,7 @@ const ProjectPage = () => {
   };
 
   return (
-    <section>
+    <main>
       <SearchBar />
       {/* project status selector */}
       <div className="flex my-3">
@@ -140,7 +140,7 @@ const ProjectPage = () => {
             </SelectContent>
           </Select>
         </div>
-        ;{/* project country selector */}
+        {/* project country selector */}
         <div>
           <Select
             value={selectedCountry}
@@ -160,7 +160,7 @@ const ProjectPage = () => {
             </SelectContent>
           </Select>
         </div>
-        ;{/* project category selector */}
+        {/* project category selector */}
         <div>
           <Select
             value={selectedCategory}
@@ -180,7 +180,6 @@ const ProjectPage = () => {
             </SelectContent>
           </Select>
         </div>
-        ;;
       </div>
       {isLoading ? (
         <div>
@@ -193,7 +192,7 @@ const ProjectPage = () => {
       ) : (
         <div>{projects && <ProjectList projects={projects} />}</div>
       )}
-    </section>
+    </main>
   );
 };
 

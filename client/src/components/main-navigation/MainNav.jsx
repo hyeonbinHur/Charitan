@@ -6,19 +6,16 @@ import { UserContext } from "../../context/AuthContext";
 import { useAuth } from "../../hooks/useAuth";
 import { Menu, X } from "lucide-react";
 import UserDropDown from "./UserDropDown";
-
 const MainNav = () => {
   const authModal = useRef(null);
   const { user } = useContext(UserContext);
   const { signOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const onClickOpenAuthModal = () => {
     if (authModal.current && authModal.current.open) {
       authModal.current.open();
     }
   };
-
   return (
     <header className="px-5 py-3 text-black w-full border-b-2">
       <div className="flex justify-between items-center">
@@ -35,9 +32,6 @@ const MainNav = () => {
           </Link>
           <Link to="/projects" className="hover:text-gray-700">
             Projects Page
-          </Link>
-          <Link to="/donation" className="hover:text-gray-700">
-            Donation
           </Link>
           {user ? (
             <Button className="hover:bg-gray-300">

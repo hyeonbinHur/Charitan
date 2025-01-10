@@ -1,34 +1,20 @@
 // @ts-nocheck
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import ProjectForm from "./ProjectForm";
-import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteProject } from "../../utils/api/project";
-import { Textarea } from "../ui/textarea";
-import { sendMessage, readMessages } from "../../utils/api/message";
-import { ScrollArea } from "../ui/scroll-area";
-import { UserContext } from "../../context/AuthContext";
-import { isInputOver } from "../../helper/inputHelper";
 import { createDeletedProject } from "../../utils/api/delete_shard";
 import { useNavigate, useParams } from "react-router-dom";
-
+import MessageAccordion from "../message/MessageAccordion";
 const ProjectDetail = ({ project }) => {
   const [isEditting, setIsEditting] = useState(false);
-  const [testMessage, setTestMessage] = useState("");
   const queryClient = useQueryClient();
-  const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const { project_id } = useParams();
-
   /**
    * Http Requests
    */
-
-  const { data: messages } = useQuery({
-    queryKey: [`read-project-message-${project.project_id}`],
-    queryFn: () => readMessages(project.project_id),
-  });
-
   const { mutate: mutateCreateShard } = useMutation({
     mutationFn: ({ newProject }) => {
       return createDeletedProject(newProject);
@@ -37,7 +23,6 @@ const ProjectDetail = ({ project }) => {
       queryClient.invalidateQueries("read-projects");
     },
   });
-
   const { mutate: mutateDeleteProject } = useMutation({
     mutationFn: ({ projectId }) => {
       return deleteProject(projectId);
@@ -47,16 +32,6 @@ const ProjectDetail = ({ project }) => {
     },
   });
 
-  const { mutate: mutateSendMessage } = useMutation({
-    mutationFn: ({ newMessage }) => {
-      return sendMessage(newMessage);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(
-        `read-project-message-${project.project_id}`
-      );
-    },
-  });
   /**
    * Basic function & event handler
    */
@@ -66,65 +41,72 @@ const ProjectDetail = ({ project }) => {
   const onClickEditButton = () => {
     setIsEditting((prev) => !prev);
   };
-  const onChangeTestMessage = (e) => {
-    if (!isInputOver(e.target.value, 250)) {
-      setTestMessage(e.target.value);
-    }
-  };
-  const onClickSendMessage = () => {
-    const newMessage = {
-      project_id: project.project_id,
-      donataion_id: user ? user.donor_id : null,
-      donor_email: user ? user.email : null,
-      content: testMessage,
-    };
-    mutateSendMessage({ newMessage: newMessage });
-  };
+
   const handleDonationClick = () => {
     console.log(project_id);
     navigate(`/donation/${project_id}`);
   };
   return (
-    <div className="w-1/2">
+    <div className="">
       <Button onClick={() => onClickEditButton()}>Edit</Button>
       {project.status === "Halted" && (
         <Button onClick={() => onClickDeleteProject()}>Delete Project</Button>
       )}
       {!isEditting ? (
-        <div>
-          <p> {project.category} using bread crumb</p>
-          <div className="border rounded-lg bg-stone-500">
-            <img className="w-[40rem]" src={project.thumbnail} />
+        <div className="p-6  rounded-lg shadow-lg space-y-6 text-gray-200">
+          {/* Bread crumb & Category */}
+
+          <div className="text-sm mb-2">
+            <p>
+              {project.category}{" "}
+              <span className="text-gray-400">using breadcrumb</span>
+            </p>
           </div>
-          <div className="border"> {project.title}</div>
-          <div>
-            {project.charity_id}, {project.created_at}, {project.updated_at}
+
+          <div className="text-3xl font-semibold mt-4">{project.title}</div>
+
+          {/* Thumbnail Image */}
+          <div className="border rounded-lg overflow-hidden shadow-md">
+            <img
+              className="w-full h-96 object-cover"
+              src={project.thumbnail}
+              alt={project.title}
+            />
           </div>
-          <div className="w-full">
+
+          {/* Project Title */}
+
+          {/* Project Dates and Charity ID */}
+          <div className="text-sm">
+            <p>
+              {project.charity_id},{" "}
+              <span className="">{project.created_at}</span>,{" "}
+              <span className="">{project.updated_at}</span>
+            </p>
+          </div>
+
+          {/* Description Section */}
+          <div className=" text-base mt-4">
             <p>{project.description}</p>
           </div>
-          <div>
-            <div>{project.target_amount}</div>
-            <div>{project.current_funding}</div>
+
+          {/* Funding Progress */}
+          <div className="flex justify-between mt-6">
+            <div className="text-lg font-semibold text-gray-800">
+              Target Amount:
+            </div>
+            <div className="text-lg text-gray-900">{project.target_amount}</div>
+          </div>
+          <div className="flex justify-between mt-2">
+            <div className="text-lg font-semibold text-gray-800">
+              Current Funding:
+            </div>
+            <div className="text-lg text-gray-900">
+              {project.current_funding}
+            </div>
           </div>
           <Button onClick={handleDonationClick}>Donate Now</Button>
-          <div className="m-3 flex flex-col gap-3 border-black-500 border-2 p-2">
-            <Textarea
-              type="text"
-              value={testMessage}
-              onChange={onChangeTestMessage}
-            />
-            <Button onClick={() => onClickSendMessage()}>
-              Submit test message
-            </Button>
-
-            <ScrollArea>
-              {messages &&
-                messages.map((e, i) => (
-                  <div key={`message-key-${i}`}>{e.content} </div>
-                ))}
-            </ScrollArea>
-          </div>
+          <MessageAccordion project_id={project.project_id} />
         </div>
       ) : (
         <ProjectForm project={project} />
@@ -132,5 +114,7 @@ const ProjectDetail = ({ project }) => {
     </div>
   );
 };
+
+ 
 
 export default ProjectDetail;
