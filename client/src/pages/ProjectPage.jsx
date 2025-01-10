@@ -25,6 +25,8 @@ import {
   updateCountry,
   updateStatus,
 } from "../store/filterSlice";
+import "./ProjectPage.css";
+
 
 const ProjectPage = () => {
   const [searchParams] = useSearchParams();
@@ -120,7 +122,26 @@ const ProjectPage = () => {
   };
 
   return (
+
     <main>
+      <div className="hero-section">
+        <img
+          src="https://media.istockphoto.com/id/1498170916/photo/a-couple-is-taking-a-bag-of-food-at-the-food-and-clothes-bank.jpg?s=612x612&w=0&k=20&c=0fnD_g46lvoZ5NdzX5zYOSM4PzM95ezfs5uMe9D1QKs=" // Replace with your image URL
+          alt="Charity banner"
+          className="hero-image"
+        />
+        <div className="hero-description">
+          <h1>Explore Our Projects</h1>
+          <p>
+            Our projects aim to make a positive impact on communities worldwide.
+            Browse through a variety of initiatives focused on education, health,
+            environment, and more. Your support can bring change and hope to those in
+            need.
+          </p>
+        </div>
+      </div>
+
+
       <SearchBar />
       {/* project status selector */}
       <div className="flex my-3">

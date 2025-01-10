@@ -20,3 +20,127 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   }
   
+  /* Hero Section Styles */
+.hero-section {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #f0f9ff; /* Light blue background */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hero-section h1 {
+  font-size: 2.5rem;
+  color: var(--cyan);
+}
+
+.hero-section p {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.hero-section .button-primary {
+  margin-top: 20px;
+}
+
+/* Featured Section Styles */
+.featured-section {
+  margin-top: 40px;
+  width: 100%;
+  text-align: center;
+}
+
+.featured-section h2 {
+  font-size: 2rem;
+  color: var(--cyan);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: var(--cyan);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card h3 {
+  font-size: 1.5rem;
+  color: var(--cyan);
+}
+
+.card p {
+  margin-top: 10px;
+  color: #555;
+}
+
+/* Horizontal Projects Layout */
+.horizontal-projects {
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.horizontal-projects .project-item {
+  flex: 1;
+  max-width: 30%; /* Adjust the width of each item */
+}
+
+@media (max-width: 768px) {
+  .horizontal-projects {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .horizontal-projects .project-item {
+    max-width: 100%;
+  }
+}
+
+/* Section Header with View All Button */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px 0;
+}
+
+.section-header h2 {
+  font-size: 2rem;
+  color: var(--cyan);
+}
+
+.view-all-btn {
+  background: none;
+  border: none;
+  color: var(--cyan);
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.view-all-btn:hover {
+  color: #008ba3; /* Slightly darker cyan */
+}
