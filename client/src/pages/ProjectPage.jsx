@@ -122,7 +122,8 @@ const ProjectPage = () => {
   };
 
   return (
-    <section>
+
+    <main>
       <div className="hero-section">
         <img
           src="https://media.istockphoto.com/id/1498170916/photo/a-couple-is-taking-a-bag-of-food-at-the-food-and-clothes-bank.jpg?s=612x612&w=0&k=20&c=0fnD_g46lvoZ5NdzX5zYOSM4PzM95ezfs5uMe9D1QKs=" // Replace with your image URL
@@ -139,6 +140,8 @@ const ProjectPage = () => {
           </p>
         </div>
       </div>
+
+
       <SearchBar />
       {/* project status selector */}
       <div className="flex my-3">
@@ -158,7 +161,7 @@ const ProjectPage = () => {
             </SelectContent>
           </Select>
         </div>
-        ;{/* project country selector */}
+        {/* project country selector */}
         <div>
           <Select
             value={selectedCountry}
@@ -178,7 +181,7 @@ const ProjectPage = () => {
             </SelectContent>
           </Select>
         </div>
-        ;{/* project category selector */}
+        {/* project category selector */}
         <div>
           <Select
             value={selectedCategory}
@@ -198,7 +201,6 @@ const ProjectPage = () => {
             </SelectContent>
           </Select>
         </div>
-        ;;
       </div>
       {isLoading ? (
         <div>
@@ -211,7 +213,7 @@ const ProjectPage = () => {
       ) : (
         <div>{projects && <ProjectList projects={projects} />}</div>
       )}
-    </section>
+    </main>
   );
 };
 

@@ -1,24 +1,41 @@
 import { Avatar } from "@radix-ui/react-avatar";
+import { Separator } from "../ui/separator";
 
 const DonationMessageCard = ({ message }) => {
   return (
-    <div className="flex items-start p-4 bg-gray-300 shadow-md rounded-lg">
-      {/* Avatar Section */}
-      {/* Content Section */}
-      <Avatar className="w-10 h-10">
-        <img
-          className="rounded-full"
-          src={`https://i.pravatar.cc/150?img=$%7Bemail.id%7D`}
-          alt="avatar"
-        />
-      </Avatar>
-      <div className="ml-4">
-        {/* Donor Email */}
-        <div className="text-sm font-semibold text-gray-800">
-          {message.donor_email}
+    <div className="w-full mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-300">
+      {/* Header Section */}
+      <div className="flex items-center space-x-4">
+        <Avatar className="w-14 h-14">
+          <img
+            className="rounded-full border-2 border-blue-500 shadow-md"
+            src={`https://i.pravatar.cc/150?img=$%7Bemail.id%7D}`}
+            alt="avatar"
+          />
+        </Avatar>
+        <div>
+          <h2 className="text-lg font-bold text-gray-900">{message.name}</h2>
+          <p className="text-sm text-gray-500">{message.donation_date}</p>
         </div>
-        {/* Message Content */}
-        <p className="mt-1 text-sm text-gray-600">{message.content}</p>
+      </div>
+      <Separator className="my-3" />
+      {/* Message Section */}
+      <div className="mt-4">
+        <p className="text-base text-gray-800">{message.message}</p>
+      </div>
+      {/* Donation Info Section */}
+      <div className="mt-4 items-center justify-between text-sm text-gray-600">
+        <div className="flex items-center gap-3">
+          <p className="font-medium text-gray-800">Amount</p>
+          <p className="text-lg font-semibold text-green-500">
+            ${message.amount}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <p className="font-medium text-gray-800">Action</p>
+          <p className="text-blue-600">{message.action}</p>
+        </div>
       </div>
     </div>
   );
