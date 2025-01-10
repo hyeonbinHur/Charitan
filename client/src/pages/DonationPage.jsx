@@ -54,7 +54,7 @@ const DonationPage = () => {
     },
     onSuccess: () => {
       console.log("email sent");
-      // setIsModalOpen(false);
+      setIsModalOpen(false);
     },
     onError: (err) => {
       console.error(err);
@@ -130,7 +130,7 @@ const DonationPage = () => {
       setDonations(donations.map((d) => (d.id === id ? data : d)));
       setEditingDonation(null);
       console.log("update");
-      // setIsModalOpen(false);
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Error updating donation:", error);
     }
