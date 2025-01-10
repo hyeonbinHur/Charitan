@@ -24,6 +24,8 @@ const AccountManagement = () => {
     const [isHidden1, setIsHidden1] = useState(true);
     const [isHidden2, setIsHidden2] =useState(true);
     const [isModalOpen2, setModalOpen2] = useState(false);
+    const [isModalOpen3, setModalOpen3] = useState(false);
+    const [isModalOpen4, setModalOpen4] = useState(false);
     const [animationLoad, setAnimationLoad] = useState(false);
 
     const [searchAdmin, setAdmin] = useState('');
@@ -38,6 +40,19 @@ const AccountManagement = () => {
     );
     const filterDornor = donorAccounts.filter((account) => 
         account.name.toLowerCase().includes(searchDonor.toLowerCase())
+    );
+
+    const [adminEmail, setAdminEmail] = useState('');
+    const [charityEmail, setCharityEmail] = useState('');
+    const [donorEmail, setDonorEmail] = useState('');
+    const filterDeleteByAdminEmail = accounts.filter((acc) =>
+        acc.username === adminEmail
+    );
+    const filterDeleteByCharityEmail = charityAccounts.filter((acc) =>
+        acc.email === charityEmail
+    );
+    const filterDeleteByDonorEmail = donorAccounts.filter((acc) =>
+        acc.email === donorEmail
     );
 
     const handleCloseModal = () => {
@@ -171,7 +186,9 @@ const AccountManagement = () => {
             {isModalOpen2 && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-lg shadow-lg p-8 w-auto flex flex-col space-y-6">
-                        <h1>Are you sure?</h1>
+                        {filterDeleteByAdminEmail.map((acc) => 
+                            <h1>Are you sure to delete {acc.name}?</h1>
+                        )}
                         <div className="flex flex-row items-center w-full space-x-8">
                             <button
                             className="bg-custom-blue-1 hover:bg-custom-blue rounded-full shadow p-2 text-white pl-4 pr-4"
@@ -182,6 +199,70 @@ const AccountManagement = () => {
                             <button
                             className="bg-red-400 hover:bg-red-200 rounded-full shadow p-2 text-white pl-4 pr-4"
                             onClick={() => {setAnimationLoad(true); setTimeout(() => {setModalOpen2(false)}, 3500)}}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {animationLoad && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <LoadingAnimation
+                    onComplete={() => setAnimationLoad(false)}
+                    />
+                </div>
+            )}
+
+            {/* Delete the Charity account */}
+            {isModalOpen3 && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg shadow-lg p-8 w-auto flex flex-col space-y-6">
+                        {filterDeleteByCharityEmail.map((acc) => 
+                            <h1>Are you sure to delete {acc.name}?</h1>
+                        )}
+                        <div className="flex flex-row items-center w-full space-x-8">
+                            <button
+                            className="bg-custom-blue-1 hover:bg-custom-blue rounded-full shadow p-2 text-white pl-4 pr-4"
+                            onClick={() => setModalOpen3(false)}
+                            >
+                                Cancle
+                            </button>
+                            <button
+                            className="bg-red-400 hover:bg-red-200 rounded-full shadow p-2 text-white pl-4 pr-4"
+                            onClick={() => {setAnimationLoad(true); setTimeout(() => {setModalOpen3(false)}, 3500)}}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {animationLoad && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <LoadingAnimation
+                    onComplete={() => setAnimationLoad(false)}
+                    />
+                </div>
+            )}
+
+            {/* Delete the Donor account */}
+            {isModalOpen4 && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg shadow-lg p-8 w-auto flex flex-col space-y-6">
+                        {filterDeleteByDonorEmail.map((acc) => 
+                            <h1>Are you sure to delete {acc.name}?</h1>
+                        )}
+                        <div className="flex flex-row items-center w-full space-x-8">
+                            <button
+                            className="bg-custom-blue-1 hover:bg-custom-blue rounded-full shadow p-2 text-white pl-4 pr-4"
+                            onClick={() => setModalOpen4(false)}
+                            >
+                                Cancle
+                            </button>
+                            <button
+                            className="bg-red-400 hover:bg-red-200 rounded-full shadow p-2 text-white pl-4 pr-4"
+                            onClick={() => {setAnimationLoad(true); setTimeout(() => {setModalOpen4(false)}, 3500)}}
                             >
                                 Delete
                             </button>
@@ -234,7 +315,7 @@ const AccountManagement = () => {
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
                                 viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
                                 className={`size-12 text-red-500 hover:text-red-200 ${isHidden ? "hidden" : ""} ${account.status !== "Master" ? "" : "hidden"}`}
-                                onClick={() => setModalOpen2(true)}>
+                                onClick={() => {setAdminEmail(account.username); setModalOpen2(true)}}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 <span></span>
                             </svg>
@@ -262,7 +343,7 @@ const AccountManagement = () => {
                     <div className="flex flex-row space-x-4">
                         <button
                         className="bg-custom-blue-1 text-white py-2 px-4 rounded-full hover:bg-custom-blue shadow"
-                        onClick={() => navigate('/page2/create_Charity_Account')}
+                        onClick={() => navigate('/admin/page2/create_Charity_Account')}
                         >
                             Create
                         </button>
@@ -280,7 +361,7 @@ const AccountManagement = () => {
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
                                 viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
                                 className={`size-12 text-red-500 hover:text-red-200 ${isHidden1 ? "hidden" : ""}`}
-                                onClick={() => setModalOpen2(true)}>
+                                onClick={() => {setCharityEmail(charityAccount.email); setModalOpen3(true)}}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 <span></span>
                             </svg>
@@ -308,7 +389,7 @@ const AccountManagement = () => {
                     <div className="flex flex-row space-x-4">
                         <button
                         className="bg-custom-blue-1 text-white py-2 px-4 rounded-full hover:bg-custom-blue shadow"
-                        onClick={() => navigate('/page2/create_Donor_Account')}
+                        onClick={() => navigate('/admin/page2/create_Donor_Account')}
                         >
                             Create
                         </button>
@@ -326,7 +407,7 @@ const AccountManagement = () => {
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
                                 viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
                                 className={`size-12 text-red-500 hover:text-red-200 ${isHidden2 ? "hidden" : ""}`}
-                                onClick={() => setModalOpen2(true)}>
+                                onClick={() => {setDonorEmail(donorAccount.email); setModalOpen4(true)}}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 <span></span>
                             </svg>

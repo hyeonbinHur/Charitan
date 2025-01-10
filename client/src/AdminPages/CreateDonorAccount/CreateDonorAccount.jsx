@@ -21,7 +21,7 @@ export default function CreateDonorAccount() {
         e.preventDefault();
         //await createAccount(account);
         setTimeout(() =>{
-            navigate('/page2');
+            navigate('/admin/page2');
         }, 3500);
     };
 
@@ -164,7 +164,7 @@ export default function CreateDonorAccount() {
                         <label htmlFor="organization_name" ></label>
                     </div>
                     <div className="flex flex-row w-full justify-end items-center pb-12 pr-12 space-x-6">
-                        <button type="button" onClick={() => navigate('/page2')} className="bg-custom-blue-1 rounded-full shadow-sm hover:bg-custom-blue pl-4 pr-4 p-2">
+                        <button type="button" onClick={() => navigate('/admin/page2')} className="bg-custom-blue-1 rounded-full shadow-sm hover:bg-custom-blue pl-4 pr-4 p-2">
                             Cancle
                         </button>
                         <button type="submit" className="bg-custom-blue-1 rounded-full shadow-sm hover:bg-custom-blue pl-4 pr-4 p-2">
