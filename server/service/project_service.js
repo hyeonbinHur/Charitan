@@ -37,6 +37,14 @@ const readHaltedProject = async () => {
     throw new Error("Failed to read data");
   }
 };
+const readProjectByOnlyStatus = async (status) => {
+  try {
+    const tests = await projectRepository.findMayByStatus(status);
+    return tests;
+  } catch (err) {
+    throw new Error("Failed to read data");
+  }
+};
 const readProjectByStatus = async (status, category) => {
   try {
     const tests = await projectRepository.findOneByStatus(status, category);
@@ -147,6 +155,26 @@ const deleteProject = async (id) => {
     throw new Error("Failed to read data");
   }
 };
+const updateProjectComplete = async (id) => {
+  try {
+    const test = await projectRepository.updateCompleteOne(id);
+    return test;
+  } catch (err) {
+    throw new Error("Failed while update project to completed");
+  }
+};
+const updateProjectDonation = async (id, funding, is_completed) => {
+  try {
+    const test = await projectRepository.updateOneDonation(
+      id,
+      funding,
+      is_completed
+    );
+    return test;
+  } catch (err) {
+    throw new Error("Failed while update project to completed");
+  }
+};
 
 export default {
   readAllProjects,
@@ -160,4 +188,7 @@ export default {
   createProject,
   updateProject,
   deleteProject,
+  updateProjectComplete,
+  readProjectByOnlyStatus,
+  updateProjectDonation,
 };

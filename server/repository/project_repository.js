@@ -37,6 +37,20 @@ const findOne = (id) => {
     });
   });
 };
+const findMayByStatus = (status) => {
+  return new Promise((resolve, reject) => {
+    let query = "SELECT * FROM Charity_Project WHERE status = ?";
+    let values = [status];
+
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
 
 const findOneByStatus = (status, category) => {
   return new Promise((resolve, reject) => {
@@ -170,6 +184,39 @@ const updateOne = (id, updatedProject) => {
   });
 };
 
+const updateCompleteOne = (id) => {
+  return new Promise((resolve, reject) => {
+    const query = `UPDATE Charity_Project SET status = ? WHERE project_id = ?`;
+    const values = ["Completed", id];
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
+
+const updateOneDonation = (id, funding, is_completed) => {
+  return new Promise((resolve, reject) => {
+    let query = `UPDATE Charity_Project SET current_funding = ? WHERE project_id = ?`;
+    let values = [funding, id];
+
+    if (is_completed) {
+      query = `UPDATE Charity_Project SET current_funding = ?, status = ? WHERE project_id = ?`;
+      values = [funding, "Completed", id];
+    }
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
+
 const deleteOne = (id) => {
   return new Promise((resolve, reject) => {
     const query = "DELETE FROM Charity_Project WHERE project_id = ?";
@@ -196,4 +243,7 @@ export default {
   deleteOne,
   createOne,
   updateOne,
+  updateCompleteOne,
+  findMayByStatus,
+  updateOneDonation,
 };

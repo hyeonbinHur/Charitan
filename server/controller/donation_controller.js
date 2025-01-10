@@ -2,8 +2,6 @@ import donationRepository from "../repository/donation_repository.js";
 
 const createDonation = async (req, res) => {
   try {
-    console.log("Request body:", req.body);
-    console.log("Project ID:", req.params.project_id);
     const donation = {
       project_id: req.params.project_id,
       donor_id: req.body.donor_id || null,
@@ -15,7 +13,6 @@ const createDonation = async (req, res) => {
     };
 
     const result = await donationRepository.createDonation(donation);
-    console.log("Database result:", result);
     const updatedDonations = await donationRepository.getDonationsByProject(
       req.params.project_id
     );

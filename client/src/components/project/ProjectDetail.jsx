@@ -93,18 +93,12 @@ const ProjectDetail = ({ project }) => {
 
           {/* Funding Progress */}
           <div className="flex justify-between mt-6">
-            <div className="text-lg font-semibold text-gray-800">
-              Target Amount:
-            </div>
-            <div className="text-lg text-gray-900">{project.target_amount}</div>
+            <div className="text-lg font-semibold">Target Amount:</div>
+            <div className="text-lg ">{project.target_amount}</div>
           </div>
           <div className="flex justify-between mt-2">
-            <div className="text-lg font-semibold text-gray-800">
-              Current Funding:
-            </div>
-            <div className="text-lg text-gray-900">
-              {project.current_funding}
-            </div>
+            <div className="text-lg font-semibold">Current Funding:</div>
+            <div className="text-lg ">{project.current_funding}</div>
           </div>
           <Button onClick={handleDonationClick}>Donate Now</Button>
           <MessageAccordion project_id={project.project_id} />

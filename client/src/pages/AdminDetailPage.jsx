@@ -1,12 +1,12 @@
 import { Separator } from "../components/ui/separator";
 import { useQuery } from "@tanstack/react-query";
 import { getDeletedProject } from "../utils/api/delete_shard";
-import { getHaltedProject } from "../utils/api/project";
+import { getProjectsByStatus } from "../utils/api/project";
 import ProjectList from "../components/project/ProjectList";
 const AdminDetailPage = () => {
   const { data: haltedProject } = useQuery({
     queryKey: ["getHaltedProject"],
-    queryFn: () => getHaltedProject(),
+    queryFn: () => getProjectsByStatus("Halted"),
   });
   const { data: deletedProject } = useQuery({
     queryKey: ["getDeletedProject"],

@@ -22,8 +22,8 @@ const DonationForm = ({
   const handlePaymentSuccess = async () => {
     try {
       await handleCreate();
-      setShowStripePayment(false);
-      window.location.reload();
+      // setShowStripePayment(false);
+      // window.location.reload();
     } catch (error) {
       console.error("Error creating donation:", error);
     }
