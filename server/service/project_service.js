@@ -31,12 +31,9 @@ const readProject = async (id) => {
 };
 const readProjectByStatus = async (status, category) => {
   try {
-    console.log("service");
     const tests = await projectRepository.findOneByStatus(status, category);
-    console.log(tests);
     return tests;
   } catch (err) {
-    console.error(err);
     throw new Error("Failed to read data");
   }
 };
@@ -57,7 +54,6 @@ const readProjectByCharityName = async (
 
     return tests;
   } catch (err) {
-    console.error(err);
     throw new Error("Failed to read data");
   }
 };
