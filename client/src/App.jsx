@@ -13,6 +13,7 @@ import CreateProjectPage from "./pages/CreateProjectPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
 import Inbox from "./components/message/Inbox";
+import CharityProjectsPage from "./pages/CharityProjectsPage";
 
 import NavBar from './AdminComponent/NavBar/NavBar';
 import AccountManagement from './AdminPages/AccountManagement/AccountManagement';
