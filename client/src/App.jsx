@@ -13,8 +13,6 @@ import CreateProjectPage from "./pages/CreateProjectPage";
 import CharityProjectsPage from "./pages/CharityProjectsPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
-import Inbox from "./components/message/Inbox";
-
 
 import AdminDetailPage from "./pages/AdminDetailPage";
 // import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
@@ -50,14 +48,8 @@ const App = () => (
         />
         <Route path="/doner-p" element={<DonerPersonalPage />} />
         <Route path="/donation/:project_id" element={<DonationPage />} />
-        <Route path="/inbox" element={<Inbox />} />
-
-
-
-
 
         <Route path="/admin" element={<AdminDetailPage />} />
-
       </Routes>
       <Footer />
     </BrowserRouter>

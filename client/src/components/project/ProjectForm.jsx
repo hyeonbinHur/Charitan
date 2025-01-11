@@ -121,6 +121,7 @@ const ProjectForm = ({ project = {} }) => {
       return updateProject(updatedProject, project.project_id);
     },
     onSuccess: () => {
+      navigate(`/charity/project/${params.charity_id}`);
       queryClient.invalidateQueries("read-projects");
       console.log("success");
     },
@@ -195,7 +196,7 @@ const ProjectForm = ({ project = {} }) => {
   return (
     <div className="mt-5">
       <form
-        className="flex flex-col p-5 shadow-md bg-gray-100 rounded-lg"
+        className="flex flex-col p-5 shadow-md bg-gray-100 rounded-lg text-gray-800"
         onSubmit={onSubmit(handleSubmit)}
       >
         <div>

@@ -56,11 +56,11 @@ const ProjectDetail = ({ project }) => {
               onClick={onClickEditButton}
               className="bg-blue-600 text-white hover:bg-blue-900 px-4 py-2 rounded-md"
             >
-              Edit
+              {!isEditting ? "Edit" : "Cancel"}
             </Button>
           )}
 
-        {project.status === "Halted" && (
+        {project.status === "Halted" && user.user_type === "Admin" && (
           <Button
             onClick={onClickDeleteProject}
             className="bg-red-600 text-white hover:bg-red-700 px-4 py-2 rounded-md"

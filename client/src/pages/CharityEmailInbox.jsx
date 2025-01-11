@@ -12,15 +12,14 @@ const CharityEmaikInbox = () => {
     queryFn: () => readEmails("Charity", params.charity_id),
   });
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-4xl mx-auto p-6  rounded-lg shadow-md">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-semibold">📥 Inbox</h1>
+      <div className="flex items-center justify-between mb-1">
+        <h1 className="text-2xl font-semibold text-gray-100">📥 Inbox</h1>
       </div>
-
       {/* Email List */}
       {emails && (
-        <ScrollArea className="space-y-4 max-h-[80vh]">
+        <ScrollArea className="space-y-4 h-[80vh] py-5">
           {emails.map((email) => (
             <EmailCard key={email.id} email={email} />
           ))}

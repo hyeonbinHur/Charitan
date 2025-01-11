@@ -12,6 +12,7 @@ const MainNav = () => {
   const { user } = useContext(UserContext);
   const { signOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const onClickOpenAuthModal = () => {
     if (authModal.current && authModal.current.open) {
       authModal.current.open();
