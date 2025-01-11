@@ -75,10 +75,41 @@ const getTopDonors = async (req, res) => {
   }
 };
 
+// Get subscriptions by donor_id
+const getDonorSubscriptions = async (req, res) => {
+  const { subscription_id } = req.params;  // Get donor_id from the URL params
+
+  try {
+    // Call the service to fetch subscriptions from the database
+    const subscriptions = await donorService.getSubscriptionsByDonor(subscription_id);
+
+    if (!subscriptions || subscriptions.length === 0) {
+      return res.status(404).json({ message: "No subscriptions found for this donor." });
+    }
+
+    res.status(200).json(subscriptions);  // Send the subscriptions data in response
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch subscriptions", error: err.message });
+  }
+};
+
+const getAllSubscriptions = async (req, res) => {
+  try {
+    const subscriptions = await donorService.getAllSubscriptions();  // Fetch all subscriptions
+    res.status(200).json(subscriptions);  // Return the list of subscriptions
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
 export default {
   signin_donor,
   subscribeToNewProjects,
   processMonthlyDonation,
   getTopDonors,
-  cancelMonthlyDonation
+  cancelMonthlyDonation,
+  getDonorSubscriptions,
+  getAllSubscriptions,
 };
