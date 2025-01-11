@@ -11,13 +11,10 @@ const CharityDetailPage = () => {
     queryFn: () => getCharity(params.charity_id),
   });
   return (
-    <div>
-      {/* <SkeletonCharityDetail /> */}
-      <main className="flex flex-col items-center">
-        Charity Detail Page {params.charity_id}
-        {charity && <CharityDetail charity={charity} />}
-      </main>
-    </div>
+    <main className="flex flex-col items-center">
+      Charity Detail Page {params.charity_id}
+      {charity && <CharityDetail charity={charity} />}
+    </main>
   );
 };
 

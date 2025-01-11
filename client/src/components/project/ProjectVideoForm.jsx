@@ -2,6 +2,10 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { SquarePlay } from "lucide-react";
 import { Label } from "../ui/label";
+
+
+import { ScrollArea, ScrollBar } from "../../components/ui/scroll-area";
+
 const ProjectVideoInput = ({
   onAddVideo,
   currentVideoCount,
@@ -48,7 +52,7 @@ const ProjectVideoInput = ({
           key={`uploaded-video-${index}`}
           src={video.url}
           controls
-          style={{ width: "300px", margin: "10px 0" }}
+          className="min-w-72 max-w-72"
         />
       ) : (
         <label
@@ -91,22 +95,28 @@ const ProjectVideoForm = () => {
 
   return (
     <div>
-      <h1>비디오 업로드</h1>
-      {videoInputs.length < 4 && (
-        <Button onClick={addVideoInput}>Add more video</Button>
-      )}
-      <div className="flex gap-5">
-        {videoInputs.map((_, i) => (
-          <div key={`video-input-${i}`}>
-            <ProjectVideoInput
-              index={i}
-              onAddVideo={addVideo}
-              currentVideoCount={videos.length}
-              maxVideos={maxVideos}
-            />
-          </div>
-        ))}
-      </div>
+      <h1 className="text-xl mb-4">Upload Multimedia</h1>
+
+      <ScrollArea className="border-2 border-gray-300 p-2 rounded-md">
+        {videoInputs.length < 4 && (
+          <Button className="mb-3" onClick={addVideoInput}>
+            Add more video
+          </Button>
+        )}
+        <div className="flex gap-5">
+          {videoInputs.map((_, i) => (
+            <div key={`video-input-${i}`}>
+              <ProjectVideoInput
+                index={i}
+                onAddVideo={addVideo}
+                currentVideoCount={videos.length}
+                maxVideos={maxVideos}
+              />
+            </div>
+          ))}
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
     </div>
   );
 };

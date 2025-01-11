@@ -147,6 +147,7 @@ const create_project = async (req, res) => {
     const tests = await projectService.createProject(newProject);
     res.json(tests);
   } catch (err) {
+    console.error(err);
     res.status(500).send(err.message);
   }
 };

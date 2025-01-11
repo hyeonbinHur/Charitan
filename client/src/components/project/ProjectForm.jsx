@@ -1,20 +1,11 @@
 /* eslint-disable no-unused-vars */
-// @ts-nocheck
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Separator } from "../ui/separator";
 import { Editor } from "@tinymce/tinymce-react";
 import { editorConfig } from "../../lib/editorOption";
 import { Controller, useForm } from "react-hook-form";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+
 import {
   Select,
   SelectContent,
@@ -34,11 +25,15 @@ import { useError } from "../../context/ErrorContext";
 import { useParams } from "react-router-dom";
 import ProjectVideoForm from "./ProjectVideoForm";
 import { UserContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+// import { useParams } from "react-router-dom";
+import LoadingSpinner from "../../../public/LoadingSpinner.svg";
 
 const ProjectForm = ({ project = {} }) => {
   /**
    * Variable Declaration
    */
+
   const params = useParams();
   const { title = "", description = "", status = "Active" } = project;
   const [projectStatus, setProjectStatus] = useState("Active");
@@ -50,6 +45,8 @@ const ProjectForm = ({ project = {} }) => {
   const editorRef = useRef(null);
   const queryClient = useQueryClient();
   const { setError } = useError();
+  const navigate = useNavigate(); // Initialize navigation
+  const [isLoading, setIsLoading] = useState(false);
 
   const { user } = useContext(UserContext);
 
@@ -63,9 +60,15 @@ const ProjectForm = ({ project = {} }) => {
   } = useForm({
     mode: "onSubmit",
     defaultValues: {
-      ...(project
+      ...(project.title
         ? { ...project }
-        : { status: projectStatus, category: projectCategory }),
+        : {
+            title: "",
+            category: "Food", // 기본값으로 'Food' 설정
+            target_amount: "",
+            status: "Active", // 기본값으로 'Active' 설정
+            description: "",
+          }),
     },
   });
   /**
@@ -85,10 +88,11 @@ const ProjectForm = ({ project = {} }) => {
       return sendEmail(newEmail);
     },
     onSuccess: () => {
-      console.log("email sent");
+      navigate(`/charity/project/${params.charity_id}`);
     },
     onError: (err) => {
       console.error(err);
+      alert("err");
     },
   });
 
@@ -141,6 +145,7 @@ const ProjectForm = ({ project = {} }) => {
   };
 
   const handleSubmit = async (data) => {
+    setIsLoading(true);
     if (project.project_id) {
       const updatedProject = {
         title: data.title,
@@ -180,19 +185,24 @@ const ProjectForm = ({ project = {} }) => {
         setError(new Error("The content must not contain more than 15 images"));
       } else {
         newProject.description = optimizedHTML;
+        console.log("here2");
         mutateCrateProject({ newProject: newProject });
       }
     }
+    setIsLoading(false);
   };
 
   return (
-    <div>
-      <form className="flex flex-col gap-5" onSubmit={onSubmit(handleSubmit)}>
-        <section>
+    <div className="mt-5">
+      <form
+        className="flex flex-col p-5 shadow-md bg-gray-100 rounded-lg"
+        onSubmit={onSubmit(handleSubmit)}
+      >
+        <div>
           <Label>Title</Label>
           <Input type="text" {...register("title")} />
-        </section>
-        <section>
+        </div>
+        <div>
           <Label>Thumbnatil</Label>
           {!project.project_id && (
             <Input
@@ -209,9 +219,9 @@ const ProjectForm = ({ project = {} }) => {
               <img src={thumbnatilImg} />
             </div>
           )}
-        </section>
+        </div>
 
-        <section>
+        <div>
           <Label>Category</Label>
           <Controller
             name="category"
@@ -242,14 +252,14 @@ const ProjectForm = ({ project = {} }) => {
               </Select>
             )}
           />
-        </section>
+        </div>
 
-        <section>
+        <div>
           <Label>Target Amount</Label>
           <Input type="number" {...register("target_amount")} />
-        </section>
+        </div>
 
-        <section>
+        <div>
           <Label>Project Status</Label>
           <Controller
             name="status"
@@ -274,9 +284,9 @@ const ProjectForm = ({ project = {} }) => {
               </Select>
             )}
           />
-        </section>
+        </div>
 
-        <section>
+        <div>
           <Label>Description</Label>
           <Controller
             name="description"
@@ -293,13 +303,29 @@ const ProjectForm = ({ project = {} }) => {
               />
             )}
           />
-        </section>
-        <section>
+        </div>
+        <div>
           <ProjectVideoForm />
-        </section>
-        <Button type="submit" className="confirm-button">
-          Confirm Create Project
-        </Button>
+        </div>
+        <div className="flex justify-between gap-10">
+          <Button
+            type="submit"
+            className="flex-1 hover:bg-blue-100"
+            variant="secondary"
+            disabled={isLoading}
+          >
+            Confirm Create Project
+            {isLoading && <img src={LoadingSpinner} className="w-5" />}
+          </Button>
+          <Button
+            className="flex-1 "
+            variant="destructive"
+            disabled={isLoading}
+            onClick={() => navigate(`/charity/project/${params.charity_id}`)}
+          >
+            Cancel
+          </Button>
+        </div>
       </form>
     </div>
   );

@@ -20,9 +20,20 @@ const UserDropDown = ({ user }) => {
           <DropdownMenuLabel>- {user.user_type} -</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {user.user_type === "Charity" && (
-            <DropdownMenuItem>
-              <Link to={`/charity-p/${user.charity_id}`}>Charity Page</Link>
-            </DropdownMenuItem>
+            <>
+              <DropdownMenuItem>
+                <Link to={`/charity-p/${user.charity_id}`}>Charity Page</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to={`/charity/project/${user.charity_id}`}>Projects</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to={`/charity/inbox/${user.charity_id}`}>
+                  Email Inbox
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
           )}
           {user.user_type === "Donor" && (
             <DropdownMenuItem>Donor Page</DropdownMenuItem>
@@ -32,7 +43,10 @@ const UserDropDown = ({ user }) => {
               <Link to={`/admin`}>Admin Page</Link>
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem onClick={() => signOut()}>
+          <DropdownMenuItem
+            onClick={() => signOut()}
+            className="focus:bg-red-300"
+          >
             Sign Out
           </DropdownMenuItem>
         </DropdownMenuContent>
