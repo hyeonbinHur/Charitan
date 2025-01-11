@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { RadioGroup } from "../ui/radio-group";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +32,7 @@ const SearchBar = () => {
     <div
       className={`flex border-[3px] rounded-md shadow-md outline ${
         isFocused
-          ? "border-transparent outline-blue-300"
+          ? "border-transparent outline-orange-300"
           : "border border-gray-300 outline-transparent"
       }`}
     >
@@ -55,36 +55,17 @@ const SearchBar = () => {
         onClick={() => {
           inputRef.current.focus();
         }}
-        className={`flex  px-2 ${isFocused ? "border-transparent" : ""}`}
+        className={`flex border-l-[3px] px-2 ${
+          isFocused ? "border-transparent" : ""
+        }`}
       >
-        <div className="flex items-center gap-5">
-          {/* Project Option */}
-          <div className="flex items-center space-x-2">
-            <Input
-              type="radio"
-              id="option-one"
-              name="selection"
-              value="Project"
-              className="form-radio text-blue-600 focus:ring-blue-500"
-            />
-            <Label htmlFor="option-one" className="text-gray-700 font-medium">
-              Project
-            </Label>
-          </div>
-
-          {/* Charity Option */}
-          <div className="flex items-center space-x-2">
-            <Input
-              type="radio"
-              id="option-two"
-              name="selection"
-              value="Charity"
-              className="form-radio text-blue-600 focus:ring-blue-500"
-            />
-            <Label htmlFor="option-two" className="text-gray-700 font-medium">
-              Charity
-            </Label>
-          </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="Project" id="option-one" />
+          <Label htmlFor="option-one">Project </Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="Charity" id="option-two" />
+          <Label htmlFor="option-two">Charity </Label>
         </div>
       </RadioGroup>
     </div>
