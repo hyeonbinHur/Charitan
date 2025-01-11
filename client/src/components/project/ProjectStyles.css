@@ -37,7 +37,8 @@
   .project-date {
     font-size: 0.9rem;
     text-align: center;
-    color: #555;
+    color: #f1f1f1; /* Light gray color for contrast */
+    font-weight: bold; /* Make the text bold */
   }
   
   .project-list {
