@@ -22,7 +22,7 @@ const UserDropDown = ({ user }) => {
           <DropdownMenuSeparator />
           {user.user_type === "Charity" && (
             <DropdownMenuItem>
-              <Link to={`/charity/${user.charity_id}`}>Charity Page</Link>
+              <Link to={`/charity-p/${user.charity_id}`}>Charity Page</Link>
             </DropdownMenuItem>
           )}
           {user.user_type === "Donor" && (

@@ -22,6 +22,9 @@ const CharityPage = () => {
       </div>
       <SearchBar />
       <CharityList />
+      <div>
+        <p></p>
+      </div>
     </main>
   );
 };

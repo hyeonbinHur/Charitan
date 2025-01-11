@@ -27,7 +27,6 @@ import {
 } from "../store/filterSlice";
 import "./ProjectPage.css";
 
-
 const ProjectPage = () => {
   const [searchParams] = useSearchParams();
   const filterState = useSelector((state) => state.filterStore);
@@ -36,17 +35,13 @@ const ProjectPage = () => {
   const [selectedStatus, setSelectedStatus] = useState(
     filterState.status || "Active"
   );
-
   const [selectedCountry, setSelectedCountry] = useState(
     filterState.country || "Vietnam"
   );
-
   const [selectedCategory, setSelectedCategory] = useState(
     filterState.category || "All Categories"
   );
-
   const dispatch = useDispatch();
-
   const { data: lan } = useQuery({
     queryKey: [`language`],
     queryFn: () => readAcceptLanguageHeader(),
@@ -122,7 +117,6 @@ const ProjectPage = () => {
   };
 
   return (
-
     <main>
       <div className="hero-section">
         <img
@@ -134,13 +128,12 @@ const ProjectPage = () => {
           <h1>Explore Our Projects</h1>
           <p>
             Our projects aim to make a positive impact on communities worldwide.
-            Browse through a variety of initiatives focused on education, health,
-            environment, and more. Your support can bring change and hope to those in
-            need.
+            Browse through a variety of initiatives focused on education,
+            health, environment, and more. Your support can bring change and
+            hope to those in need.
           </p>
         </div>
       </div>
-
 
       <SearchBar />
       {/* project status selector */}

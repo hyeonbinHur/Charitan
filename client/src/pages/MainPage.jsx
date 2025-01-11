@@ -4,7 +4,11 @@ import { getProjects } from "../utils/api/project";
 import { readAcceptLanguageHeader } from "../utils/api/languageUtils";
 import ProjectItemSkeleton from "../components/project/skeletons/ProjectItemSkeleton";
 import ProjectItem from "../components/project/ProjectItem";
+
 import "../components/project/ProjectStyles.css"; 
+
+import Hero from "../components/hero/Hero";
+
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -17,6 +21,7 @@ const MainPage = () => {
 
   // Fetch featured projects
   const { data: projects, isLoading, isError } = useQuery({
+
     queryKey: ["featured-projects"],
     queryFn: () => getProjects("Active", "All Categories"),
   });
@@ -46,11 +51,13 @@ const MainPage = () => {
       <section className="featured-section">
         <div className="section-header flex justify-between items-center mb-4">
           <h2 className="text-3xl font-bold">Featured Projects</h2>
+
           <button
             className="view-all-btn"
             onClick={() => navigate("/projects")}
           >
-            View All
+
+            VIEW ALL
           </button>
         </div>
         <div className="featured-projects">

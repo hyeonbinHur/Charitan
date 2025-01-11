@@ -26,7 +26,6 @@ const nodeMailSender = async (receiverEmail, subject, message) => {
 // 여기서 socket io && email rest api 받아야함
 const sendEmail = async (email) => {
   try {
-    console.log(email);
     await nodeMailSender(email.receiver_email, email.title, email.content);
     const user = await emailRepository.createOne(email);
     // await setUser(user[0].user_id, user[0].user_name);
@@ -36,4 +35,23 @@ const sendEmail = async (email) => {
     throw new Error("Failed to read data", err.message);
   }
 };
-export default { sendEmail };
+const readEmail = async (receiver_type, receiver_id) => {
+  try {
+    const result = await emailRepository.findMany(receiver_type, receiver_id);
+    return result;
+  } catch (err) {
+    throw new Error("Failed to read emails", err.message);
+  }
+};
+const deleteEmail = async (email_id) => {
+  try {
+    console.log(email_id);
+    const result = await emailRepository.deleteOne(email_id);
+    return result;
+  } catch (err) {
+    console.error(err);
+    throw new Error("Failed to delete email", err.message);
+  }
+};
+
+export default { sendEmail, readEmail, deleteEmail };

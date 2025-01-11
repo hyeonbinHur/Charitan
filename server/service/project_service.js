@@ -73,7 +73,6 @@ const readProjectByCharityName = async (
     throw new Error("Failed to read data");
   }
 };
-
 const readProjectByProjectName = async (
   projectName,
   status,
@@ -126,7 +125,6 @@ const readProjectByCharity = async (id) => {
     throw new Error("Failed to read data");
   }
 };
-
 const createProject = async (newProject) => {
   try {
     console.log(newProject);
@@ -136,7 +134,6 @@ const createProject = async (newProject) => {
     throw new Error("Failed to read data");
   }
 };
-
 const updateProject = async (id, updatedProject) => {
   try {
     const tests = await projectRepository.updateOne(id, updatedProject);
@@ -146,7 +143,6 @@ const updateProject = async (id, updatedProject) => {
     throw new Error("Failed to read data");
   }
 };
-
 const deleteProject = async (id) => {
   try {
     const tests = await projectRepository.deleteOne(id);
@@ -170,9 +166,13 @@ const updateProjectDonation = async (id, funding, is_completed) => {
       funding,
       is_completed
     );
+
+    const cache = await projectRepository.findOne(id);
+    await setProjectFromCache(cache[0].project_id, cache[0]);
+
     return test;
   } catch (err) {
-    throw new Error("Failed while update project to completed");
+    throw new Error("Failed while update project to complete2d");
   }
 };
 
