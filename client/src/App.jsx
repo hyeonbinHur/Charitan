@@ -52,7 +52,7 @@ const App = () => (
         <Route path="/donation/:project_id" element={<DonationPage />} />
         <Route path="/inbox" element={<Inbox />} />
         <Route path="/admin" element={<AdminDetailPage />} />
-        
+
 
       </Routes>
       <Footer />
