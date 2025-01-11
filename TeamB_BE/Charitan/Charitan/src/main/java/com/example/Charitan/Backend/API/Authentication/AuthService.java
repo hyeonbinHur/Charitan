@@ -21,20 +21,18 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
 
     // Function to check for username and password
-    public boolean authenticate(String email, String password){
+    public boolean authenticate(String email, String password, String userType){
 
         // Check if user is Donor
-        Donor donor = donorRepository.findByEmail(email).orElse(null);
-        if(donor != null && passwordEncoder.matches(password, donor.getPassword())){
-            return true;
+        if (userType.equalsIgnoreCase("Donor")) {
+            // Authenticate Donor
+            Donor donor = donorRepository.findByEmail(email).orElse(null);
+            return donor != null && passwordEncoder.matches(password, donor.getPassword());
+        } else if (userType.equalsIgnoreCase("Charity")) {
+            // Authenticate Charity
+            Charity charity = charityRepository.findByEmail(email).orElse(null);
+            return charity != null && passwordEncoder.matches(password, charity.getPassword());
         }
-
-        // Check if user is Charity
-        Charity charity = charityRepository.findByEmail(email).orElse(null);
-        if(charity != null && passwordEncoder.matches(password, charity.getPassword())){
-            return true;
-        }
-
         return false;
     }
 }

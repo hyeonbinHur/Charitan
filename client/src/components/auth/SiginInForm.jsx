@@ -16,11 +16,14 @@ const SignInForm = ({ close, toggleForm }) => {
   const onSubmitSignin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const isSignin = await signIn(userEmail, userType);
+
+    const isSignin = await signIn(userEmail,password, userType);
+    setIsLoading(false)
     if (isSignin) {
       close();
-    }
-    setIsLoading(true);
+    } else 
+    {alert("Invalid login credentials. Please try again.");}
+    
   };
 
   return (
@@ -41,7 +44,7 @@ const SignInForm = ({ close, toggleForm }) => {
               value={userEmail}
               onChange={(e) => setUserEmail(e.target.value)}
             />
-            <Label>Username must be longer than 5 letters</Label>
+            <Label>Enter your username </Label>
             <Input
               type="password"
               name="password"
@@ -49,12 +52,13 @@ const SignInForm = ({ close, toggleForm }) => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
-            <Label>Password must be longer than 7 letters</Label>
+            <Label>Enter your password</Label>
             <RadioGroup
               defaultValue="Donor"
               className="flex justify-around my-4"
-              onValueChange={(e) => setUserType(e)}
+              onValueChange={(value) => setUserType(value)}
             >
               <div>
                 <RadioGroupItem value="Donor" id="Donor" />

@@ -21,7 +21,7 @@ public class AuthController {
     // Login endpoint
     @PostMapping("/login")
     public ResponseEntity<String> login (@RequestBody LoginRequest loginRequest){
-        boolean isAuthenticated = authService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+        boolean isAuthenticated = authService.authenticate(loginRequest.getEmail(), loginRequest.getPassword(), loginRequest.getUserType());
 
         if(isAuthenticated){
 
