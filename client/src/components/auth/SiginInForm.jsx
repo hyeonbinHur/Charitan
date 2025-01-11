@@ -5,7 +5,6 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useAuth } from "../../hooks/useAuth";
 import LoadingSpinner from "../../../public/LoadingSpinner.svg";
-import { Circle } from "lucide-react";
 
 const SignInForm = ({ close, toggleForm }) => {
   const [userEmail, setUserEmail] = useState("");
