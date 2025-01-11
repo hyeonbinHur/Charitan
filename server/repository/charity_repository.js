@@ -20,10 +20,8 @@ const findManyByCountry = (country) => {
     // @ts-ignore
     connection.query(query, values, (err, results) => {
       if (err) {
-        console.error(err);
         reject(err);
       } else {
-        console.error(results);
         resolve(results);
       }
     });

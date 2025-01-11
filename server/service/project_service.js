@@ -82,7 +82,6 @@ const readProjectByProjectName = async (
 ) => {
   try {
     const charities = await charityRepository.findManyByCountry(country);
-    console.log(charities);
     if (charities.length > 0) {
       const charitiesId = charities.map((item) => item.charity_id);
       const tests = await projectRepository.findOneByProjectName(
@@ -93,11 +92,9 @@ const readProjectByProjectName = async (
       );
       return tests;
     } else {
-      console.log("show nothing");
       return [];
     }
   } catch (err) {
-    console.error(err);
     throw new Error("Failed to read data");
   }
 };
@@ -128,7 +125,6 @@ const readProjectByCharity = async (id) => {
 };
 const createProject = async (newProject) => {
   try {
-    console.log(newProject);
     const tests = await projectRepository.createOne(newProject);
     return tests;
   } catch (err) {

@@ -45,7 +45,6 @@ const readEmail = async (receiver_type, receiver_id) => {
 };
 const deleteEmail = async (email_id) => {
   try {
-    console.log(email_id);
     const result = await emailRepository.deleteOne(email_id);
     return result;
   } catch (err) {

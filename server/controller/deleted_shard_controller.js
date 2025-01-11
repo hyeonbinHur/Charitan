@@ -38,7 +38,6 @@ const create_deleted_project = async (req, res) => {
 };
 const read_deleted_projects = async (req, res) => {
   try {
-    console.log("here de");
     const user = await shardService.readDeletedProjects();
     res.json(user);
   } catch (err) {

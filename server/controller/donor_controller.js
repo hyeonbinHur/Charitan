@@ -3,8 +3,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const signin_donor = async (req, res) => {
-  // set cache
-  console.log(process.env.DB_HOST);
   try {
     const { email } = req.body;
     const user = await donorService.signInUser(email);
@@ -81,16 +79,21 @@ const getDonorSubscriptions = async (req, res) => {
 
   try {
     // Call the service to fetch subscriptions from the database
-    const subscriptions = await donorService.getSubscriptionsByDonor(subscription_id);
+    const subscriptions = await donorService.getSubscriptionsByDonor(
+      subscription_id
+    );
 
     if (!subscriptions || subscriptions.length === 0) {
-      return res.status(404).json({ message: "No subscriptions found for this donor." });
+      return res
+        .status(404)
+        .json({ message: "No subscriptions found for this donor." });
     }
 
-    res.status(200).json(subscriptions);  // Send the subscriptions data in response
+    res.status(200).json(subscriptions); // Send the subscriptions data in response
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to fetch subscriptions", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Failed to fetch subscriptions", error: err.message });
   }
 };
 

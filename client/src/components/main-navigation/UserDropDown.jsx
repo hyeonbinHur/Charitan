@@ -8,7 +8,6 @@ import {
 } from "../ui/dropdown-menu";
 import { useAuth } from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
-
 const UserDropDown = ({ user }) => {
   const { signOut } = useAuth();
   return (
