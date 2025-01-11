@@ -74,7 +74,6 @@ const findOneByCharityName = (charityName, status, category, charities) => {
   return new Promise((resolve, reject) => {
     const query =
       "SELECT * FROM Charity_Project WHERE charity_name LIKE ? AND status = ? AND category = ? AND charity_id IN (?)";
-    console.log(category);
     const values = [`%${charityName}%`, status, category, charities];
     connection.query(query, values, (err, results) => {
       if (err) {
@@ -88,10 +87,8 @@ const findOneByCharityName = (charityName, status, category, charities) => {
 
 const findOneByProjectName = (projectName, status, category, charities) => {
   return new Promise((resolve, reject) => {
-    console.log(projectName, status, category, charities.join(","));
     const query =
       "SELECT * FROM Charity_Project WHERE title LIKE ? AND status = ? AND category = ? AND charity_id IN (?)";
-    console.log(category);
 
     const values = [`%${projectName}%`, status, category, charities.join(",")];
     connection.query(query, values, (err, results) => {

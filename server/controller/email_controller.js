@@ -2,7 +2,6 @@ import emailService from "../service/email_service.js";
 
 const send_email = async (req, res) => {
   // set cache
-  console.log("receive");
   try {
     const {
       title,
@@ -34,7 +33,6 @@ const get_email = async (req, res) => {
   try {
     const { receiver_type } = req.query;
     const { receiver_id } = req.query;
-    console.log(receiver_id, receiver_type);
     const emails = await emailService.readEmail(receiver_type, receiver_id);
     res.json(emails);
   } catch (err) {

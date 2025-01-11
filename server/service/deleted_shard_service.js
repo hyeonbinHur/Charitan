@@ -5,12 +5,10 @@ import shardRepository from "../repository/deleted_shard_repository.js";
  */
 const createDeletedProject = async (newProject) => {
   try {
-    console.log(newProject);
     const user = await shardRepository.createOne(newProject);
     // await setUser(user[0].user_id, user[0].user_name);
     return user;
   } catch (err) {
-    console.error(err);
     throw new Error("Failed to read data");
   }
 };

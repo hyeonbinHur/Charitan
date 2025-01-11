@@ -154,7 +154,6 @@ const update_project_donation = async (req, res) => {
     const id = req.params.id;
     const { donation_amount } = req.body;
     const { is_completed } = req.body;
-    console.log(donation_amount, is_completed);
     const test = await projectService.updateProjectDonation(
       id,
       donation_amount,
@@ -162,7 +161,6 @@ const update_project_donation = async (req, res) => {
     );
     res.json(test);
   } catch (err) {
-    console.error(err);
     res.status(500).send(err.message);
   }
 };

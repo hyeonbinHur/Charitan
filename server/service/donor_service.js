@@ -26,7 +26,6 @@
         };
 
         await transporter.sendMail(mailOptions);
-        console.log("Email sent successfully!");
       } catch (err) {
         console.error("Failed to send email:", err);
       }
@@ -37,7 +36,6 @@
      */
     const signInUser = async (email) => {
       try {
-        console.log("here");
         const user = await donorRepository.findOneByEmail(email);
         // await setUser(user[0].user_id, user[0].user_name);
         return user;
@@ -48,10 +46,17 @@
     };
 
     // Subscribe a donor to a new project
-    const subscribeToNewProjects = async (donor_id, category, region, donation_id) => {
+    const subscribeToNewProjects = async (
+      donor_id,
+      category,
+      region,
+      donation_id
+    ) => {
       try {
         // Ensure the donation exists for the donor
-        const [donations] = await donationRepository.getDonationsByDonor(donor_id);
+        const [donations] = await donationRepository.getDonationsByDonor(
+          donor_id
+        );
 
         if (!donations || donations.length === 0) {
           throw new Error("No donation found for this donor.");
@@ -63,15 +68,17 @@
           category,
           region,
           created_at: new Date(),
-          donation_id,  // Use the donation_id from the Donation table
+          donation_id, // Use the donation_id from the Donation table
         };
 
         // Save subscription
-        const result = await subscriptionRepository.createSubscription(subscription);
+        const result = await subscriptionRepository.createSubscription(
+          subscription
+        );
 
         // Send email notification to donor
         const donor = await donorRepository.findDonorById(donor_id);
-        const subject = 'New Project Subscription Notification';
+        const subject = "New Project Subscription Notification";
         const message = `Hello ${donor.name},\n\nYou have successfully subscribed to receive notifications for new projects in the ${region} region and ${category} category. You will be notified when a new project matching your preferences is published.\n\nThank you for your support!`;
 
         // Call send_email function
@@ -87,26 +94,23 @@
     // Process monthly donations for all donors who have opted in
     const processMonthlyDonations = async () => {
       try {
-        console.log("Starting monthly donation processing...");
-
         // Calculate the time remaining until the next 15th of the month
         const timeUntilNext15th = getTimeToNext15th();
-        console.log(`Time until next 15th: ${timeUntilNext15th} milliseconds`);
-
 
         // Use setTimeout to execute the donation processing function on the 15th
         setTimeout(async () => {
           try {
-            console.log("Processing monthly donations...");
-
             // Fetch all donors who have made donations in the current month
-            const [monthlyDonors] = await donationRepository.getTopDonorsByMonth();
+            const [monthlyDonors] =
+              await donationRepository.getTopDonorsByMonth();
             console.log("Donors to process:", monthlyDonors);
 
             // Process donations for each donor
             for (const donor of monthlyDonors) {
               const donationAmount = donor.total_amount;
-              console.log(`Processing donation for donor ${donor.donor_id} - Amount: ${donationAmount}`);
+              console.log(
+                `Processing donation for donor ${donor.donor_id} - Amount: ${donationAmount}`
+              );
               await donationRepository.createDonation({
                 donor_id: donor.donor_id,
                 amount: donationAmount,
@@ -118,13 +122,11 @@
             console.log("Monthly donations processed successfully.");
 
             // Re-run the function for the next month
-            processMonthlyDonations();  // Schedule next month's donation processing
-
+            processMonthlyDonations(); // Schedule next month's donation processing
           } catch (err) {
             console.error("Error processing monthly donations:", err.message);
           }
-        }, timeUntilNext15th);  // Set timeout to run at the calculated time
-
+        }, timeUntilNext15th); // Set timeout to run at the calculated time
       } catch (err) {
         throw new Error("Failed to process monthly donations: " + err.message);
       }
