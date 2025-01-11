@@ -71,7 +71,6 @@ const DonationPage = () => {
   });
   const handleCreate = async () => {
     try {
-      console.log("create start");
       const fundingAmount = newDonation.amount;
       const response = await axiosInstance.post(
         `donations/project/${project_id}`,
@@ -89,21 +88,19 @@ const DonationPage = () => {
         sender: "Admin",
         created_at: new Date(),
       };
-
-      const isCompletedAfterDonation = project.current_funding + fundingAmount;
+      const isCompletedAfterDonation =
+        +project.current_funding + +fundingAmount;
       let newDonationStatus = {
-        donation_amount: fundingAmount,
+        donation_amount: +fundingAmount + +project.current_funding,
         is_completed: false,
       };
-      if (isCompletedAfterDonation) {
+      if (isCompletedAfterDonation > +project.target_amount) {
         newDonationStatus.is_completed = true;
       }
-
       mutateUpdateProjectDonation({
         project_id: project.project_id,
         donationStatus: newDonationStatus,
       });
-
       setNewDonation({
         donor_id: null,
         amount: 0,
@@ -112,7 +109,6 @@ const DonationPage = () => {
         action: "Donate",
         project_id: project_id,
       });
-
       mutateSendEmail({ newEmail: newEmail });
     } catch (error) {
       console.error("Error creating donation:", error);
