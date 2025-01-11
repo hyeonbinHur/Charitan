@@ -3,7 +3,6 @@ import Cookies from "js-cookie";
 import { UserContext } from "../context/AuthContext"; // UserContext를 임포트
 import { signinCharity, signinDonor, signinAdmin } from "../utils/api/auth";
 
-
 // 커스텀 훅: useAuth
 export const useAuth = () => {
   const { dispatch } = useContext(UserContext); // UserContext에서 dispatch 가져오기
