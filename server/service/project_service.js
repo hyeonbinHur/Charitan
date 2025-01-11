@@ -62,14 +62,20 @@ const readProjectByCharityName = async (
 ) => {
   try {
     const charities = await charityRepository.findManyByCountry(country);
-    const tests = await projectRepository.findOneByCharityName(
-      charityName,
-      status,
-      category,
-      charities
-    );
 
-    return tests;
+    if (charities.length > 0) {
+      const charitiesId = charities.map((item) => item.charity_id);
+      const tests = await projectRepository.findOneByCharityName(
+        charityName,
+        status,
+        category,
+        charitiesId
+      );
+
+      return tests;
+    } else {
+      return [];
+    }
   } catch (err) {
     throw new Error("Failed to read data");
   }

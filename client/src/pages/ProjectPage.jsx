@@ -8,7 +8,9 @@ import {
   getProjectsByCharityName,
   getProjectsByProjectTitle,
 } from "../utils/api/project";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../context/AuthContext";
+
 import {
   Select,
   SelectContent,
@@ -26,10 +28,17 @@ import {
   updateCountry,
   updateStatus,
 } from "../store/filterSlice";
-import { subscribeToNewProjects, getSubscribedProjects, getDonorSubscriptions } from "../utils/api/project"; // Import subscription API function
+
+import {
+  subscribeToNewProjects,
+  getSubscribedProjects,
+  getDonorSubscriptions,
+} from "../utils/api/project"; // Import subscription API function
+
 import "./ProjectPage.css";
 
 const ProjectPage = () => {
+  const { user } = useContext(UserContext);
   const [searchParams] = useSearchParams();
   const filterState = useSelector((state) => state.filterStore);
   const searchQuery = searchParams.get("searchQuery");
@@ -38,17 +47,20 @@ const ProjectPage = () => {
   const [selectedStatus, setSelectedStatus] = useState(
     filterState.status || "Active"
   );
+
   const [selectedCountry, setSelectedCountry] = useState(
     filterState.country || "Vietnam"
   );
+
   const [selectedCategory, setSelectedCategory] = useState(
     filterState.category || "All Categories"
   );
+
+  // eslint-disable-next-line no-unused-vars
   const [selectedRegion, setSelectedRegion] = useState(""); // State for region selection
   const [isSubscribed, setIsSubscribed] = useState(false); // Track subscription status
   const [loading, setLoading] = useState(false); // Track loading state
   const [subscribedProjects, setSubscribedProjects] = useState([]); // State to store subscribed projects
-
 
   const dispatch = useDispatch();
   const { data: lan } = useQuery({
@@ -74,7 +86,7 @@ const ProjectPage = () => {
   // Fetch subscribed projects for the donor when the component loads
   useEffect(() => {
     const fetchSubscribedProjects = async () => {
-      const donor_id = "1";  // Replace with actual donor ID from context/session
+      const donor_id = "1"; // Replace with actual donor ID from context/session
       try {
         const fetchedSubscribedProjects = await getDonorSubscriptions(donor_id);
         console.log("Fetched Subscribed Projects:", fetchedSubscribedProjects);
@@ -116,37 +128,29 @@ const ProjectPage = () => {
       }
     },
   });
-
   if (isLoading) {
     console.log("loading");
   }
-
   const onChangeCategory = (value) => {
     setSelectedCategory(value);
     setIsSubscribed(false); // Reset subscription when category changes
   };
-
   const onChangeCountry = (value) => {
     setSelectedCountry(value);
     setIsSubscribed(false); // Reset subscription when country changes
   };
-
   const onChangeStatus = (value) => {
     dispatch(updateStatus({ status: value }));
     setSelectedStatus(value);
     setIsSubscribed(false); // Reset subscription when status changes
   };
-
-
   const handleSubscription = async () => {
     if (!selectedCategory || (!selectedRegion && !selectedCountry)) {
       alert("Please select both category and region/country.");
       return;
     }
-
-    const donor_id = "1";  // Replace with actual donor ID from context/session
-    const donation_id = 3;  // Example donation ID, replace with actual value
-
+    const donor_id = "1"; // Replace with actual donor ID from context/session
+    const donation_id = 3; // Example donation ID, replace with actual value
     try {
       setLoading(true); // Show loading state
       // Make the subscription API call with selected data
@@ -158,12 +162,9 @@ const ProjectPage = () => {
       });
       setIsSubscribed(true); // Set to true when successfully subscribed
       alert("You have successfully subscribed!");
-
       // Fetch and set the list of subscribed projects
       const fetchedSubscribedProjects = await getSubscribedProjects(donor_id);
-      console.log("Fetched Subscribed Projects:", fetchedSubscribedProjects);
       setSubscribedProjects(fetchedSubscribedProjects);
-
     } catch (error) {
       console.error("Subscription failed", error);
       alert("Failed to subscribe, please try again.");
@@ -171,8 +172,6 @@ const ProjectPage = () => {
       setLoading(false); // Hide loading state
     }
   };
-
-
   return (
     <main>
       {/* Hero Section */}
@@ -199,23 +198,24 @@ const ProjectPage = () => {
       <div className="mb-8">
         <SearchBar />
       </div>
-
       {/* Project Status Selector */}
       <div className="flex flex-wrap gap-4 mb-8">
         {/* Status Selector */}
-        <Select value={selectedStatus} onValueChange={onChangeStatus}>
-          <SelectTrigger className="w-[200px] px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-500">
-            <SelectValue placeholder="Project Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Active">Active</SelectItem>
-            <SelectItem value="Halted">Halted</SelectItem>
-          </SelectContent>
-        </Select>
+        {user && user.user_type === "Admin" && (
+          <Select value={selectedStatus} onValueChange={onChangeStatus}>
+            <SelectTrigger className="w-[200px] px-4 py-2 border text-gray-300 border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-500">
+              <SelectValue placeholder="Project Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Active">Active</SelectItem>
+              <SelectItem value="Halted">Halted</SelectItem>
+            </SelectContent>
+          </Select>
+        )}
 
         {/* Country Selector */}
         <Select value={selectedCountry} onValueChange={onChangeCountry}>
-          <SelectTrigger className="w-[200px] px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-500">
+          <SelectTrigger className="w-[200px] px-4 py-2 border text-gray-300 border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-500">
             <SelectValue placeholder="Project Country" />
           </SelectTrigger>
           <SelectContent>
@@ -226,10 +226,9 @@ const ProjectPage = () => {
             ))}
           </SelectContent>
         </Select>
-
         {/* Category Selector */}
         <Select value={selectedCategory} onValueChange={onChangeCategory}>
-          <SelectTrigger className="w-[200px] px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-500">
+          <SelectTrigger className="w-[200px] px-4 py-2 border text-gray-300 border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-500">
             <SelectValue placeholder="Select Category" />
           </SelectTrigger>
           <SelectContent>
