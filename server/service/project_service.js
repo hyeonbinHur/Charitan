@@ -30,6 +30,14 @@ const readProject = async (id) => {
     throw new Error("Failed to read data");
   }
 };
+const readProjectByCharityId = async (id) => {
+  try {
+    const tests = await projectRepository.findAllByCharity(id);
+    return tests;
+  } catch (err) {
+    throw new Error("Failed to read data");
+  }
+};
 const readHaltedProject = async () => {
   try {
     const tests = await projectRepository.findHaltedAll();
@@ -194,4 +202,5 @@ export default {
   updateProjectComplete,
   readProjectByOnlyStatus,
   updateProjectDonation,
+  readProjectByCharityId,
 };

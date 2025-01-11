@@ -90,7 +90,7 @@ const MainPage = () => {
       {/* Featured Projects Section */}
       <section className="featured-section py-12">
         <div className="section-header flex justify-between items-center mb-8 px-6">
-          <h2 className="text-3xl font-semibold text-gray-800">
+          <h2 className="text-3xl font-semibold text-gray-200">
             Recent Projects
           </h2>
           <button

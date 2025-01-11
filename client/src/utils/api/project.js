@@ -217,11 +217,20 @@ const updateProjectToComplete = async (id) => {
 
 const updateProjectDonation = async (id, donationStatus) => {
   try {
-    console.log("why not");
     const response = await axiosInstance.patch(
       `project/donate/donor/${id}`,
       donationStatus
     );
+    return response.data;
+  } catch (err) {
+    console.log("Error while update project status to halt", err);
+    throw err;
+  }
+};
+
+const getProjectsByCharity = async (charity_id) => {
+  try {
+    const response = await axiosInstance.get(`project/charity/${charity_id}`);
     return response.data;
   } catch (err) {
     console.log("Error while update project status to halt", err);
@@ -247,4 +256,5 @@ export {
   updateProjectToComplete,
   getProjectsByStatus,
   updateProjectDonation,
+  getProjectsByCharity,
 };

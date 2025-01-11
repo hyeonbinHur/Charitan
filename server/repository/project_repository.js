@@ -11,6 +11,18 @@ const findAll = () => {
     });
   });
 };
+const findAllByCharity = (id) => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM Charity_Project WHERE charity_id = ?";
+    connection.query(query, [id], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
 const findHaltedAll = () => {
   return new Promise((resolve, reject) => {
     const query = "SELECT * FROM Charity_Project WHERE status = ?";
@@ -254,4 +266,5 @@ export default {
   updateCompleteOne,
   findMayByStatus,
   updateOneDonation,
+  findAllByCharity,
 };

@@ -4,6 +4,7 @@ import api from "../controller/project_controller.js";
 const router = express.Router();
 router.get("/project", api.get_projects); //read all posts with titles
 router.get("/project/:id", api.get_project); // read a specific post
+router.get("/project/charity/:id", api.get_project_by_charity_id);
 router.get("/project/admin/halted", api.get_halted_project);
 router.get("/project/only/status", api.get_projects_by_only_status);
 

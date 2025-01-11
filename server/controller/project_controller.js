@@ -17,6 +17,15 @@ const get_project = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+const get_project_by_charity_id = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const tests = await projectService.readProjectByCharityId(id);
+    res.json(tests);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
 const get_halted_project = async (req, res) => {
   try {
     const tests = await projectService.readHaltedProject();
@@ -217,4 +226,5 @@ export default {
   update_project_complete,
   get_projects_by_only_status,
   update_project_donation,
+  get_project_by_charity_id,
 };
