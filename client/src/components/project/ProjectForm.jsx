@@ -30,10 +30,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProject, updateProject } from "../../utils/api/project";
 import { uploadFileToS3 } from "../../lib/s3Option";
 import { sendEmail } from "../../utils/api/email";
-import { UserContext } from "../../context/AuthContext";
 import { useError } from "../../context/ErrorContext";
 import { useParams } from "react-router-dom";
 import ProjectVideoForm from "./ProjectVideoForm";
+import { UserContext } from "../../context/AuthContext";
 
 const ProjectForm = ({ project = {} }) => {
   /**
@@ -49,8 +49,9 @@ const ProjectForm = ({ project = {} }) => {
   const [thumbnatilImg, setThumbnailImg] = useState(null);
   const editorRef = useRef(null);
   const queryClient = useQueryClient();
-  const { user } = useContext(UserContext);
   const { setError } = useError();
+
+  const { user } = useContext(UserContext);
 
   const {
     register,

@@ -1,53 +1,77 @@
-    import { axiosInstance } from "./axiosUtils";
+import { axiosInstance } from "./axiosUtils";
+const getProjects = async (status, category) => {
+  try {
+    const response = await axiosInstance.get(
+      `project/search/status?status=${status}&category=${category}`
+    );
+    return response.data;
+  } catch (err) {
+    console.log("Error fetching projects:", err);
+    throw err;
+  }
+};
 
-    const getProjects = async (status, category) => {
-      try {
-        const response = await axiosInstance.get(
-          `project/search/status?status=${status}&category=${category}`
-        );
-        return response.data;
-      } catch (err) {
-        console.log("Error fetching projects:", err);
-        throw err;
-      }
-    };
-    const getProject = async (id) => {
-      try {
-        const response = await axiosInstance.get(`project/${id}`);
-        return response.data[0];
-      } catch (err) {
-        console.log("Error get one project", err);
-        throw err;
-      }
-    };
-    const createProject = async (newProject) => {
-      try {
-        const response = await axiosInstance.post("project", newProject);
-        return response.data;
-      } catch (err) {
-        console.log("error while creating new project", err);
-        throw err;
-      }
-    };
-    const updateProject = async (newPost, id) => {
-      try {
-        const response = await axiosInstance.put(`project/${id}`, newPost);
-        console.log(response.data);
-        return response.data;
-      } catch (err) {
-        console.log("error while updating project", err);
-        throw err;
-      }
-    };
-    const deleteProject = async (id) => {
-      try {
-        const response = await axiosInstance.delete(`project/${id}`);
-        return response.data;
-      } catch (err) {
-        console.log("error while deleting project", err);
-        throw err;
-      }
-    };
+const getProjectsByStatus = async (status) => {
+  try {
+    const response = await axiosInstance.get(
+      `project/only/status?status=${status}`
+    );
+    return response.data;
+  } catch (err) {
+    console.error("Error while read projects by status ", err);
+    throw err;
+  }
+};
+
+const getProject = async (id) => {
+  try {
+    const response = await axiosInstance.get(`project/${id}`);
+    return response.data[0];
+  } catch (err) {
+    console.log("Error get one project", err);
+    throw err;
+  }
+};
+
+const getHaltedProject = async () => {
+  try {
+    console.log("here");
+    const response = await axiosInstance.get(`project/admin/halted`);
+    return response.data;
+  } catch (err) {
+    console.log("Error get one project", err);
+    throw err;
+  }
+};
+const createProject = async (newProject) => {
+  try {
+    const response = await axiosInstance.post("project", newProject);
+    return response.data;
+  } catch (err) {
+    console.log("error while creating new project", err);
+    throw err;
+  }
+};
+const updateProject = async (newPost, id) => {
+  try {
+    const response = await axiosInstance.put(`project/${id}`, newPost);
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    console.log("error while updating project", err);
+    throw err;
+  }
+};
+
+const deleteProject = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`project/${id}`);
+    return response.data;
+  } catch (err) {
+    console.log("error while deleting project", err);
+    throw err;
+  }
+};
 
     const getProjectsByCharityName = async (
       charityName,
@@ -94,7 +118,6 @@
         throw err;
       }
     };
-
     // Function to subscribe to a project
     const subscribeToNewProjects = async ({ donor_id, category, region, donation_id }) => {
       try {
@@ -165,6 +188,32 @@
       }
     };
 
+    const updateProjectToComplete = async (id) => {
+      try {
+        const response = await axiosInstance.patch(
+          `project/status/completed/${id}`
+        );
+        return response.data;
+      } catch (err) {
+        console.log("Error while update project status to halt");
+        throw err;
+      }
+    };
+
+    const updateProjectDonation = async (id, donationStatus) => {
+      try {
+        console.log("why not");
+        const response = await axiosInstance.patch(
+          `project/donate/donor/${id}`,
+          donationStatus
+        );
+        return response.data;
+      } catch (err) {
+        console.log("Error while update project status to halt", err);
+        throw err;
+      }
+    };
+
     export {
       getProjects,
       getProject,
@@ -180,4 +229,8 @@
       getTopDonors,
       cancelMonthlyDonation,
       getSubscribedProjects,
+      updateProjectToComplete,
+      getProjectsByStatus,
+      updateProjectDonation,
     };
+

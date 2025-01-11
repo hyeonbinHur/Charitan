@@ -23,6 +23,36 @@ const createOne = (newEmail) => {
   });
 };
 
+const findMany = (receiver_type, receiver_id) => {
+  return new Promise((resolve, reject) => {
+    const query =
+      "SELECT * FROM Email WHERE receiver_type = ? AND receiver_id = ?";
+    const values = [receiver_type, receiver_id];
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
+const deleteOne = (email_id) => {
+  return new Promise((resolve, reject) => {
+    const query = "DELETE FROM Email WHERE message_id = ?";
+    const values = [email_id];
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
+
 export default {
   createOne,
+  findMany,
+  deleteOne,
 };

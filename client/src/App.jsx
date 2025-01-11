@@ -16,12 +16,15 @@ import "./App.css";
 import Inbox from "./components/message/Inbox";
 
 
-const queryClient = new QueryClient();
+import AdminDetailPage from "./pages/AdminDetailPage";
+// import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
+// import { AppSidebar } from "./components/app-sidebar";
+import CharityEmailInbox from "./pages/CharityEmailInbox";
 
+const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
-      {/* Main navigation for routed views */}
       <MainNav />
       <Routes>
         <Route path="/" element={<MainPage />} />
@@ -31,18 +34,29 @@ const App = () => (
           path="/charity/project/:charity_id"
           element={<CharityProjectsPage />}
         />
-        <Route path="/charity-p" element={<CharityPersonalPage />} />
+        <Route
+          path="/charity-p/:charity_id"
+          element={<CharityPersonalPage />}
+        />
         <Route path="/projects" element={<ProjectPage />} />
         <Route path="/project/:project_id" element={<ProjectDetailPage />} />
         <Route
           path="/create-project/:charity_id"
           element={<CreateProjectPage />}
         />
+        <Route
+          path="/charity/inbox/:charity_id"
+          element={<CharityEmailInbox />}
+        />
         <Route path="/doner-p" element={<DonerPersonalPage />} />
         <Route path="/donation/:project_id" element={<DonationPage />} />
         <Route path="/inbox" element={<Inbox />} />
 
 
+
+
+
+        <Route path="/admin" element={<AdminDetailPage />} />
 
       </Routes>
       <Footer />

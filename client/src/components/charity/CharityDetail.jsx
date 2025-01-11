@@ -1,21 +1,23 @@
+import "./CharityDetail.css";
+
 const CharityDetail = ({ charity }) => {
   return (
-    <div>
-      <p> {charity.category} using bread crumb</p>
-      <div className="border w-[45rem] h-[20rem] rounded-lg bg-stone-500">
-        Avatar
+    <div className="charity-detail-container">
+      <p className="breadcrumb">{charity.category} using bread crumb</p>
+      <div className="avatar-container">Avatar</div>
+      <h1 className="charity-name">{charity.organization_name}</h1>
+      <div className="charity-meta">
+        <span>ID: {charity.charity_id}</span>
+        <span>Created: {new Date(charity.createdAt).toLocaleDateString()}</span>
+        <span>Updated: {new Date(charity.updatedAt).toLocaleDateString()}</span>
       </div>
-      <div> {charity.organization_name}</div>
-      <div>
-        {charity.charity_id}, {charity.createdAt}, {charity.updatedAt}
-      </div>
-      <div>
+      <div className="charity-description">
         <p>{charity.description}</p>
       </div>
-      <div>
-        <p>{charity.email}</p>
+      <div className="charity-contact">
+        <a href={`mailto:${charity.email}`}>{charity.email}</a>
       </div>
-      <button>create charity</button>
+      <button className="create-button">Create Charity</button>
     </div>
   );
 };

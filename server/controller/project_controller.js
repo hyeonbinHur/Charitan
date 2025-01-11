@@ -2,7 +2,6 @@ import projectService from "../service/project_service.js";
 
 const get_projects = async (req, res) => {
   try {
-    console.log("here");
     const tests = await projectService.readAllProjects();
     res.json(tests);
   } catch (err) {
@@ -18,11 +17,29 @@ const get_project = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+const get_halted_project = async (req, res) => {
+  try {
+    const tests = await projectService.readHaltedProject();
+    res.json(tests);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
+const get_projects_by_only_status = async (req, res) => {
+  try {
+    const { status } = req.query;
+    const tests = await projectService.readProjectByOnlyStatus(status);
+    res.json(tests);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
 const get_projects_by_status = async (req, res) => {
   try {
     const { status } = req.query;
     const { category } = req.query;
-    console.log(status, category);
     const tests = await projectService.readProjectByStatus(status, category);
     res.json(tests);
   } catch (err) {
@@ -48,12 +65,10 @@ const get_projects_by_charity_name = async (req, res) => {
 };
 const get_projects_by_project_name = async (req, res) => {
   try {
-    console.log("here");
     const { projectName } = req.query;
     const { status } = req.query;
     const { category } = req.query;
     const { country } = req.query;
-    console.log(country, status, category);
     const tests = await projectService.readProjectByProjectName(
       projectName,
       status,
@@ -70,7 +85,6 @@ const get_projects_by_country = async (req, res) => {
     const { country } = req.query;
     const { status } = req.query;
     const { category } = req.query;
-    console.log(country, status, category);
     const tests = await projectService.readProjectByCountry(
       country,
       status,
@@ -126,6 +140,32 @@ const create_project = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+const update_project_complete = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const test = await projectService.updateProjectComplete(id);
+    res.json(test);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+const update_project_donation = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { donation_amount } = req.body;
+    const { is_completed } = req.body;
+    console.log(donation_amount, is_completed);
+    const test = await projectService.updateProjectDonation(
+      id,
+      donation_amount,
+      is_completed
+    );
+    res.json(test);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+};
 const update_project = async (req, res) => {
   try {
     const id = req.params.id;
@@ -166,6 +206,7 @@ const delete_project = async (req, res) => {
 export default {
   get_projects,
   get_project,
+  get_halted_project,
   get_projects_by_status,
   get_projects_by_charity_name,
   get_projects_by_project_name,
@@ -174,4 +215,7 @@ export default {
   create_project,
   update_project,
   delete_project,
+  update_project_complete,
+  get_projects_by_only_status,
+  update_project_donation,
 };

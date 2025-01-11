@@ -33,16 +33,23 @@ const ProjectPage = () => {
   const filterState = useSelector((state) => state.filterStore);
   const searchQuery = searchParams.get("searchQuery");
   const searchTypeQuery = searchParams.get("searchType");
-  const [selectedStatus, setSelectedStatus] = useState(filterState.status || "Active");
-  const [selectedCountry, setSelectedCountry] = useState(filterState.country || "Vietnam");
-  const [selectedCategory, setSelectedCategory] = useState(filterState.category || "All Categories");
+
+  const [selectedStatus, setSelectedStatus] = useState(
+    filterState.status || "Active"
+  );
+  const [selectedCountry, setSelectedCountry] = useState(
+    filterState.country || "Vietnam"
+  );
+  const [selectedCategory, setSelectedCategory] = useState(
+    filterState.category || "All Categories"
+  );
   const [selectedRegion, setSelectedRegion] = useState(""); // State for region selection
   const [isSubscribed, setIsSubscribed] = useState(false); // Track subscription status
   const [loading, setLoading] = useState(false); // Track loading state
   const [subscribedProjects, setSubscribedProjects] = useState([]); // State to store subscribed projects
 
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const { data: lan } = useQuery({
     queryKey: [`language`],
     queryFn: () => readAcceptLanguageHeader(),
@@ -129,6 +136,7 @@ const ProjectPage = () => {
     setIsSubscribed(false); // Reset subscription when status changes
   };
 
+
   const handleSubscription = async () => {
     if (!selectedCategory || (!selectedRegion && !selectedCountry)) {
       alert("Please select both category and region/country.");
@@ -163,6 +171,7 @@ const ProjectPage = () => {
     }
   };
 
+
   return (
     <main>
       <div className="hero-section">
@@ -175,9 +184,9 @@ const ProjectPage = () => {
           <h1>Explore Our Projects</h1>
           <p>
             Our projects aim to make a positive impact on communities worldwide.
-            Browse through a variety of initiatives focused on education, health,
-            environment, and more. Your support can bring change and hope to those in
-            need.
+            Browse through a variety of initiatives focused on education,
+            health, environment, and more. Your support can bring change and
+            hope to those in need.
           </p>
         </div>
       </div>
