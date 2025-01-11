@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { UserContext } from "../context/AuthContext"; // UserContext를 임포트
 import { signinCharity, signinDonor, signinAdmin } from "../utils/api/auth";
-import { log } from "console";
 
 // 커스텀 훅: useAuth
 export const useAuth = () => {
