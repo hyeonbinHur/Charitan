@@ -5,9 +5,10 @@ import CharityDetail from "../components/charity/CharityDetail";
 import { Button } from "../components/ui/button";
 // import SkeletonCharityDetail from "../skeleton/SkeletonCharityDetail";
 import { Link } from "react-router-dom";
+
 const CharityPersonalPage = () => {
   const params = useParams();
-  const { data: charity, isLoading } = useQuery({
+  const { data: charity } = useQuery({
     queryKey: [`getCharity-${params.charity_id}`],
     queryFn: () => getCharity(params.charity_id),
   });

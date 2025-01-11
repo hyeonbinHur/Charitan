@@ -6,7 +6,7 @@ import CharityDetail from "../components/charity/CharityDetail";
 
 const CharityDetailPage = () => {
   const params = useParams();
-  const { data: charity, isLoading } = useQuery({
+  const { data: charity } = useQuery({
     queryKey: [`getCharity-${params.charity_id}`],
     queryFn: () => getCharity(params.charity_id),
   });

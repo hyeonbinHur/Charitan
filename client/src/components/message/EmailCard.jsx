@@ -20,11 +20,11 @@ const EmailCard = ({ email }) => {
             </Avatar>
             <div>
               <h2 className="font-semibold">{email.sender}</h2>
-              <p className="text-sm text-gray-500">{email.subject}</p>
+              <p className="text-sm text-gray-500">{email.title}</p>
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-400">{email.time}</span>
+            <span className="text-sm text-gray-400">{email.created_At}</span>
             {email.status === "unread" && (
               <Badge variant="default">Unread</Badge>
             )}
