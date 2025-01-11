@@ -6,6 +6,8 @@ import { UserContext } from "../../context/AuthContext";
 import { useAuth } from "../../hooks/useAuth";
 import { Menu, X } from "lucide-react";
 import UserDropDown from "./UserDropDown";
+import "./MainNav.css";
+
 const MainNav = () => {
   const authModal = useRef(null);
   const { user } = useContext(UserContext);

@@ -5,6 +5,7 @@ import { getProjects } from "../utils/api/project"; // Import the API function
 import { readAcceptLanguageHeader } from "../utils/api/languageUtils";
 import ProjectItemSkeleton from "../components/project/skeletons/ProjectItemSkeleton";
 import ProjectItem from "../components/project/ProjectItem";
+import Hero from "../components/hero/Hero";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -16,14 +17,26 @@ const MainPage = () => {
   });
 
   // Fetch projects for the homepage
-  const { data: projects, isLoading, isError } = useQuery({
+  const {
+    data: projects,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["featured-projects"],
     queryFn: () => getProjects("Active", "All Categories"),
   });
 
   return (
-    <main style={{ padding: "20px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <main
+      style={{
+        padding: "20px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       {/* Hero Section */}
+      <Hero />
       <section className="hero-section">
         <h1>Welcome to Charitan</h1>
         <p>Make a difference by supporting causes that matter.</p>
@@ -32,7 +45,10 @@ const MainPage = () => {
             Your language preference: <strong>{lan.languageCode}</strong>
           </p>
         )}
-        <button className="button-primary" onClick={() => navigate("/donation")}>
+        <button
+          className="button-primary"
+          onClick={() => navigate("/donation")}
+        >
           Donate Now
         </button>
       </section>
@@ -41,7 +57,10 @@ const MainPage = () => {
       <section className="featured-section">
         <div className="section-header">
           <h2>Featured Projects</h2>
-          <button className="view-all-btn" onClick={() => navigate("/projects")}>
+          <button
+            className="view-all-btn"
+            onClick={() => navigate("/projects")}
+          >
             VIEW ALL
           </button>
         </div>
