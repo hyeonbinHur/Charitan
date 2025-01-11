@@ -9,7 +9,10 @@ const client = redis.createClient({
 });
 client.connect().catch((err) => console.error("Redis connection failed:", err));
 
+
 async function setProjectFromCache(project_id, project) {
+  console.log(project);
+  console.log(project_id);
   await client.hSet(`project_id:${project_id}`, {
     project_id: project.project_id,
     charity_id: project.charity_id,

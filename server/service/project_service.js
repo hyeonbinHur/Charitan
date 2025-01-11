@@ -26,6 +26,7 @@ const readProject = async (id) => {
       return [cacheVal];
     }
   } catch (err) {
+    console.log(err);
     throw new Error("Failed to read data");
   }
 };

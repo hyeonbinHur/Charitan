@@ -25,6 +25,7 @@ const getProjectsByStatus = async (status) => {
 
 const getProject = async (id) => {
   try {
+    console.log("receive project id", id);
     const response = await axiosInstance.get(`project/${id}`);
     return response.data[0];
   } catch (err) {
