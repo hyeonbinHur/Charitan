@@ -1,21 +1,17 @@
 import ProjectItem from "./ProjectItem";
 import { useNavigate } from "react-router-dom";
+import './ProjectStyles.css';
 
 const ProjectList = ({ projects }) => {
   const navigate = useNavigate();
-  const handleNavigateToDetail = (project_id) => {
-    navigate(`/project/${project_id}`);
-  };
   return (
-    <div>
-      {projects.map((e, i) => (
+    <div className="project-list">
+      {projects.map((project, index) => (
         <div
-          key={i}
-          className="my-5"
-          onClick={() => handleNavigateToDetail(e.project_id)}
+          key={index}
+          onClick={() => navigate(`/project/${project.project_id}`)}
         >
-          {/* <SkeletonProjectItem project={e} /> */}
-          <ProjectItem project={e} />
+          <ProjectItem project={project} />
         </div>
       ))}
     </div>
