@@ -1,6 +1,6 @@
 import CharityList from "@/components/charity/CharityList";
-import SearchBar from "@/components/searchbar/SearchBar";
 import "./ProjectPage.css";
+import CharitySearchBar from "../components/searchbar/CharitySearchBar";
 
 const CharityPage = () => {
   return (
@@ -20,7 +20,7 @@ const CharityPage = () => {
           </p>
         </div>
       </div>
-      <SearchBar />
+      <CharitySearchBar />
       <CharityList />
       <div>
         <p></p>

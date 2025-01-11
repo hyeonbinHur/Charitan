@@ -20,6 +20,7 @@ import { COUNTRIES, CATEGORIES } from "../utils/Global/GlobalVariables";
 import ProjectItemSkeleton from "../components/project/skeletons/ProjectItemSkeleton";
 import { useSelector, useDispatch } from "react-redux";
 import { readAcceptLanguageHeader } from "../utils/api/languageUtils";
+
 import {
   updateCategory,
   updateCountry,
@@ -174,15 +175,18 @@ const ProjectPage = () => {
 
   return (
     <main>
-      <div className="hero-section">
+      {/* Hero Section */}
+      <div className="hero-section relative mb-12">
         <img
           src="https://media.istockphoto.com/id/1498170916/photo/a-couple-is-taking-a-bag-of-food-at-the-food-and-clothes-bank.jpg?s=612x612&w=0&k=20&c=0fnD_g46lvoZ5NdzX5zYOSM4PzM95ezfs5uMe9D1QKs="
           alt="Charity banner"
-          className="hero-image"
+          className="w-full h-72 object-cover rounded-lg shadow-lg"
         />
-        <div className="hero-description">
-          <h1>Explore Our Projects</h1>
-          <p>
+        <div className="absolute inset-0 flex flex-col justify-center items-center bg-black bg-opacity-40 text-white text-center p-6 rounded-lg">
+          <h1 className="text-3xl lg:text-5xl font-bold mb-4">
+            Explore Our Projects
+          </h1>
+          <p className="text-sm lg:text-base max-w-2xl">
             Our projects aim to make a positive impact on communities worldwide.
             Browse through a variety of initiatives focused on education,
             health, environment, and more. Your support can bring change and
@@ -191,96 +195,104 @@ const ProjectPage = () => {
         </div>
       </div>
 
-      <SearchBar />
-      {/* project status selector */}
-      <div className="flex my-3">
-        <div>
-          <Select value={selectedStatus} onValueChange={onChangeStatus}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Project Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Active">Active</SelectItem>
-              <SelectItem value="Halted">Halted</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        {/* project country selector */}
-        <div>
-          <Select value={selectedCountry} onValueChange={onChangeCountry}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Project Country" />
-            </SelectTrigger>
-            <SelectContent>
-              {COUNTRIES.map((e, i) => (
-                <SelectItem value={e} key={`Country-key-${i}`}>
-                  {e}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+      {/* Search Bar */}
+      <div className="mb-8">
+        <SearchBar />
+      </div>
 
-        {/* Category selection */}
-        <div>
-          <Select value={selectedCategory} onValueChange={onChangeCategory}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select Category" />
-            </SelectTrigger>
-            <SelectContent>
-              {CATEGORIES.map((e, i) => (
-                <SelectItem value={e} key={`Category-key-${i}`}>
-                  {e}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+      {/* Project Status Selector */}
+      <div className="flex flex-wrap gap-4 mb-8">
+        {/* Status Selector */}
+        <Select value={selectedStatus} onValueChange={onChangeStatus}>
+          <SelectTrigger className="w-[200px] px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-500">
+            <SelectValue placeholder="Project Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Active">Active</SelectItem>
+            <SelectItem value="Halted">Halted</SelectItem>
+          </SelectContent>
+        </Select>
+
+        {/* Country Selector */}
+        <Select value={selectedCountry} onValueChange={onChangeCountry}>
+          <SelectTrigger className="w-[200px] px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-500">
+            <SelectValue placeholder="Project Country" />
+          </SelectTrigger>
+          <SelectContent>
+            {COUNTRIES.map((e, i) => (
+              <SelectItem value={e} key={`Country-key-${i}`}>
+                {e}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        {/* Category Selector */}
+        <Select value={selectedCategory} onValueChange={onChangeCategory}>
+          <SelectTrigger className="w-[200px] px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-500">
+            <SelectValue placeholder="Select Category" />
+          </SelectTrigger>
+          <SelectContent>
+            {CATEGORIES.map((e, i) => (
+              <SelectItem value={e} key={`Category-key-${i}`}>
+                {e}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Subscription Section */}
-      <div className="subscription-section my-4">
-        <h3>Subscribe to Project Notifications</h3>
-        <div className="flex my-3">
+      <div className="subscription-section bg-blue-50 p-6 rounded-lg shadow-md mb-8">
+        <h3 className="text-xl font-semibold mb-4">
+          Subscribe to Project Notifications
+        </h3>
+        <div className="flex">
           <button
             onClick={handleSubscription}
             disabled={loading || isSubscribed}
-            className="px-4 py-2 bg-blue-500 text-white disabled:opacity-50"
+            className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 disabled:opacity-50 transition"
           >
-            {loading ? "Subscribing..." : isSubscribed ? "Subscribed" : "Subscribe"}
+            {loading
+              ? "Subscribing..."
+              : isSubscribed
+              ? "Subscribed"
+              : "Subscribe"}
           </button>
         </div>
       </div>
 
-      {/* Display Subscribed Projects */}
-      <div className="subscribed-projects">
-        <h3>Your Subscribed Projects</h3>
+      {/* Subscribed Projects */}
+      <div className="subscribed-projects mb-8">
+        <h3 className="text-xl font-semibold mb-4">Your Subscribed Projects</h3>
         {subscribedProjects.length > 0 ? (
-          <div>
-            <ul>
-              {subscribedProjects.map((project) => (
-                <li key={project.subscription_id}>
-                  <strong>{project.category}</strong> - {project.region} - {project.created_at}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="space-y-2">
+            {subscribedProjects.map((project) => (
+              <li
+                key={project.subscription_id}
+                className="p-3 bg-gray-100 rounded-lg shadow-md"
+              >
+                <strong>{project.category}</strong> - {project.region} -{" "}
+                {project.created_at}
+              </li>
+            ))}
+          </ul>
         ) : (
-          <p>You have no subscribed projects.</p>
+          <p className="text-gray-500">You have no subscribed projects.</p>
         )}
       </div>
 
       {/* Loading and Project List */}
       {isLoading ? (
-        <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array(7)
             .fill(0)
-            .map((e, i) => (
+            .map((_, i) => (
               <ProjectItemSkeleton key={`blog-post-skeleton-${i}`} />
             ))}
         </div>
       ) : (
-        <div>{projects && <ProjectList projects={projects} />}</div>
+        projects && <ProjectList projects={projects} />
       )}
     </main>
   );

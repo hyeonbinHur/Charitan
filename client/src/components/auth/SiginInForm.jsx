@@ -5,14 +5,12 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useAuth } from "../../hooks/useAuth";
 import LoadingSpinner from "../../../public/LoadingSpinner.svg";
-
 const SignInForm = ({ close, toggleForm }) => {
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userType, setUserType] = useState("Donor");
   const [isLoading, setIsLoading] = useState(false);
   const { signIn } = useAuth();
-
   const onSubmitSignin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -20,9 +18,8 @@ const SignInForm = ({ close, toggleForm }) => {
     if (isSignin) {
       close();
     }
-    setIsLoading(true);
+    setIsLoading(false);
   };
-
   return (
     <div>
       {isLoading ? (
