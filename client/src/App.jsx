@@ -52,7 +52,7 @@ const App = () => (
         <Route path="/donation/:project_id" element={<DonationPage />} />
         <Route path="/inbox" element={<Inbox />} />
         <Route path="/admin" element={<AdminDetailPage />} />
-        <Route path="/signin" element={<h1>SignIn Form Test</h1>} />
+        
 
       </Routes>
       <Footer />
