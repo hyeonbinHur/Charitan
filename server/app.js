@@ -9,6 +9,7 @@ import deletedShardRouter from "./routers/deleted_shard.js";
 import completedShardRouter from "./routers/completed_shard.js";
 import donationRouter from "./routers/donation.js";
 import paymentRouter from "./routers/payment.js";
+import languageRouter from "./routers/language.js";
 import cors from "cors";
 
 const app = express();
@@ -17,7 +18,7 @@ const port = process.env.PORT || 3000; // 환경 변수 사용
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
@@ -41,7 +42,8 @@ app.use(
   deletedShardRouter,
   completedShardRouter,
   donationRouter,
-  paymentRouter
+  paymentRouter,
+  languageRouter
 );
 
 // 서버 실행

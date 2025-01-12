@@ -1,5 +1,4 @@
 import { axiosInstance } from "./axiosUtils";
-
 const getProjects = async (status, category) => {
   try {
     const response = await axiosInstance.get(
@@ -11,10 +10,34 @@ const getProjects = async (status, category) => {
     throw err;
   }
 };
+
+const getProjectsByStatus = async (status) => {
+  try {
+    const response = await axiosInstance.get(
+      `project/only/status?status=${status}`
+    );
+    return response.data;
+  } catch (err) {
+    console.error("Error while read projects by status ", err);
+    throw err;
+  }
+};
+
 const getProject = async (id) => {
   try {
     const response = await axiosInstance.get(`project/${id}`);
     return response.data[0];
+  } catch (err) {
+    console.log("Error get one project", err);
+    throw err;
+  }
+};
+
+const getHaltedProject = async () => {
+  try {
+    console.log("here");
+    const response = await axiosInstance.get(`project/admin/halted`);
+    return response.data;
   } catch (err) {
     console.log("Error get one project", err);
     throw err;
@@ -39,6 +62,7 @@ const updateProject = async (newPost, id) => {
     throw err;
   }
 };
+
 const deleteProject = async (id) => {
   try {
     const response = await axiosInstance.delete(`project/${id}`);
@@ -95,13 +119,43 @@ const getProjectsByCountry = async (country, status, category) => {
   }
 };
 
+const updateProjectToComplete = async (id) => {
+  try {
+    const response = await axiosInstance.patch(
+      `project/status/completed/${id}`
+    );
+    return response.data;
+  } catch (err) {
+    console.log("Error while update project status to halt");
+    throw err;
+  }
+};
+
+const updateProjectDonation = async (id, donationStatus) => {
+  try {
+    console.log("why not");
+    const response = await axiosInstance.patch(
+      `project/donate/donor/${id}`,
+      donationStatus
+    );
+    return response.data;
+  } catch (err) {
+    console.log("Error while update project status to halt", err);
+    throw err;
+  }
+};
+
 export {
   getProjects,
   getProject,
+  getHaltedProject,
   createProject,
   updateProject,
   deleteProject,
   getProjectsByCharityName,
   getProjectsByProjectTitle,
   getProjectsByCountry,
+  updateProjectToComplete,
+  getProjectsByStatus,
+  updateProjectDonation,
 };

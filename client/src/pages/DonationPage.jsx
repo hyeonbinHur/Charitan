@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import DonationForm from "../components/donation/DonationForm";
 import DonationTable from "../components/donation/DonationTable";
 import DonationModal from "../components/donation/DonationModal";
 import { useParams } from "react-router-dom";
 import { axiosInstance } from "../utils/api/axiosUtils";
+import { useMutation } from "@tanstack/react-query";
+import { sendEmail } from "../utils/api/email";
+import { getProject, updateProjectDonation } from "../utils/api/project";
+import { useQuery } from "@tanstack/react-query";
+
 const DonationPage = () => {
   const { project_id } = useParams();
   const [donations, setDonations] = useState([]);
+
   const [newDonation, setNewDonation] = useState({
     donor_id: null,
     amount: 0,
@@ -15,9 +21,13 @@ const DonationPage = () => {
     action: "Donate",
     project_id: project_id,
   });
+
   const [editingDonation, setEditingDonation] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const { data: project } = useQuery({
+    queryKey: [`get-projects-${project_id}`],
+    queryFn: () => getProject(project_id),
+  });
   const fetchDonations = async () => {
     try {
       console.log("Fetching donations for project_id:", project_id);
@@ -35,19 +45,62 @@ const DonationPage = () => {
       fetchDonations();
     }
   }, [project_id]);
-
   const handleChange = (e) => {
     setNewDonation({ ...newDonation, [e.target.name]: e.target.value });
   };
+  const { mutate: mutateSendEmail } = useMutation({
+    mutationFn: ({ newEmail }) => {
+      return sendEmail(newEmail);
+    },
+    onSuccess: () => {
+      console.log("email sent");
+      setIsModalOpen(false);
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
 
+  const { mutate: mutateUpdateProjectDonation } = useMutation({
+    mutationFn: ({ project_id, donationStatus }) => {
+      return updateProjectDonation(project_id, donationStatus);
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
   const handleCreate = async () => {
     try {
+      const fundingAmount = newDonation.amount;
       const response = await axiosInstance.post(
         `donations/project/${project_id}`,
         newDonation
       );
       setDonations(response.data);
-      console.log("Donation created:", response.data);
+      console.log(response.data);
+      const newEmail = {
+        title: "Your Donation has been successfully made!",
+        content: `Thank you for you donattion!`,
+        status: "UNREAD",
+        receiver_type: "Donor",
+        receiver_id: newDonation.donor_id,
+        receiver_email: "hhb7201@naver.com",
+        sender: "Admin",
+        created_at: new Date(),
+      };
+      const isCompletedAfterDonation =
+        +project.current_funding + +fundingAmount;
+      let newDonationStatus = {
+        donation_amount: +fundingAmount + +project.current_funding,
+        is_completed: false,
+      };
+      if (isCompletedAfterDonation > +project.target_amount) {
+        newDonationStatus.is_completed = true;
+      }
+      mutateUpdateProjectDonation({
+        project_id: project.project_id,
+        donationStatus: newDonationStatus,
+      });
       setNewDonation({
         donor_id: null,
         amount: 0,
@@ -56,7 +109,7 @@ const DonationPage = () => {
         action: "Donate",
         project_id: project_id,
       });
-      setIsModalOpen(false);
+      mutateSendEmail({ newEmail: newEmail });
     } catch (error) {
       console.error("Error creating donation:", error);
     }
@@ -72,6 +125,7 @@ const DonationPage = () => {
       const data = await response.json();
       setDonations(donations.map((d) => (d.id === id ? data : d)));
       setEditingDonation(null);
+      console.log("update");
       setIsModalOpen(false);
     } catch (error) {
       console.error("Error updating donation:", error);

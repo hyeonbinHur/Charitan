@@ -1,0 +1,74 @@
+/* MainNav.css */
+
+header {
+  background-color: #73ABC7;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header a {
+  color: white;
+  font-weight: 600;
+  transition: color 0.2s ease-in-out;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+header a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.font-bold {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: white;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease-in-out;
+  font-weight: 600;
+  color: white;
+}
+
+button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile menu styles */
+.md\:hidden button {
+  background-color: transparent;
+  padding: 0.5rem;
+  color: white;
+}
+
+/* Mobile menu dropdown */
+.flex.flex-col.gap-4 {
+  background-color: #84b6d0;
+  padding: 1rem;
+  border-radius: 0 0 0.5rem 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* User dropdown styles */
+.Button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.Button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Add subtle transition effects */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Active link state */
+.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}

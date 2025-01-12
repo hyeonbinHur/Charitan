@@ -17,7 +17,6 @@ const createDeletedProject = async (newProject) => {
 const readDeletedProjects = async () => {
   try {
     const user = await shardRepository.findMany();
-    // await setUser(user[0].user_id, user[0].user_name);
     return user;
   } catch (err) {
     throw new Error("Failed to read data");

@@ -6,19 +6,18 @@ import { UserContext } from "../../context/AuthContext";
 import { useAuth } from "../../hooks/useAuth";
 import { Menu, X } from "lucide-react";
 import UserDropDown from "./UserDropDown";
+import "./MainNav.css";
 
 const MainNav = () => {
   const authModal = useRef(null);
   const { user } = useContext(UserContext);
   const { signOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const onClickOpenAuthModal = () => {
     if (authModal.current && authModal.current.open) {
       authModal.current.open();
     }
   };
-
   return (
     <header className="px-5 py-3 text-black w-full border-b-2">
       <div className="flex justify-between items-center">
@@ -28,7 +27,6 @@ const MainNav = () => {
             Charitan
           </Link>
         </div>
-
         {/* Desktop Navigation */}
         <nav className="hidden md:flex gap-5">
           <Link to="/charities" className="hover:text-gray-700">
@@ -37,18 +35,9 @@ const MainNav = () => {
           <Link to="/projects" className="hover:text-gray-700">
             Projects Page
           </Link>
-          <Link to="/doner-p" className="hover:text-gray-700">
-            Donor Profile
-          </Link>
-          <Link to="/charity-p" className="hover:text-gray-700">
-            Charity Profile
-          </Link>
-          <Link to="/donation" className="hover:text-gray-700">
-            Donation
-          </Link>
           {user ? (
-            <Button onClick={signOut} className="hover:bg-gray-300">
-              {user.email}
+            <Button className="hover:bg-gray-300">
+              <UserDropDown user={user} />
             </Button>
           ) : (
             <Button

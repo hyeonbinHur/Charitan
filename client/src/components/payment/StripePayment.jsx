@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   Elements,
@@ -11,7 +11,7 @@ import { createPaymentIntent } from "../../utils/api/payment";
 //https://docs.stripe.com/testing
 //test card
 
-const stripePromise = loadStripe(import.meta.env.REACT_APP_STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 const StripePayment = ({ amount, description, onSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -21,23 +21,19 @@ const StripePayment = ({ amount, description, onSuccess }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!stripe || !elements || isProcessing) return;
-
     setIsProcessing(true);
     setMessage("");
-
     try {
       const { clientSecret } = await createPaymentIntent({
         amount,
         currency: "usd",
         description,
       });
-
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: elements.getElement(CardElement),
         },
       });
-
       if (result.error) {
         setMessage(`Payment failed: ${result.error.message}`);
       } else if (result.paymentIntent.status === "succeeded") {

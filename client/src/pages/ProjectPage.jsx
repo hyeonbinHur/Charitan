@@ -8,7 +8,7 @@ import {
   getProjectsByCharityName,
   getProjectsByProjectTitle,
 } from "../utils/api/project";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -17,16 +17,65 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import { COUNTRIES, CATEGORIES } from "../utils/Global/GlobalVariables";
+import ProjectItemSkeleton from "../components/project/skeletons/ProjectItemSkeleton";
+import { useSelector, useDispatch } from "react-redux";
+import { readAcceptLanguageHeader } from "../utils/api/languageUtils";
+import {
+  updateCategory,
+  updateCountry,
+  updateStatus,
+} from "../store/filterSlice";
+import "./ProjectPage.css";
+
 
 const ProjectPage = () => {
   const [searchParams] = useSearchParams();
+  const filterState = useSelector((state) => state.filterStore);
   const searchQuery = searchParams.get("searchQuery");
   const searchTypeQuery = searchParams.get("searchType");
-  const [selectedStatus, setSelectedStatus] = useState("Active");
-  const [selectedCountry, setSelectedCountry] = useState("Vietnam");
-  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+  const [selectedStatus, setSelectedStatus] = useState(
+    filterState.status || "Active"
+  );
 
-  const { data: projects } = useQuery({
+  const [selectedCountry, setSelectedCountry] = useState(
+    filterState.country || "Vietnam"
+  );
+
+  const [selectedCategory, setSelectedCategory] = useState(
+    filterState.category || "All Categories"
+  );
+
+  const dispatch = useDispatch();
+
+  const { data: lan } = useQuery({
+    queryKey: [`language`],
+    queryFn: () => readAcceptLanguageHeader(),
+  });
+  useEffect(() => {
+    console.log(filterState);
+    if (filterState.status === "" && lan) {
+      if (lan.languageCode === "vi") {
+        dispatch(updateCountry({ country: "Vietanm" }));
+        setSelectedCountry("Vietnam");
+      } else if (lan.languageCode === "de") {
+        dispatch(updateCountry({ country: "Germany" }));
+        setSelectedCountry("Germany");
+      } else if (lan.languageCode === "ar") {
+        dispatch(updateCountry({ country: "Qatar" }));
+        setSelectedCountry("Qatar");
+      } else if (lan.languageCode === "en") {
+        dispatch(updateCountry({ country: "USA" }));
+        setSelectedCountry("USA");
+      } else if (lan.languageCode === "cm") {
+        dispatch(updateCountry({ country: "Cameroon" }));
+        setSelectedCountry("Camerron");
+      } else {
+        dispatch(updateCountry({ country: "USA" }));
+        setSelectedCountry("USA");
+      }
+    }
+  }, [lan]);
+  const { data: projects, isLoading } = useQuery({
     queryKey: [
       "read-projects",
       searchQuery,
@@ -55,10 +104,44 @@ const ProjectPage = () => {
       }
     },
   });
+  if (isLoading) {
+    console.log("loading");
+  }
+
+  const onChangeCategory = (value) => {
+    dispatch(updateCategory({ category: value }));
+    setSelectedCategory(value);
+  };
+  const onChangeCountry = (value) => {
+    dispatch(updateCountry({ country: value }));
+    setSelectedCountry(value);
+  };
+  const onChangeStatus = (value) => {
+    dispatch(updateStatus({ status: value }));
+    setSelectedStatus(value);
+  };
 
   return (
-    <section>
-      Project Page
+
+    <main>
+      <div className="hero-section">
+        <img
+          src="https://media.istockphoto.com/id/1498170916/photo/a-couple-is-taking-a-bag-of-food-at-the-food-and-clothes-bank.jpg?s=612x612&w=0&k=20&c=0fnD_g46lvoZ5NdzX5zYOSM4PzM95ezfs5uMe9D1QKs=" // Replace with your image URL
+          alt="Charity banner"
+          className="hero-image"
+        />
+        <div className="hero-description">
+          <h1>Explore Our Projects</h1>
+          <p>
+            Our projects aim to make a positive impact on communities worldwide.
+            Browse through a variety of initiatives focused on education, health,
+            environment, and more. Your support can bring change and hope to those in
+            need.
+          </p>
+        </div>
+      </div>
+
+
       <SearchBar />
       {/* project status selector */}
       <div className="flex my-3">
@@ -66,7 +149,7 @@ const ProjectPage = () => {
           <Select
             value={selectedStatus}
             onValueChange={(value) => {
-              setSelectedStatus(value);
+              onChangeStatus(value);
             }}
           >
             <SelectTrigger className="w-[180px]">
@@ -83,7 +166,7 @@ const ProjectPage = () => {
           <Select
             value={selectedCountry}
             onValueChange={(value) => {
-              setSelectedCountry(value);
+              onChangeCountry(value);
             }}
           >
             <SelectTrigger className="w-[180px]">
@@ -103,7 +186,7 @@ const ProjectPage = () => {
           <Select
             value={selectedCategory}
             onValueChange={(value) => {
-              setSelectedCategory(value);
+              onChangeCategory(value);
             }}
           >
             <SelectTrigger className="w-[180px]">
@@ -119,8 +202,18 @@ const ProjectPage = () => {
           </Select>
         </div>
       </div>
-      {projects && <ProjectList projects={projects} />}
-    </section>
+      {isLoading ? (
+        <div>
+          {Array(7)
+            .fill(0)
+            .map((e, i) => (
+              <ProjectItemSkeleton key={`blog-post-skeleton-${i}`} />
+            ))}
+        </div>
+      ) : (
+        <div>{projects && <ProjectList projects={projects} />}</div>
+      )}
+    </main>
   );
 };
 

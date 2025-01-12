@@ -5,9 +5,9 @@
 // import { toast } from "react-toastify";
 // import { checkPendingStatus } from "../../../utils/util/util";
 // import Spinner from "../../../assets/svgs/loading.svg";
-import React from "react";
+import { Button } from "../ui/button";
 
-const SignUpForm = ({ toSignIn }) => {
+const SignUpForm = ({ toSignIn, toggleForm }) => {
   //   const [username, setUsername] = useState("");
   //   const [password, setPassword] = useState("");
   //   const [passwordCheck, setPasswordCheck] = useState("");
@@ -175,19 +175,16 @@ const SignUpForm = ({ toSignIn }) => {
           Sign Up
         </button>
       </form>
-      <div className="mt-4 text-center">
-        <p className="text-sm">
-          Already have an account?{" "}
-          <button
-            onClick={toSignIn}
-            className="text-blue-500 underline hover:text-blue-700"
-          >
+      <section className="mt-6 text-center">
+        <div>
+          <h3 className="text-gray-700 mb-2">Already have an account?</h3>
+          <Button onClick={toggleForm} className="bg-blue-500 text-white">
             Sign In
-          </button>
-        </p>
-      </div>
+          </Button>
+        </div>
+      </section>
     </div>
   );
-}
+};
 
 export default SignUpForm;

@@ -30,13 +30,16 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProject, updateProject } from "../../utils/api/project";
 import { uploadFileToS3 } from "../../lib/s3Option";
 import { sendEmail } from "../../utils/api/email";
-import { UserContext } from "../../context/AuthContext";
 import { useError } from "../../context/ErrorContext";
+import { useParams } from "react-router-dom";
+import ProjectVideoForm from "./ProjectVideoForm";
+import { UserContext } from "../../context/AuthContext";
 
 const ProjectForm = ({ project = {} }) => {
   /**
    * Variable Declaration
    */
+  const params = useParams();
   const { title = "", description = "", status = "Active" } = project;
   const [projectStatus, setProjectStatus] = useState("Active");
   const [projectCategory, setProjectCategory] = useState("Food");
@@ -46,8 +49,9 @@ const ProjectForm = ({ project = {} }) => {
   const [thumbnatilImg, setThumbnailImg] = useState(null);
   const editorRef = useRef(null);
   const queryClient = useQueryClient();
-  const { user } = useContext(UserContext);
   const { setError } = useError();
+
+  const { user } = useContext(UserContext);
 
   const {
     register,
@@ -154,7 +158,7 @@ const ProjectForm = ({ project = {} }) => {
       mutateUpdateProject({ updatedProject: updatedProject });
     } else {
       const newProject = {
-        charity_id: 1,
+        charity_id: params.charity_id,
         thumbnail: data.thumbnail,
         title: data.title,
         description: data.description,
@@ -290,7 +294,9 @@ const ProjectForm = ({ project = {} }) => {
             )}
           />
         </section>
-
+        <section>
+          <ProjectVideoForm />
+        </section>
         <Button type="submit" className="confirm-button">
           Confirm Create Project
         </Button>
