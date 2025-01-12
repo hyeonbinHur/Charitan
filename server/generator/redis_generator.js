@@ -22,7 +22,7 @@ async function setProjectFromCache(project_id, project) {
     current_funding: String(project.current_funding),
     status: project.status || "",
     created_at: String(project.created_at),
-    updated_at: String(project.updated_at),
+    updated_at: String(project.updated_at) || "",
     bankaccount: project.bankaccount || "",
     charity_name: project.charity_name || "",
     thumbnail: project.thumbnail || "",
