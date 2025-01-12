@@ -1,11 +1,30 @@
-const AboutUs = () => (
-    <div className="about-us-page container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">About Us</h1>
-      <p>
-        Welcome to Charitan! We are dedicated to making a positive impact by connecting donors with meaningful causes. Our platform provides transparency, accountability, and an easy way to support projects that matter.
-      </p>
+import React from 'react';
+
+const GrsIDTable = () => {
+  const members = [
+    { sID: '1', name: 'Alice' },
+    { sID: '2', name: 'Bob' },
+    { sID: '3', name: 'Charlie' },
+    { sID: '4', name: 'Diana' },
+    { sID: '3863973', name: 'Tran Vinh Trong' },
+    { sID: '6', name: 'Frank' },
+    { sID: '7', name: 'Grace' },
+    { sID: '8', name: 'Hank' },
+  ];
+
+  return (
+    <div className="grid grid-cols-3 gap-4 p-6">
+      {members.map((member) => (
+        <div
+          key={member.sID}
+          className="border p-4 rounded shadow text-center"
+        >
+          <p><strong>sID:</strong> {member.sID}</p>
+          <p><strong>Name:</strong> {member.name}</p>
+        </div>
+      ))}
     </div>
   );
-  
-  export default AboutUs;
-  
+};
+
+export default GrsIDTable;
