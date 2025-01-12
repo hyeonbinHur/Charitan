@@ -8,6 +8,9 @@ import ProjectPage from "./pages/ProjectPage";
 import ProjectDetailPage from "./pages/ProjectDetailPage";
 import DonerPersonalPage from "./pages/DonerPersonalPage";
 import DonationPage from "./pages/DonationPage";
+import AboutUs from "./pages/AboutUsPage";
+import Contact from "./pages/Contact";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import MainNav from "./components/main-navigation/MainNav";
 import CreateProjectPage from "./pages/CreateProjectPage";
 import CharityProjectsPage from "./pages/CharityProjectsPage";
@@ -27,6 +30,9 @@ const App = () => (
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/charities" element={<CharityPage />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/charity/:charity_id" element={<CharityDetailPage />} />
         <Route
           path="/charity/project/:charity_id"
