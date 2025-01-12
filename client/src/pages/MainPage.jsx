@@ -10,7 +10,6 @@ import MainPageImg from "../../public/main_page.jpg";
 const MainPage = () => {
   const navigate = useNavigate();
   // Fetch user's language preferences
-
   // Fetch featured projects
   const {
     data: projects,
