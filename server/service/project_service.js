@@ -18,14 +18,14 @@ const readAllProjects = async () => {
 const readProject = async (id) => {
   try {
     const cacheVal = await getProjectFromCache(id);
-    if (Object.keys(cacheVal).length === 0) {
-      const tests = await projectRepository.findOne(id);
-      console.log("try to store data in cache");
-      await setProjectFromCache(tests[0].project_id, tests[0]);
-      return tests;
-    } else {
-      return [cacheVal];
-    }
+    // if (Object.keys(cacheVal).length === 0) {
+    const tests = await projectRepository.findOne(id);
+    console.log("try to store data in cache");
+    await setProjectFromCache(tests[0].project_id, tests[0]);
+    return tests;
+    // } else {
+    //   return [cacheVal];
+    // }
   } catch (err) {
     console.log(err);
     throw new Error("Failed to read data");
