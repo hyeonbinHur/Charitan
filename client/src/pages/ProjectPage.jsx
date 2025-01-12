@@ -3,11 +3,13 @@ import ProjectList from "../components/project/ProjectList";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import SearchBar from "../components/searchbar/SearchBar";
+
 import {
   getProjects,
   getProjectsByCharityName,
   getProjectsByProjectTitle,
 } from "../utils/api/project";
+
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../context/AuthContext";
 
@@ -98,7 +100,6 @@ const ProjectPage = () => {
 
     fetchSubscribedProjects();
   }, []); // Empty dependency array to run once on component mount
-
   const { data: projects, isLoading } = useQuery({
     queryKey: [
       "read-projects",
@@ -128,9 +129,7 @@ const ProjectPage = () => {
       }
     },
   });
-  if (isLoading) {
-    console.log("loading");
-  }
+
   const onChangeCategory = (value) => {
     setSelectedCategory(value);
     setIsSubscribed(false); // Reset subscription when category changes

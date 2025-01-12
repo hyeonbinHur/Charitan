@@ -22,12 +22,10 @@ const CharityProjectsPage = () => {
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
   };
-
   const { data: projects } = useQuery({
     queryKey: [`get-project-by-charity-${charity_id}`, currentStatus],
     queryFn: () => getProjectsByCharity(charity_id, currentStatus),
   });
-
   const onChangeStatus = (value) => {
     setCurrentStatus(value);
   };

@@ -1,4 +1,4 @@
-import CharityList from "@/components/charity/CharityList";
+import CharityList from "../components/charity/CharityList";
 import "./ProjectPage.css";
 // import CharitySearchBar from "../components/searchbar/CharitySearchBar";
 
