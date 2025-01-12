@@ -6,7 +6,6 @@ import ProjectDetailSkeleton from "../components/project/skeletons/ProjectDetail
 
 const ProjectDetailPage = () => {
   const { project_id } = useParams();
-
   const {
     data: project,
     isLoading,
