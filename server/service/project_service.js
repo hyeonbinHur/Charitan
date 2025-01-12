@@ -31,9 +31,9 @@ const readProject = async (id) => {
     throw new Error("Failed to read data");
   }
 };
-const readProjectByCharityId = async (id) => {
+const readProjectByCharityId = async (id, status) => {
   try {
-    const tests = await projectRepository.findAllByCharity(id);
+    const tests = await projectRepository.findAllByCharity(id, status);
     return tests;
   } catch (err) {
     throw new Error("Failed to read data");

@@ -70,7 +70,6 @@ const ProjectVideoInput = ({
     </>
   );
 };
-
 const ProjectVideoForm = ({ addVideoOnParents }) => {
   const [videos, setVideos] = useState([]);
   const [videoInputs, setVideoInputs] = useState([1]); // 배열로 초기화

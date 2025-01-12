@@ -11,10 +11,11 @@ const findAll = () => {
     });
   });
 };
-const findAllByCharity = (id) => {
+const findAllByCharity = (id, status) => {
   return new Promise((resolve, reject) => {
-    const query = "SELECT * FROM Charity_Project WHERE charity_id = ?";
-    connection.query(query, [id], (err, results) => {
+    const query =
+      "SELECT * FROM Charity_Project WHERE charity_id = ? AND status = ?";
+    connection.query(query, [id, status], (err, results) => {
       if (err) {
         reject(err);
       } else {
@@ -139,7 +140,7 @@ const findManyByCountry = (charities, status, category) => {
   });
 };
 
-const findOneByCharity = (id) => {
+const findOneByCharity = (id, status) => {
   return new Promise((resolve, reject) => {
     const query = "SELECT * FROM Charity_Project WHERE charity_id = ?";
     const values = [id];

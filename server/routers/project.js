@@ -18,6 +18,5 @@ router.post("/project", api.create_project); // create new post
 router.put("/project/:id", api.update_project); // update post
 router.delete("/project/:id", api.delete_project); // delete post
 router.patch("/project/status/completed/:id", api.update_project_complete);
-
 router.patch("/project/donate/donor/:id", api.update_project_donation);
 export default router;

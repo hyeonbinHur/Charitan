@@ -228,9 +228,11 @@ const updateProjectDonation = async (id, donationStatus) => {
   }
 };
 
-const getProjectsByCharity = async (charity_id) => {
+const getProjectsByCharity = async (charity_id, status) => {
   try {
-    const response = await axiosInstance.get(`project/charity/${charity_id}`);
+    const response = await axiosInstance.get(
+      `project/charity/${charity_id}?status=${status}`
+    );
     return response.data;
   } catch (err) {
     console.log("Error while update project status to halt", err);

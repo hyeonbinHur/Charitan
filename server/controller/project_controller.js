@@ -21,7 +21,9 @@ const get_project = async (req, res) => {
 const get_project_by_charity_id = async (req, res) => {
   try {
     const id = req.params.id;
-    const tests = await projectService.readProjectByCharityId(id);
+    const { status } = req.query;
+
+    const tests = await projectService.readProjectByCharityId(id, status);
     res.json(tests);
   } catch (err) {
     res.status(500).send(err.message);
