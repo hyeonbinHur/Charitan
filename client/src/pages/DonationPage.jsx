@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 const DonationPage = () => {
   const { project_id } = useParams();
   const [donations, setDonations] = useState([]);
+  const [userRole, setUserRole] = useState(null);
 
   const [newDonation, setNewDonation] = useState({
     donor_id: null,
@@ -41,6 +42,9 @@ const DonationPage = () => {
     }
   };
   useEffect(() => {
+    const userRole = localStorage.getItem("userRole");
+    console.log(userRole);
+
     if (project_id) {
       fetchDonations();
     }
@@ -163,6 +167,7 @@ const DonationPage = () => {
       </DonationModal>
       <DonationTable
         donations={donations}
+        userRole={userRole} // Pass userRole as a prop
         setEditingDonation={(donation) => {
           setEditingDonation(donation);
           setIsModalOpen(true);

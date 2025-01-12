@@ -1,6 +1,11 @@
 import React from "react";
 
-const DonationTable = ({ donations, setEditingDonation, handleDelete }) => {
+const DonationTable = ({
+  donations,
+  userRole,
+  setEditingDonation,
+  handleDelete,
+}) => {
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse">
@@ -10,7 +15,9 @@ const DonationTable = ({ donations, setEditingDonation, handleDelete }) => {
             <th className="border px-4 py-2">Amount</th>
             <th className="border px-4 py-2">Message</th>
             <th className="border px-4 py-2">Action</th>
-            <th className="border px-4 py-2">Actions</th>
+            {userRole === "Admin" && (
+              <th className="border px-4 py-2">Actions</th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -20,14 +27,16 @@ const DonationTable = ({ donations, setEditingDonation, handleDelete }) => {
               <td className="border px-4 py-2">{donation.amount}</td>
               <td className="border px-4 py-2">{donation.message}</td>
               <td className="border px-4 py-2">{donation.action}</td>
-              <td className="border px-4 py-2">
-                <button
-                  className="bg-red-500 text-white py-1 px-2 rounded"
-                  onClick={() => handleDelete(donation.donation_id)}
-                >
-                  Delete
-                </button>
-              </td>
+              {userRole === "Admin" && (
+                <td className="border px-4 py-2">
+                  <button
+                    className="bg-red-500 text-white py-1 px-2 rounded"
+                    onClick={() => handleDelete(donation.donation_id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
