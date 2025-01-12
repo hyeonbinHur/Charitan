@@ -343,7 +343,7 @@ const AccountManagement = () => {
                     <div className="flex flex-row space-x-4">
                         <button
                         className="bg-custom-blue-1 text-white py-2 px-4 rounded-full hover:bg-custom-blue shadow"
-                        onClick={() => navigate('/admin/page2/create_Charity_Account')}
+                        onClick={() => navigate('/admin_role/page2/create_Charity_Account')}
                         >
                             Create
                         </button>
@@ -389,7 +389,7 @@ const AccountManagement = () => {
                     <div className="flex flex-row space-x-4">
                         <button
                         className="bg-custom-blue-1 text-white py-2 px-4 rounded-full hover:bg-custom-blue shadow"
-                        onClick={() => navigate('/admin/page2/create_Donor_Account')}
+                        onClick={() => navigate('/admin_role/page2/create_Donor_Account')}
                         >
                             Create
                         </button>

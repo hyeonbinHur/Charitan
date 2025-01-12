@@ -6,5 +6,7 @@ const router = express.Router();
  */
 
 router.post("/send-email", api.send_email);
+router.get("/get-email", api.get_email);
+router.delete("/delete-email/:email_id", api.delete_email);
 
 export default router;

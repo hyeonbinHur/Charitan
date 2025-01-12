@@ -21,7 +21,7 @@ export default function CreateCharityAccount() {
         e.preventDefault();
         //await createAccount(account);
         setTimeout(() =>{
-            navigate('/admin/page2');
+            navigate('/admin_role/page2');
         }, 3500);
     };
 
@@ -162,7 +162,7 @@ export default function CreateCharityAccount() {
                     </div>
 
                     <div className="flex flex-row w-full justify-end items-center pb-12 pr-12 space-x-6 pt-6">
-                        <button type="button" onClick={() => navigate('/admin/page2')} className="bg-custom-blue-1 rounded-full shadow-sm hover:bg-custom-blue pl-4 pr-4 p-2">
+                        <button type="button" onClick={() => navigate('/admin_role/page2')} className="bg-custom-blue-1 rounded-full shadow-sm hover:bg-custom-blue pl-4 pr-4 p-2">
                             Cancle
                         </button>
                         <button type="submit" className="bg-custom-blue-1 rounded-full shadow-sm hover:bg-custom-blue pl-4 pr-4 p-2">

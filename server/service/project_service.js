@@ -26,6 +26,31 @@ const readProject = async (id) => {
       return [cacheVal];
     }
   } catch (err) {
+    console.log(err);
+    throw new Error("Failed to read data");
+  }
+};
+const readProjectByCharityId = async (id) => {
+  try {
+    const tests = await projectRepository.findAllByCharity(id);
+    return tests;
+  } catch (err) {
+    throw new Error("Failed to read data");
+  }
+};
+const readHaltedProject = async () => {
+  try {
+    const tests = await projectRepository.findHaltedAll();
+    return tests;
+  } catch (err) {
+    throw new Error("Failed to read data");
+  }
+};
+const readProjectByOnlyStatus = async (status) => {
+  try {
+    const tests = await projectRepository.findMayByStatus(status);
+    return tests;
+  } catch (err) {
     throw new Error("Failed to read data");
   }
 };
@@ -45,19 +70,24 @@ const readProjectByCharityName = async (
 ) => {
   try {
     const charities = await charityRepository.findManyByCountry(country);
-    const tests = await projectRepository.findOneByCharityName(
-      charityName,
-      status,
-      category,
-      charities
-    );
 
-    return tests;
+    if (charities.length > 0) {
+      const charitiesId = charities.map((item) => item.charity_id);
+      const tests = await projectRepository.findOneByCharityName(
+        charityName,
+        status,
+        category,
+        charitiesId
+      );
+
+      return tests;
+    } else {
+      return [];
+    }
   } catch (err) {
     throw new Error("Failed to read data");
   }
 };
-
 const readProjectByProjectName = async (
   projectName,
   status,
@@ -66,7 +96,6 @@ const readProjectByProjectName = async (
 ) => {
   try {
     const charities = await charityRepository.findManyByCountry(country);
-    console.log(charities);
     if (charities.length > 0) {
       const charitiesId = charities.map((item) => item.charity_id);
       const tests = await projectRepository.findOneByProjectName(
@@ -77,11 +106,9 @@ const readProjectByProjectName = async (
       );
       return tests;
     } else {
-      console.log("show nothing");
       return [];
     }
   } catch (err) {
-    console.error(err);
     throw new Error("Failed to read data");
   }
 };
@@ -110,17 +137,16 @@ const readProjectByCharity = async (id) => {
     throw new Error("Failed to read data");
   }
 };
-
 const createProject = async (newProject) => {
   try {
     console.log(newProject);
     const tests = await projectRepository.createOne(newProject);
     return tests;
   } catch (err) {
+    console.error(err);
     throw new Error("Failed to read data");
   }
 };
-
 const updateProject = async (id, updatedProject) => {
   try {
     const tests = await projectRepository.updateOne(id, updatedProject);
@@ -130,7 +156,6 @@ const updateProject = async (id, updatedProject) => {
     throw new Error("Failed to read data");
   }
 };
-
 const deleteProject = async (id) => {
   try {
     const tests = await projectRepository.deleteOne(id);
@@ -139,11 +164,36 @@ const deleteProject = async (id) => {
     throw new Error("Failed to read data");
   }
 };
+const updateProjectComplete = async (id) => {
+  try {
+    const test = await projectRepository.updateCompleteOne(id);
+    return test;
+  } catch (err) {
+    throw new Error("Failed while update project to completed");
+  }
+};
+const updateProjectDonation = async (id, funding, is_completed) => {
+  try {
+    const test = await projectRepository.updateOneDonation(
+      id,
+      funding,
+      is_completed
+    );
+
+    const cache = await projectRepository.findOne(id);
+    await setProjectFromCache(cache[0].project_id, cache[0]);
+
+    return test;
+  } catch (err) {
+    throw new Error("Failed while update project to complete2d");
+  }
+};
 
 export default {
   readAllProjects,
   readProject,
   readProjectByStatus,
+  readHaltedProject,
   readProjectByCharityName,
   readProjectByProjectName,
   readProjectByCountry,
@@ -151,4 +201,8 @@ export default {
   createProject,
   updateProject,
   deleteProject,
+  updateProjectComplete,
+  readProjectByOnlyStatus,
+  updateProjectDonation,
+  readProjectByCharityId,
 };

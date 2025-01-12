@@ -30,9 +30,9 @@ const SearchBar = () => {
   );
   return (
     <div
-      className={`flex border-[3px] rounded-md shadow-md outline ${
+      className={`flex border-[3px] rounded-md shadow-md outline text-gray-300 font-semibold ${
         isFocused
-          ? "border-transparent outline-orange-300"
+          ? "border-transparent outline-blue-300"
           : "border border-gray-300 outline-transparent"
       }`}
     >
@@ -55,9 +55,7 @@ const SearchBar = () => {
         onClick={() => {
           inputRef.current.focus();
         }}
-        className={`flex border-l-[3px] px-2 ${
-          isFocused ? "border-transparent" : ""
-        }`}
+        className={`flex px-2 ${isFocused ? "border-transparent" : ""}`}
       >
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="Project" id="option-one" />

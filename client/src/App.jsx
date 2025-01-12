@@ -10,10 +10,14 @@ import DonerPersonalPage from "./pages/DonerPersonalPage";
 import DonationPage from "./pages/DonationPage";
 import MainNav from "./components/main-navigation/MainNav";
 import CreateProjectPage from "./pages/CreateProjectPage";
+import CharityProjectsPage from "./pages/CharityProjectsPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
-import Inbox from "./components/message/Inbox";
-import CharityProjectsPage from "./pages/CharityProjectsPage";
+
+import AdminDetailPage from "./pages/AdminDetailPage";
+// import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
+// import { AppSidebar } from "./components/app-sidebar";
+import CharityEmailInbox from "./pages/CharityEmailInbox";
 
 import NavBar from './AdminComponent/NavBar/NavBar';
 import AccountManagement from './AdminPages/AccountManagement/AccountManagement';
@@ -24,29 +28,14 @@ import CreateDonorAccount from './AdminPages/CreateDonorAccount/CreateDonorAccou
 import ProjectManagement from './AdminPages/ProjectManagement/ProjectManagement';
 import AdminProjectDetailPage from "./AdminPages/ProjectManagement/ProjectDetailPage";
 import EditProjectPage from './AdminPages/ProjectManagement/EditProjectPage';
+import AppNavBar from "./AppNavBar";
 
-export default function App() {
-  const queryClient = new QueryClient();
+const queryClient = new QueryClient();
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AppWithNav />
-      </BrowserRouter>
-    </QueryClientProvider>
-  );
-}
-
-// This component handles the conditional rendering for the navbar
-function AppWithNav() {
-  const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith('/admin');
-
-  return (
-    <>
-      {/* Conditional Navbar */}
-      {isAdminRoute ? <NavBar /> : <MainNav />}
-
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <BrowserRouter>
+      <AppNavBar/>
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/charities" element={<CharityPage />} />
@@ -55,31 +44,38 @@ function AppWithNav() {
           path="/charity/project/:charity_id"
           element={<CharityProjectsPage />}
         />
-        <Route path="/charity-p" element={<CharityPersonalPage />} />
+        <Route
+          path="/charity-p/:charity_id"
+          element={<CharityPersonalPage />}
+        />
         <Route path="/projects" element={<ProjectPage />} />
         <Route path="/project/:project_id" element={<ProjectDetailPage />} />
         <Route
           path="/create-project/:charity_id"
           element={<CreateProjectPage />}
         />
+        <Route
+          path="/charity/inbox/:charity_id"
+          element={<CharityEmailInbox />}
+        />
         <Route path="/doner-p" element={<DonerPersonalPage />} />
         <Route path="/donation/:project_id" element={<DonationPage />} />
-        <Route path="/inbox" element={<Inbox />} />
+
+        <Route path="/admin" element={<AdminDetailPage />} />
 
         {/* Admin Routes */}
-        <Route path="/admin/" element={<Home />} />
-        <Route path="/admin/page1" element={<Home />} />
-        <Route path="/admin/page2" element={<AccountManagement />} />
-        <Route path="/admin/page2/create_Charity_Account" element={<CreateCharityAccount />} />
-        <Route path="/admin/page2/create_Donor_Account" element={<CreateDonorAccount />} />
-        <Route path="/admin/page3" element={<ProjectManagement />} />
-        <Route path="/admin/project/:id" element={<AdminProjectDetailPage />} />
-        <Route path="/admin/edit-project/:id" element={<EditProjectPage />} />
-        <Route path="/admin/page4" element={<Statistic />} />
+        <Route path="/admin_role/" element={<Home />} />
+        <Route path="/admin_role/page1" element={<Home />} />
+        <Route path="/admin_role/page2" element={<AccountManagement />} />
+        <Route path="/admin_role/page2/create_Charity_Account" element={<CreateCharityAccount />} />
+        <Route path="/admin_role/page2/create_Donor_Account" element={<CreateDonorAccount />} />
+        <Route path="/admin_role/page3" element={<ProjectManagement />} />
+        <Route path="/admin_role/project/:id" element={<AdminProjectDetailPage />} />
+        <Route path="/admin_role/edit-project/:id" element={<EditProjectPage />} />
+        <Route path="/admin_role/page4" element={<Statistic />} />
       </Routes>
-
-      {/* Footer is common for all pages */}
       <Footer />
-    </>
-  );
-}
+    </BrowserRouter>
+  </QueryClientProvider>
+);
+export default App;

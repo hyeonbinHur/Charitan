@@ -25,7 +25,6 @@ async function setProjectFromCache(project_id, project) {
     charity_name: project.charity_name,
     thumbnail: project.thumbnail,
   });
-
   client.expire(`project_id:${project_id}`, 300);
 }
 async function getProjectFromCache(project_id) {

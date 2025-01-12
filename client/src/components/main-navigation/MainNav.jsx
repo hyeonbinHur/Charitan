@@ -6,11 +6,13 @@ import { UserContext } from "../../context/AuthContext";
 import { useAuth } from "../../hooks/useAuth";
 import { Menu, X } from "lucide-react";
 import UserDropDown from "./UserDropDown";
+import "./MainNav.css";
 const MainNav = () => {
   const authModal = useRef(null);
   const { user } = useContext(UserContext);
   const { signOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const onClickOpenAuthModal = () => {
     if (authModal.current && authModal.current.open) {
       authModal.current.open();

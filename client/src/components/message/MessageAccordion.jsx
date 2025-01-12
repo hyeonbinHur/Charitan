@@ -18,17 +18,19 @@ const MessageAccordion = ({ project_id }) => {
   });
   return (
     <div>
-      <Accordion type="single" collapsible>
-        <AccordionItem value="item-1">
-          <AccordionTrigger>Donation History</AccordionTrigger>
-          {messages &&
-            messages.map((e) => (
-              <AccordionContent key={`message-key-${e.donation_id}`}>
-                <DonationMessageCard message={e} />
-              </AccordionContent>
-            ))}
-        </AccordionItem>
-      </Accordion>
+      {messages && messages.length > 0 && (
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Donation History</AccordionTrigger>
+            {messages &&
+              messages.map((e) => (
+                <AccordionContent key={`message-key-${e.donation_id}`}>
+                  <DonationMessageCard message={e} />
+                </AccordionContent>
+              ))}
+          </AccordionItem>
+        </Accordion>
+      )}
     </div>
   );
 };

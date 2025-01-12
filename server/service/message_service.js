@@ -15,7 +15,6 @@ const createMessage = async (newMessage) => {
     const user = await messageRepository.createOne(newMessage);
     return user;
   } catch (err) {
-    console.error(err);
     throw new Error("Failed to read data");
   }
 };

@@ -15,6 +15,9 @@ router.get('/top-donors/donor', api.getTopDonors);
 
 router.post("/cancel-monthly-donation/donor", api.cancelMonthlyDonation);
 
+router.get("/subscriptions", api.getAllSubscriptions);  // Using donor_id as a parameter in the URL
+
+
 
 
 export default router;

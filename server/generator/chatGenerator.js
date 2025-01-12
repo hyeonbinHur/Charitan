@@ -10,12 +10,10 @@ export const initializeSocket = (server) => {
     },
   });
   io.of("/chat").on("connection", (socket) => {
-    console.log("chat namespace connected");
     const roomId = socket.handshake.query.roomId;
     socket.join(roomId);
     socket.to(roomId).emit("join", `${roomId} chatroom join`);
     socket.on("disconnect", () => {
-      console.log("user disconnected");
       socket.leave(roomId);
     });
   });

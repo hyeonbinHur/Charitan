@@ -12,7 +12,6 @@ const SignInForm = ({ close, toggleForm }) => {
   const [userType, setUserType] = useState("Donor");
   const [isLoading, setIsLoading] = useState(false);
   const { signIn } = useAuth();
-
   const onSubmitSignin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -20,9 +19,8 @@ const SignInForm = ({ close, toggleForm }) => {
     if (isSignin) {
       close();
     }
-    setIsLoading(true);
+    setIsLoading(false);
   };
-
   return (
     <div>
       {isLoading ? (

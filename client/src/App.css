@@ -17,7 +17,7 @@
 body {
   background-color: var(--yellow-sand);
   font-family: Arial, sans-serif;
-  color: var(--cyan);
+  /* color: var(--cyan); */
 }
 
 main {
