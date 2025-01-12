@@ -14,6 +14,7 @@ const get_project = async (req, res) => {
     const tests = await projectService.readProject(id);
     res.json(tests);
   } catch (err) {
+    console.error(err);
     res.status(500).send(err.message);
   }
 };
@@ -129,6 +130,10 @@ const create_project = async (req, res) => {
       updated_at,
       bankaccount,
       charity_name,
+      video_1,
+      video_2,
+      video_3,
+      video_4,
     } = req.body;
     const newProject = {
       charity_id,
@@ -143,6 +148,10 @@ const create_project = async (req, res) => {
       updated_at,
       bankaccount,
       charity_name,
+      video_1,
+      video_2,
+      video_3,
+      video_4,
     };
     const tests = await projectService.createProject(newProject);
     res.json(tests);

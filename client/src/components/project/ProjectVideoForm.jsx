@@ -1,11 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { SquarePlay } from "lucide-react";
 import { Label } from "../ui/label";
-
-
 import { ScrollArea, ScrollBar } from "../../components/ui/scroll-area";
-
 const ProjectVideoInput = ({
   onAddVideo,
   currentVideoCount,
@@ -20,7 +17,6 @@ const ProjectVideoInput = ({
     if (index === 3) return "4th";
     return "";
   };
-
   const handleVideoUpload = (e) => {
     if (currentVideoCount >= maxVideos) {
       alert(`최대 ${maxVideos}개의 비디오만 업로드할 수 있습니다.`);
@@ -46,7 +42,6 @@ const ProjectVideoInput = ({
         accept="video/*"
         className="w-0 h-0 m-0 absolute invisible"
       />
-
       {video.url ? (
         <video
           key={`uploaded-video-${index}`}
@@ -76,30 +71,32 @@ const ProjectVideoInput = ({
   );
 };
 
-const ProjectVideoForm = () => {
+const ProjectVideoForm = ({ addVideoOnParents }) => {
   const [videos, setVideos] = useState([]);
   const [videoInputs, setVideoInputs] = useState([1]); // 배열로 초기화
   const maxVideos = 4;
   const addVideo = (video) => {
     if (videos.length < maxVideos) {
       setVideos((prevVideos) => [...prevVideos, video]); // 새로운 비디오 추가
+      addVideoOnParents(video);
     }
   };
   const addVideoInput = () => {
     if (videoInputs.length < maxVideos) {
       setVideoInputs((prevInputs) => [...prevInputs, prevInputs.length + 1]); // 새로운 입력 추가
     } else {
-      alert(`최대 ${maxVideos}개의 비디오 입력만 추가할 수 있습니다.`);
+      alert(`${maxVideos} is exceed max num of videos.`);
     }
   };
-
+  useEffect(() => {
+    console.log(videos);
+  }, [videos]);
   return (
     <div>
       <h1 className="text-xl mb-4">Upload Multimedia</h1>
-
       <ScrollArea className="border-2 border-gray-300 p-2 rounded-md">
         {videoInputs.length < 4 && (
-          <Button className="mb-3" onClick={addVideoInput}>
+          <Button className="mb-3" type="button" onClick={addVideoInput}>
             Add more video
           </Button>
         )}

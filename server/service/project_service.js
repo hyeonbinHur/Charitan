@@ -20,6 +20,7 @@ const readProject = async (id) => {
     const cacheVal = await getProjectFromCache(id);
     if (Object.keys(cacheVal).length === 0) {
       const tests = await projectRepository.findOne(id);
+      console.log("try to store data in cache");
       await setProjectFromCache(tests[0].project_id, tests[0]);
       return tests;
     } else {
@@ -70,7 +71,6 @@ const readProjectByCharityName = async (
 ) => {
   try {
     const charities = await charityRepository.findManyByCountry(country);
-
     if (charities.length > 0) {
       const charitiesId = charities.map((item) => item.charity_id);
       const tests = await projectRepository.findOneByCharityName(

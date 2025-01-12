@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import path from "path"; // Importing path module for alias resolution
+import path from "path";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
@@ -13,5 +13,9 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  optimizeDeps: {
+    include: [],
+    exclude: ["@ffmpeg/ffmpeg"], // 최적화에서 제외
   },
 });

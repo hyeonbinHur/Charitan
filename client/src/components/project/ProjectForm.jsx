@@ -19,7 +19,7 @@ import { useEffect, useRef, useState, useContext } from "react";
 import { optimizeHTMLImage, resizePostImage } from "../../helper/imageHelper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProject, updateProject } from "../../utils/api/project";
-import { uploadFileToS3 } from "../../lib/s3Option";
+import { uploadFileToS3, uploadVideoToS3 } from "../../lib/s3Option";
 import { sendEmail } from "../../utils/api/email";
 import { useError } from "../../context/ErrorContext";
 import { useParams } from "react-router-dom";
@@ -33,7 +33,6 @@ const ProjectForm = ({ project = {} }) => {
   /**
    * Variable Declaration
    */
-
   const params = useParams();
   const { title = "", description = "", status = "Active" } = project;
   const [projectStatus, setProjectStatus] = useState("Active");
@@ -47,9 +46,13 @@ const ProjectForm = ({ project = {} }) => {
   const { setError } = useError();
   const navigate = useNavigate(); // Initialize navigation
   const [isLoading, setIsLoading] = useState(false);
-
   const { user } = useContext(UserContext);
-
+  const [videos, setVideos] = useState([]);
+  const onChangeAddVideo = (newVideo) => {
+    if (videos.length < 4) {
+      setVideos((prevVideos) => [...prevVideos, newVideo]); // 새로운 비디오 추가
+    }
+  };
   const {
     register,
     handleSubmit: onSubmit,
@@ -79,7 +82,6 @@ const ProjectForm = ({ project = {} }) => {
       setThumbnailImg(project.thumbnail);
     }
   }, []);
-
   /**
    * Http Requests
    */
@@ -113,6 +115,7 @@ const ProjectForm = ({ project = {} }) => {
       };
       mutateSendEmail({ newEmail: newEmail });
       queryClient.invalidateQueries("read-projects");
+      navigate(`/charity/project/${params.charity_id}`);
     },
   });
 
@@ -121,23 +124,19 @@ const ProjectForm = ({ project = {} }) => {
       return updateProject(updatedProject, project.project_id);
     },
     onSuccess: () => {
-      navigate(`/charity/project/${params.charity_id}`);
       queryClient.invalidateQueries("read-projects");
       console.log("success");
     },
   });
-
   /**
    * Event Handler
    */
-
   const onChangeThumbnail = async (e) => {
     const file = e.target.files?.[0];
     if (file) {
       try {
         const resizedImage = await resizePostImage(file);
         setThumbnailFile(resizedImage);
-        console.log(resizedImage);
         setThumbnailImg(URL.createObjectURL(resizedImage));
       } catch (err) {
         console.error("error while pre process image");
@@ -173,20 +172,46 @@ const ProjectForm = ({ project = {} }) => {
         current_funding: 0,
         status: data.status,
         created_at: new Date(),
-        updated_at: null,
+        updated_at: "",
         bankaccount: "234-567-890",
         charity_name: "asd",
+        video_1: "",
+        video_2: "",
+        video_3: "",
+        video_4: "",
       };
       newProject.thumbnail = await uploadFileToS3(thumbnailFile, data.title);
       const optimizedHTML = await optimizeHTMLImage(
         data.description,
         data.title
       );
+      for (let i = 0; i < videos.length; i++) {
+        if (i === 0) {
+          newProject.video_1 = await uploadVideoToS3(
+            videos[i],
+            newProject.title
+          );
+        } else if (i === 1) {
+          newProject.video_2 = await uploadVideoToS3(
+            videos[i],
+            newProject.title
+          );
+        } else if (i === 2) {
+          newProject.video_3 = await uploadVideoToS3(
+            videos[i],
+            newProject.title
+          );
+        } else if (i === 3) {
+          newProject.video_4 = await uploadVideoToS3(
+            videos[i],
+            newProject.title
+          );
+        }
+      }
       if (optimizedHTML === false) {
         setError(new Error("The content must not contain more than 15 images"));
       } else {
         newProject.description = optimizedHTML;
-        console.log("here2");
         mutateCrateProject({ newProject: newProject });
       }
     }
@@ -306,8 +331,9 @@ const ProjectForm = ({ project = {} }) => {
           />
         </div>
         <div>
-          <ProjectVideoForm />
+          <ProjectVideoForm addVideoOnParents={onChangeAddVideo} />
         </div>
+
         <div className="flex justify-between gap-10">
           <Button
             type="submit"

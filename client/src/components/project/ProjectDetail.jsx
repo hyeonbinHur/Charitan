@@ -15,6 +15,7 @@ import {
 } from "../../components/ui/breadcrumb";
 import { Separator } from "../ui/separator";
 import { UserContext } from "../../context/AuthContext";
+import ProjectVideoContent from "./ProjectVideoContent";
 
 const ProjectDetail = ({ project }) => {
   const { user } = useContext(UserContext);
@@ -22,12 +23,10 @@ const ProjectDetail = ({ project }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { project_id } = useParams();
-
   const { mutate: mutateCreateShard } = useMutation({
     mutationFn: ({ newProject }) => createDeletedProject(newProject),
     onSuccess: () => queryClient.invalidateQueries("read-projects"),
   });
-
   const { mutate: mutateDeleteProject } = useMutation({
     mutationFn: ({ projectId }) => deleteProject(projectId),
     onSuccess: () => mutateCreateShard({ newProject: project }),
@@ -92,12 +91,10 @@ const ProjectDetail = ({ project }) => {
       {!isEditting ? (
         <div className="space-y-6">
           {/* Breadcrumb */}
-
           {/* Title */}
           <h2 className="text-3xl font-bold text-gray-100 text-center">
             {project.title}
           </h2>
-
           {/* Thumbnail */}
           <div className="border border-gray-700 rounded-lg overflow-hidden shadow-md">
             <img
@@ -148,7 +145,14 @@ const ProjectDetail = ({ project }) => {
               <span>{new Date(project.created_at).toLocaleDateString()}</span>
             </p>
           </div>
-
+          <div>
+            <ProjectVideoContent
+              video_1={project.video_1}
+              video_2={project.video_2}
+              video_3={project.video_3}
+              video_4={project.video_4}
+            />
+          </div>
           {/* Donate Button */}
           <div className="mt-4">
             <Button
