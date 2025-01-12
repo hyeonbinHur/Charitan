@@ -19,34 +19,6 @@ const Footer = () => (
           Privacy Policy
         </a>
       </div>
-
-      {/* Social Links Section */}
-      <div className="social-links mt-6">
-        <a
-          href="https://facebook.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="footer-link facebook-icon mx-4"
-        >
-          Facebook
-        </a>
-        <a
-          href="https://twitter.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="footer-link twitter-icon mx-4"
-        >
-          Twitter
-        </a>
-        <a
-          href="https://instagram.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="footer-link instagram-icon mx-4"
-        >
-          Instagram
-        </a>
-      </div>
     </div>
   </footer>
 );
