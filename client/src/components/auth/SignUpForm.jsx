@@ -1,178 +1,221 @@
-// import { useMutation } from "@tanstack/react-query";
-// import { signUpUser } from "../../../utils/api/aws/authRoutes";
-// import { useState } from "react";
-// import * as authUtil from "../../../utils/util/authUtil";
-// import { toast } from "react-toastify";
-// import { checkPendingStatus } from "../../../utils/util/util";
-// import Spinner from "../../../assets/svgs/loading.svg";
+import { useState } from "react";
 import { Button } from "../ui/button";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { Label } from "../ui/label";
 
 const SignUpForm = ({ toSignIn, toggleForm }) => {
-  //   const [username, setUsername] = useState("");
-  //   const [password, setPassword] = useState("");
-  //   const [passwordCheck, setPasswordCheck] = useState("");
-  //   const [isConflict, setIsConflict] = useState(false);
+  const [userType, setUserType] = useState("Donor");
+  const [charityType, setCharityType] = useState("");
+  const [charityCategory, setCharityCategory] = useState("");
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    address: "",
+    email: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
-  //   /**http request */
-  //   const { mutate: mutateSignUp, status: isSignUpStatus } = useMutation({
-  //     mutationFn: ({ userId, userPassword }) => {
-  //       return signUpUser(userId, userPassword);
-  //     },
-  //     onSuccess: (response) => {
-  //       console.log(response);
-  //       if (response.status === 409) {
-  //         setIsConflict(true);
-  //       } else if (response.status === 200) {
-  //         setIsConflict(false);
-  //         toSignIn();
-  //       } else {
-  //         setIsConflict(false);
-  //         toast.error("Unexpected error has been occured.");
-  //       }
-  //     },
-  //   });
-  /**basic functions */
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-  //   const isLoading = checkPendingStatus([isSignUpStatus]);
+  const handleUserTypeChange = (value) => {
+    setUserType(value);
+    if (value !== "Charity") {
+      setCharityType("");
+      setCharityCategory("");
+      setFormData({ ...formData, country: "" });
+    }
+  };
 
-  //   const componentSignUp = () => {
-  //     if (
-  //       authUtil.isNotEmpty(username) &&
-  //       authUtil.isNotEmpty(password) &&
-  //       authUtil.isNotEmpty(passwordCheck)
-  //     ) {
-  //       if (!emailIsValid && !passwordIsValid && !passCheckIsValid) {
-  //         mutateSignUp({ userId: username, userPassword: password });
-  //       } else {
-  //         toast.error(
-  //           "Please check the requirements for each field and try again."
-  //         );
-  //       }
-  //     } else {
-  //       toast.error("Please complete all required fields before submitting.");
-  //     }
-  //   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-  //   const emailIsValid =
-  //     authUtil.isNotEmpty(username) && !authUtil.checkIdValidation(username);
+    try {
+      let apiEndpoint = "";
+      const { username, ...payload } = formData;
 
-  //   const passwordIsValid =
-  //     authUtil.isNotEmpty(password) &&
-  //     !authUtil.checkPasswordValidation(password);
+      if (userType === "Donor") {
+        apiEndpoint = "http://localhost:8080/api/donors/register";
+        payload.donorType = "Individual";
+      } else if (userType === "Charity") {
+        apiEndpoint = "http://localhost:8080/api/charities/register";
+        payload.organizationName = formData.name;
+        payload.organizationType = charityType;
+        payload.category = charityCategory;
+      }
 
-  //   const passCheckIsValid =
-  //     authUtil.isNotEmpty(passwordCheck) &&
-  //     !authUtil.checkIsPasswordMatch(password, passwordCheck);
+      console.log("Payload being sent:", payload);
+
+      const response = await fetch(apiEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        alert("Registration successful! Please verify your email.");
+        toggleForm();
+      } else {
+        const responseText = await response.text(); // Capture raw response for debugging
+        console.error("Server response:", responseText);
+        alert(`Registration failed: ${responseText}`);
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      alert("An error occurred during registration. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    // <div>
-    //   {isLoading ? (
-    //     <img src={Spinner} className="sign-in-loading loading-sub" />
-    //   ) : (
-    //     <form className="sign-in-form">
-    //       <div className="item-horizontal-center">
-    //         <div className="auth-heading-container item-horizontal-center">
-    //           <h2 className="heading-secondary">Sign Up to Name Gacha</h2>
-
-    //           <h3 className="heading-tertiary">Let's join to generate name!</h3>
-    //         </div>
-    //         <input
-    //           className="sign-in-form--input"
-    //           type="text"
-    //           id="username"
-    //           name="username"
-    //           required
-    //           placeholder="Username"
-    //           value={username}
-    //           onChange={(e) => setUsername(e.target.value)}
-    //         />
-    //         {emailIsValid ? (
-    //           <label className="sign-in-form--label label__invalid ">
-    //             username must be longer than 5 letters
-    //           </label>
-    //         ) : (
-    //           <label
-    //             className="sign-in-form--label label__valid"
-    //             htmlFor="username"
-    //           >
-    //             Username
-    //           </label>
-    //         )}
-    //         <input
-    //           className="sign-in-form--input"
-    //           type="password"
-    //           id="password"
-    //           name="password"
-    //           required
-    //           placeholder="password"
-    //           value={password}
-    //           onChange={(e) => setPassword(e.target.value)}
-    //         />
-    //         {passwordIsValid ? (
-    //           <label className="sign-in-form--label label__invalid">
-    //             Password must be longer than 7 letters
-    //           </label>
-    //         ) : (
-    //           <label className="sign-in-form--label label__valid">
-    //             Password
-    //           </label>
-    //         )}
-    //         <input
-    //           className="sign-in-form--input"
-    //           type="password"
-    //           id="passwordCheck"
-    //           name="passwordCheck"
-    //           required
-    //           placeholder="Check your password"
-    //           value={passwordCheck}
-    //           onChange={(e) => setPasswordCheck(e.target.value)}
-    //         />
-    //         {passCheckIsValid ? (
-    //           <label className="sign-in-form--label label__invalid">
-    //             Passwords are not match!
-    //           </label>
-    //         ) : (
-    //           <label className="sign-in-form--label label__valid">
-    //             Password Check
-    //           </label>
-    //         )}
-    //         {isConflict && (
-    //           <div className="sign-in-form--conflict">user id conflict</div>
-    //         )}
-    //         <button
-    //           className="sign-in-form--btn__submit btn-round"
-    //           onClick={() => componentSignUp()}
-    //           type="button"
-    //         >
-    //           Sign up
-    //         </button>
-    //       </div>
-    //     </form>
-    //   )}
-    // </div>
     <div>
       <h2 className="text-2xl font-bold mb-4">Sign Up for Charitan</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Username"
+          name="name"
+          placeholder="Name"
           className="border p-2 rounded w-full mb-3"
+          value={formData.name}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          className="border p-2 rounded w-full mb-3"
+          value={formData.email}
+          onChange={handleInputChange}
+          required
         />
         <input
           type="password"
+          name="password"
           placeholder="Password"
           className="border p-2 rounded w-full mb-3"
+          value={formData.password}
+          onChange={handleInputChange}
+          required
         />
         <input
-          type="password"
-          placeholder="Confirm Password"
+          type="text"
+          name="address"
+          placeholder="Address"
           className="border p-2 rounded w-full mb-3"
+          value={formData.address}
+          onChange={handleInputChange}
         />
+
+        <RadioGroup
+          defaultValue="Donor"
+          className="flex justify-around my-4"
+          onValueChange={handleUserTypeChange}
+        >
+          <div>
+            <RadioGroupItem value="Donor" id="Donor" />
+            <Label htmlFor="Donor">Donor</Label>
+          </div>
+          <div>
+            <RadioGroupItem value="Charity" id="Charity" />
+            <Label htmlFor="Charity">Charity</Label>
+          </div>
+        </RadioGroup>
+
+        {userType === "Donor" && (
+          <input
+            type="text"
+            name="phoneNumber"
+            placeholder="Phone Number"
+            className="border p-2 rounded w-full mb-3"
+            value={formData.phoneNumber}
+            onChange={handleInputChange}
+            required
+          />
+        )}
+
+        {userType === "Charity" && (
+          <>
+            <div className="mt-4">
+              <Label>Country</Label>
+              <input
+                type="text"
+                name="country"
+                placeholder="Country"
+                className="border p-2 rounded w-full mb-3"
+                value={formData.country}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <div className="mt-4">
+              <Label>Select Charity Type</Label>
+              <RadioGroup
+                defaultValue=""
+                className="flex justify-around my-4"
+                onValueChange={(value) => setCharityType(value)}
+              >
+                <div>
+                  <RadioGroupItem value="BUSINESS" id="Business" />
+                  <Label htmlFor="Business">Business</Label>
+                </div>
+                <div>
+                  <RadioGroupItem value="NON_PROFIT" id="NonProfit" />
+                  <Label htmlFor="NonProfit">Non-Profit</Label>
+                </div>
+              </RadioGroup>
+            </div>
+
+            <div className="mt-4">
+              <Label>Select Charity Category</Label>
+              <RadioGroup
+                defaultValue=""
+                className="flex justify-around my-4"
+                onValueChange={(value) => setCharityCategory(value)}
+              >
+                <div>
+                  <RadioGroupItem value="Food" id="Food" />
+                  <Label htmlFor="Food">Food</Label>
+                </div>
+                <div>
+                  <RadioGroupItem value="Health" id="Health" />
+                  <Label htmlFor="Health">Health</Label>
+                </div>
+                <div>
+                  <RadioGroupItem value="Education" id="Education" />
+                  <Label htmlFor="Education">Education</Label>
+                </div>
+                <div>
+                  <RadioGroupItem value="Environment" id="Environment" />
+                  <Label htmlFor="Environment">Environment</Label>
+                </div>
+                <div>
+                  <RadioGroupItem value="Religion" id="Religion" />
+                  <Label htmlFor="Religion">Religion</Label>
+                </div>
+                <div>
+                  <RadioGroupItem value="Humanitarian" id="Humanitarian" />
+                  <Label htmlFor="Humanitarian">Humanitarian</Label>
+                </div>
+                <div>
+                  <RadioGroupItem value="Housing" id="Housing" />
+                  <Label htmlFor="Housing">Housing</Label>
+                </div>
+              </RadioGroup>
+            </div>
+          </>
+        )}
+
         <button
           type="submit"
           className="bg-blue-500 text-white py-2 px-4 rounded w-full"
         >
-          Sign Up
+          {isLoading ? "Signing Up..." : "Sign Up"}
         </button>
       </form>
       <section className="mt-6 text-center">
