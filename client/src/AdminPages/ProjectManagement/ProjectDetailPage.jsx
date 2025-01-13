@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import './ProjectDetail.css';
-import {updateProjectByAdminRole,fetchAllProjects } from '../../utils/AdminAPI/ProjectAPI/projectData';
+import {updateProjectByAdminRole, fetchAllProjects } from '../../utils/AdminAPI/ProjectAPI/projectData';
 
 const AdminProjectDetailPage = () => {
   const [projects, setProjects] = useState([]);
@@ -19,19 +19,26 @@ const AdminProjectDetailPage = () => {
   }, [])
   const { id } = useParams();
   const navigate = useNavigate();
-  const [project, setProject] = useState(projects.find((p) => p.projectId === parseInt(id)));
+  const [project, setProject] = useState();
   const [haltReason, setHaltReason] = useState('');
   const [showHaltReason, setShowHaltReason] = useState(false);
+
+  useEffect(() => {
+    // Update project when projects or id changes
+    if (projects.length > 0 && id) {
+      const selectedProject = projects.find((p) => p.projectId === parseInt(id, 10));
+      setProject(selectedProject);
+    }
+  }, [projects, id]);
   
   const updateStatus = (status) => {
-    setUpdatedProject((preProject) => ({
+    setProject((preProject) => ({
       ...preProject, // Keep the other properties
       projectStatus: status, // Update the highlight property
     }));
   };
 
   const handleUpdate = async () => {
-    updateHighlight();
     try {
       await updateProjectByAdminRole(id, project);
       alert("Project updated successfully!");
@@ -41,31 +48,19 @@ const AdminProjectDetailPage = () => {
   };
 
   if (!project) {
-    return <p>Cannot find project.</p>;
+    return <p className='mt-48'>Cannot find project.</p>;
   }
 
   const handleApprove = () => {
-    handleUpdateProjectStatus(project.projectId, 'Active');
     navigate('/admin_role/page3');
   };
 
   const handleReject = () => {
-    handleUpdateProjectStatus(project.ProjectId, 'Completed');
     navigate('/admin_role/page3');
   };
 
   const handleHalt = () => {
     setShowHaltReason(true);
-  };
-
-  const confirmHalt = () => {
-    if (haltReason.trim()) {
-      handleUpdateProjectStatus(project.id, 'Halted', haltReason);
-      setShowHaltReason(false);
-      navigate('admin_role/page3');
-    } else {
-      alert('Please provide a reason for halting the project.');
-    }
   };
 
   return (
@@ -137,7 +132,7 @@ const AdminProjectDetailPage = () => {
                 placeholder="Enter reason for halting this project"
                 />
                 <div className="modal-buttons">
-                <button onClick={confirmHalt}>Confirm Halt</button>
+                <button>Confirm Halt</button>
                 <button onClick={() => setShowHaltReason(false)}>Cancel</button>
                 </div>
             </div>
