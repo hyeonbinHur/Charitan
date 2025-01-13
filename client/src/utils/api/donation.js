@@ -45,6 +45,7 @@ export const deleteDonation = async (id) => {
     console.error("Error deleting donation:", error);
   }
 };
+
 export const getDonationsByProject = async (projectId) => {
   try {
     const response = await axiosInstance.get(`donations/project/${projectId}`);

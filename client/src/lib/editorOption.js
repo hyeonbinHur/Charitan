@@ -47,11 +47,9 @@ export const editorConfig = {
               console.error("Failed to read file as base64 string");
             }
           };
-          // 오류 처리: 파일 읽기 실패 시 처리
           reader.onerror = function () {
             console.error("Error reading file");
           };
-          // 파일을 base64로 읽기
           reader.readAsDataURL(file);
         }
       };

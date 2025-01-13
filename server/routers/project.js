@@ -1,6 +1,5 @@
 import express from "express";
 import api from "../controller/project_controller.js";
-
 const router = express.Router();
 router.get("/project", api.get_projects); //read all posts with titles1
 router.get("/project/:id", api.get_project); // read a specific post

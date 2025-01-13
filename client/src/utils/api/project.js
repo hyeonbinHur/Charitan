@@ -66,7 +66,6 @@ const updateProject = async (newPost, id) => {
     throw err;
   }
 };
-
 const deleteProject = async (id) => {
   try {
     const response = await axiosInstance.delete(`project/${id}`);
@@ -76,7 +75,6 @@ const deleteProject = async (id) => {
     throw err;
   }
 };
-
 const getProjectsByCharityName = async (
   charityName,
   status,
@@ -93,7 +91,6 @@ const getProjectsByCharityName = async (
     throw err;
   }
 };
-
 const getProjectsByProjectTitle = async (
   projectName,
   status,
@@ -142,7 +139,6 @@ const subscribeToNewProjects = async ({
     throw err; // Handle error in frontend
   }
 };
-
 // Function to get subscriptions for a donor
 const getDonorSubscriptions = async (donor_id) => {
   try {
@@ -154,7 +150,6 @@ const getDonorSubscriptions = async (donor_id) => {
     throw err;
   }
 };
-
 // Function to process monthly donations
 const processMonthlyDonation = async (donorData) => {
   try {
@@ -168,7 +163,6 @@ const processMonthlyDonation = async (donorData) => {
     throw err;
   }
 };
-
 // Function to cancel monthly donations
 const cancelMonthlyDonation = async (donorData) => {
   try {
@@ -182,7 +176,6 @@ const cancelMonthlyDonation = async (donorData) => {
     throw err;
   }
 };
-
 const getSubscribedProjects = async (donor_id) => {
   try {
     const response = await axiosInstance.get(`/subscriptions`); // Use axiosInstance
@@ -192,7 +185,6 @@ const getSubscribedProjects = async (donor_id) => {
     throw error; // Throw the error to be handled in the component
   }
 };
-
 const getTopDonors = async () => {
   try {
     const response = await axiosInstance.get(`/top-donors/donor`); // Ensure the correct backend endpoint
@@ -202,7 +194,6 @@ const getTopDonors = async () => {
     throw err; // Handle error in frontend
   }
 };
-
 const updateProjectToComplete = async (id) => {
   try {
     const response = await axiosInstance.patch(

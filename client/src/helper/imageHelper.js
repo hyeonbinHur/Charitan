@@ -1,5 +1,6 @@
 import Resizer from "react-image-file-resizer";
 import { uploadFileToS3 } from "../lib/s3Option";
+
 export const resizePostImage = (file) =>
   new Promise((res) => {
     Resizer.imageFileResizer(
