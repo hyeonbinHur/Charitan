@@ -1,31 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import './ProjectDetail.css';
-import { loadProjects, updateProjectStatus } from '../../utils/AdminAPI/ProjectAPI/projectData';
+import {updateProjectByAdminRole,fetchAllProjects } from '../../utils/AdminAPI/ProjectAPI/projectData';
 
 const AdminProjectDetailPage = () => {
-  const [projects, setProjects] = useState(loadProjects);
-  const handleUpdateProjectStatus = (id, status, reason = '') => {
-    setProjects(updateProjectStatus(projects, id, status, reason));
-  };
+  const [projects, setProjects] = useState([]);
+  useEffect(() => {
+    const fetch = async () => {
+    try {
+        const data = await fetchAllProjects();
+        setProjects(data);
+    } catch (error) {
+        console.error("Error fetching projects list:", error);
+    }
+    };
+
+    fetch();
+  }, [])
   const { id } = useParams();
   const navigate = useNavigate();
-  const project = projects.find((p) => p.id === parseInt(id));
+  const [project, setProject] = useState(projects.find((p) => p.projectId === parseInt(id)));
   const [haltReason, setHaltReason] = useState('');
   const [showHaltReason, setShowHaltReason] = useState(false);
+  
+  const updateStatus = (status) => {
+    setUpdatedProject((preProject) => ({
+      ...preProject, // Keep the other properties
+      projectStatus: status, // Update the highlight property
+    }));
+  };
+
+  const handleUpdate = async () => {
+    updateHighlight();
+    try {
+      await updateProjectByAdminRole(id, project);
+      alert("Project updated successfully!");
+    } catch (error) {
+      console.error("Failed to update project:", error);
+    }
+  };
 
   if (!project) {
     return <p>Cannot find project.</p>;
   }
 
   const handleApprove = () => {
-    handleUpdateProjectStatus(project.id, 'approved');
-    navigate('/page3');
+    handleUpdateProjectStatus(project.projectId, 'Active');
+    navigate('/admin_role/page3');
   };
 
   const handleReject = () => {
-    handleUpdateProjectStatus(project.id, 'rejected');
-    navigate('/page3');
+    handleUpdateProjectStatus(project.ProjectId, 'Completed');
+    navigate('/admin_role/page3');
   };
 
   const handleHalt = () => {
@@ -34,9 +60,9 @@ const AdminProjectDetailPage = () => {
 
   const confirmHalt = () => {
     if (haltReason.trim()) {
-      handleUpdateProjectStatus(project.id, 'halted', haltReason);
+      handleUpdateProjectStatus(project.id, 'Halted', haltReason);
       setShowHaltReason(false);
-      navigate('/page3');
+      navigate('admin_role/page3');
     } else {
       alert('Please provide a reason for halting the project.');
     }
@@ -45,7 +71,7 @@ const AdminProjectDetailPage = () => {
   return (
     <div className='bg-custom-white min-h-screen p-4 mt-24'>
         <div className="project-detail">
-        <h2 className="font-fancy">Project Detail: {project.name}</h2>
+        <h2 className="font-fancy">Project Detail: {project.title}</h2>
         <table>
             <tbody>
             <tr>
@@ -54,35 +80,27 @@ const AdminProjectDetailPage = () => {
             </tr>
             <tr>
                 <th>Manager:</th>
-                <td>{project.managerName}</td>
-            </tr>
-            <tr>
-                <th>Email:</th>
-                <td>{project.managerEmail}</td>
+                <td>{project.charityName}</td>
             </tr>
             <tr>
                 <th>Date:</th>
                 <td>{project.createdAt}</td>
             </tr>
             <tr>
-                <th>End Date:</th>
-                <td>{project.endDate}</td>
-            </tr>
-            <tr>
-                <th>Payment Method:</th>
-                <td>{project.paymentMethod}</td>
+                <th>Bank Account:</th>
+                <td>{project.bankAccount}</td>
             </tr>
             <tr>
                 <th>Goal:</th>
-                <td>{project.goal}</td>
+                <td>{project.targetAmuont}</td>
             </tr>
             <tr>
                 <th>Current:</th>
-                <td>{project.current}</td>
+                <td>{project.currentFunding}</td>
             </tr>
             <tr>
                 <th>Status:</th>
-                <td>{project.status}</td>
+                <td>{project.projectStatus}</td>
             </tr>
             </tbody>
         </table>
@@ -102,10 +120,10 @@ const AdminProjectDetailPage = () => {
             <button className="yellow" onClick={handleHalt}>
             Halt
             </button>
-            <Link to={`/admin/edit-project/${project.id}`}>
+            <Link to={`/admin_role/edit-project/${project.projectId}`}>
             <button>Edit</button>
             </Link>
-            <button type="button" onClick={()=>navigate(`/admin/page3`)}>Back</button>
+            <button type="button" onClick={()=>navigate(`/admin_role/page3`)}>Back</button>
         </div>
 
         {/* Halt reason modal */}

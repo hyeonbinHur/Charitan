@@ -1,28 +1,43 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingAnimation from "../../AdminComponent/Animation/LoadingAnimation";
+import { createDonorByAdminRole } from "../../utils/AdminAPI/AccountAPI/DonorAccountAPI";
 
 export default function CreateDonorAccount() {
     const currentDate = new Date();
-    const formattedDate = `${currentDate.getDate().toString().padStart(2, '0')}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getFullYear()}`;
+    const formattedDate = `${currentDate}`;
     const [animationLoad, setAnimationLoad] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword1, setShowPassword1] = useState(false);
 
-    const [donorAccount, setDonorAccount] = useState({name: '', email: '', password: '', total_donations: '', donation_count: '', createAt: `${formattedDate}`, updateAt: '', phone_number: '', address: '', paymentDetail:'', donor_type: ''});
+    const [donorAccount, setDonorAccount] = useState({name: '', email: '', password: '', totalDonations: '', donationCount: '', createAt: `${formattedDate}`, updateAt: '', phoneNumber: '', address: '', paymentDetail:'', donorType: ''});
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         setDonorAccount({ ...donorAccount, [e.target.name]: e.target.value });
     };
 
+    const [error, setError] = useState('');  // Define error state
+    const [success, setSuccess] = useState('');
+
     const handleSubmit = async (e) => {
-        setAnimationLoad(true)
         e.preventDefault();
         //await createAccount(account);
-        setTimeout(() =>{
-            navigate('/admin_role/page2');
-        }, 3500);
+        try {
+            const response = await createDonorByAdminRole(donorAccount);
+            setSuccess('Donor created successfully!');
+            setError('');
+            setAnimationLoad(true)
+            setTimeout(() =>{
+                navigate('/admin_role/page2');
+            }, 3500);
+            setTimeout(() => {
+                window.location.reload(); // Reloads the page
+            }, 1000);
+        } catch (err) {
+            setError('Error creating donor: ' + err.response?.data?.message || err.message);
+            setSuccess('');
+        }
     };
 
     const [preview, setPreview] = useState(null); // Store preview URL
@@ -67,11 +82,12 @@ export default function CreateDonorAccount() {
                     )}
                     </div>
                     <div className="flex flex-row w-full">
-                        <label htmlFor="organization_name" ></label>
+                        <label htmlFor="name" ></label>
                     </div>
                     <div className="flex flex-row items-center space-x-2 pb-4 justify-between w-4/5 pl-20">
                         <label htmlFor="name" className="text-lg whitespace-nowrap pr-4">Name:</label>
                         <input 
+                            onChange={handleChange}
                             type="text" 
                             id="name" 
                             name="name" 
@@ -82,6 +98,7 @@ export default function CreateDonorAccount() {
                         <div className="flex flex-row items-center space-x-2 justify-between w-1/2">
                             <label htmlFor="email" className="text-lg pr-4">Email:</label>
                             <input 
+                                onChange={handleChange}
                                 type="email" 
                                 id="email" 
                                 name="email" 
@@ -91,9 +108,10 @@ export default function CreateDonorAccount() {
                         <div className="flex flex-row items-center space-x-2 justify-between w-1/2">
                             <label htmlFor="email" className="text-lg whitespace-nowrap pr-4">Phone Number:</label>
                             <input 
+                                onChange={handleChange}
                                 type="number" 
-                                id="phone_number" 
-                                name="phone_number" 
+                                id="phoneNumber" 
+                                name="phoneNumber" 
                                 className="border-b-2 border-gray-400 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-white w-full"
                             />
                         </div>
@@ -102,6 +120,7 @@ export default function CreateDonorAccount() {
                     <div className="flex flex-row items-center space-x-2 p-4 justify-between w-1/2 pl-20">
                         <label htmlFor="country" className="text-lg whitespace-nowrap pr-4">Country:</label>
                         <input 
+                            onChange={handleChange}
                             type="text" 
                             id="country" 
                             name="country" 
@@ -111,6 +130,7 @@ export default function CreateDonorAccount() {
                     <div className="flex flex-row items-center space-x-2 pb-4 justify-between w-1/2 pl-20">
                         <label htmlFor="address" className="text-lg whitespace-nowrap pr-4">Address:</label>
                         <input 
+                            onChange={handleChange}
                             type="text" 
                             id="address" 
                             name="address" 
@@ -121,6 +141,7 @@ export default function CreateDonorAccount() {
                     <div className="relative p-6 justify-between w-1/2 pl-20">
                         <label htmlFor="password" className="absolute top-0 left-20 text-lg whitespace-nowrap pr-4">Password:</label>
                         <input 
+                            onChange={handleChange}
                             type={showPassword1 ? 'text' : 'password'}
                             id="password" 
                             name="password" 
@@ -171,6 +192,8 @@ export default function CreateDonorAccount() {
                             Create
                         </button>
                     </div>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {success && <p style={{ color: 'green' }}>{success}</p>}
                 </div>
             </div>
         </form>

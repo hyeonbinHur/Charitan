@@ -1,50 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './ProjectList.css';
+import { fetchAllProjects, updateProjectByAdminRole } from '../../utils/AdminAPI/ProjectAPI/projectData';
 
-const ProjectList = ({ projects, highlightedProjects, toggleHighlight }) => {
-  const [selectedStatus, setSelectedStatus] = useState('pending');
+const ProjectList = ({ projects }) => {
+  const [allProjects, setAllProjects] = useState([]);
+  const [updatedProject, setUpdatedProject] = useState({});
+  const [projectId, setProjectId] = useState();
+
+  const updateHighlight = () => {
+    setUpdatedProject(allProjects.filter((pro) =>
+      pro.projectId === projectId
+    ));
+    setUpdatedProject((preProject) => ({
+      ...preProject, // Keep the other properties
+      highlight: "TRUE", // Update the highlight property
+    }));
+  };
+  
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+          const data = await fetchAllProjects();
+          setAllProjects(data);
+      } catch (error) {
+          console.error("Error fetching projects list:", error);
+      }
+    };
+    fetch();
+  }, [])
+  
+  const handleUpdate = async (id) => {
+    updateHighlight();
+    try {
+      await updateProjectByAdminRole(id, updatedProject);
+      alert("Project updated successfully!");
+    } catch (error) {
+      console.error("Failed to update project:", error);
+    }
+  };
+  
+  const [selectedStatus, setSelectedStatus] = useState('Pending');
 
   const filteredProjects = projects.filter(
-    (project) => project.status === selectedStatus
+    (project) => project.projectStatus === selectedStatus
   );
 
-  const renderHighlightButton = (project) => {
-    const type = project.region === 'Global' ? 'global' : 'regional';
-    const isHighlighted = highlightedProjects[type].includes(project.id);
-
-    return (
-      <button
-        className={isHighlighted ? 'highlighted' : ''}
-        onClick={() => toggleHighlight(project.id, type)}
-      >
-        {isHighlighted ? 'Unhighlight' : 'Highlight'}
-      </button>
-    );
-  };
-
   return (
-    <div className="project-list">
-      <h2 className="text-xl font-bold mb-4">Project List</h2>
+    <div className="flex flex-col mt-36">
+      <h2 className="font-bold mb-4 text-black text-4xl">Project List</h2>
 
       <div className="filter-buttons mb-4">
         <button
-          className={`filter-button ${selectedStatus === 'pending' ? 'active' : ''}`}
-          onClick={() => setSelectedStatus('pending')}
+          className={`filter-button ${selectedStatus === 'Pending' ? 'active' : ''}`}
+          onClick={() => setSelectedStatus('Pending')}
         >
           Pending
         </button>
         <button
-          className={`filter-button ${selectedStatus === 'approved' ? 'active' : ''}`}
-          onClick={() => setSelectedStatus('approved')}
+          className={`filter-button ${selectedStatus === 'Active' ? 'active' : ''}`}
+          onClick={() => setSelectedStatus('Active')}
         >
-          Approved
+          Active
         </button>
         <button
-          className={`filter-button ${selectedStatus === 'rejected' ? 'active' : ''}`}
-          onClick={() => setSelectedStatus('rejected')}
+          className={`filter-button ${selectedStatus === 'Halted' ? 'active' : ''}`}
+          onClick={() => setSelectedStatus('Halted')}
         >
-          Rejected
+          Halted
+        </button>
+        <button
+          className={`filter-button ${selectedStatus === 'Completed' ? 'active' : ''}`}
+          onClick={() => setSelectedStatus('Completed')}
+        >
+          Completed
         </button>
       </div>
 
@@ -62,17 +91,19 @@ const ProjectList = ({ projects, highlightedProjects, toggleHighlight }) => {
           </thead>
           <tbody>
             {filteredProjects.map((project) => (
-              <tr key={project.id} className="hover:bg-gray-50">
-                <td className="border border-gray-300 px-4 py-2">{project.name}</td>
-                <td className="border border-gray-300 px-4 py-2">{project.region}</td>
-                <td className="border border-gray-300 px-4 py-2">{project.status}</td>
+              <tr key={project.projectId} className="hover:bg-gray-50">
+                <td className={`border border-gray-300 px-4 py-2  ${project.highlight === "TRUE" ? "underline" : ""}`}>{project.title}</td>
+                <td className="border border-gray-300 px-4 py-2">{project.category}</td>
+                <td className="border border-gray-300 px-4 py-2">{project.projectStatus}</td>
                 <td className="border border-gray-300 px-4 py-2">
-                  <Link to={`/admin/project/${project.id}`}>
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+                  <Link to={`/admin_role/project/${project.projectId}`}>
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-500">
                       Info
                     </button>
                   </Link>
-                  {renderHighlightButton(project)}
+                    <button onClick={() => {setProjectId(project.projectId); updateHighlight();  handleUpdate(project.projectId)}}  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-500 ml-6">
+                      Hightlight
+                    </button>
                 </td>
               </tr>
             ))}

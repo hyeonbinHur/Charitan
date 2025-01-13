@@ -1,28 +1,43 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingAnimation from "../../AdminComponent/Animation/LoadingAnimation";
+import { createCharityByAdminRole } from "../../utils/AdminAPI/AccountAPI/CharityAccountAPI";
+
 
 export default function CreateCharityAccount() {
     const currentDate = new Date();
-    const formattedDate = `${currentDate.getDate().toString().padStart(2, '0')}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getFullYear()}`;
+    const formattedDate = `${currentDate}`;
     const [animationLoad, setAnimationLoad] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword1, setShowPassword1] = useState(false);
 
-    const [CharityAccount, setCharityAccount] = useState({organization_name: '', description: '', category: '', email: '', password: '', createAt: `${formattedDate}`, updateAt: '', country: '', avatar: ''});
+    const [CharityAccount, setCharityAccount] = useState({organizationName: '', description: '', organizationType: '', email: '', password: '', createAt: `${formattedDate}`, updateAt: `${formattedDate}`, country: '', avatar: ''});
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         setCharityAccount({ ...CharityAccount, [e.target.name]: e.target.value });
     };
+    const [error, setError] = useState('');  // Define error state
+    const [success, setSuccess] = useState('');
 
     const handleSubmit = async (e) => {
-        setAnimationLoad(true)
         e.preventDefault();
-        //await createAccount(account);
-        setTimeout(() =>{
-            navigate('/admin_role/page2');
-        }, 3500);
+        try {
+            const response = await createCharityByAdminRole(CharityAccount);
+            setSuccess('Charity created successfully!');
+            setError('');
+            setAnimationLoad(true)
+            setTimeout(() =>{
+                navigate('/admin_role/page2');
+            }, 3500);
+            setTimeout(() => {
+                window.location.reload(); // Reloads the page
+            }, 1000);
+        } catch (err) {
+            setError('Error creating charity: ' + err.response?.data?.message || err.message);
+            setSuccess('');
+        }
+    
     };
 
     
@@ -73,9 +88,10 @@ export default function CreateCharityAccount() {
                     <div className="flex flex-row items-center space-x-2 pb-4 justify-between w-4/5 pl-20">
                         <label htmlFor="organization_name" className="text-lg whitespace-nowrap pr-4">Organization Name:</label>
                         <input 
+                            onChange={handleChange}
                             type="text" 
-                            id="organization_name" 
-                            name="organization_name" 
+                            id="organizationName" 
+                            name="organizationName" 
                             className="border-b-2 border-gray-400 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-white w-full"
                         />
                     </div>
@@ -83,22 +99,24 @@ export default function CreateCharityAccount() {
                         <div className="flex flex-row items-center space-x-2 justify-between w-1/2">
                             <label htmlFor="email" className="text-lg pr-4">Email:</label>
                             <input 
+                                onChange={handleChange}
                                 type="email" 
                                 id="email" 
                                 name="email" 
                                 className="border-b-2 border-gray-400 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-white w-full"
                             />
                         </div>
-                        <select name="type" id="category" onChange={handleChange} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-1/3">
+                        <select name="type" id="organizationType" onChange={handleChange} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-1/3">
                             <option selected>Charity Category</option>
-                            <option value="individual">individual</option>
-                            <option value="company">company</option>
-                            <option value="non-profit organization">non-profit organization</option>
+                            <option value="INDIVIDUAL">individual</option>
+                            <option value="BUSSINESS">company</option>
+                            <option value="NON_PROFIT">non-profit organization</option>
                         </select>
                     </div>
                     <div className="flex flex-row items-center space-x-2 p-4 justify-between w-1/2 pl-20">
                         <label htmlFor="country" className="text-lg whitespace-nowrap pr-4">Country:</label>
                         <input 
+                            onChange={handleChange}
                             type="text" 
                             id="country" 
                             name="country" 
@@ -109,6 +127,7 @@ export default function CreateCharityAccount() {
                     <div className="relative p-6 justify-between w-1/2 pl-20">
                         <label htmlFor="password" className="absolute top-0 left-20 text-lg whitespace-nowrap pr-4">Password:</label>
                         <input 
+                            onChange={handleChange}
                             type={showPassword1 ? 'text' : 'password'}
                             id="password" 
                             name="password" 
@@ -169,6 +188,8 @@ export default function CreateCharityAccount() {
                             Create
                         </button>
                     </div>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {success && <p style={{ color: 'green' }}>{success}</p>}
                 </div>
             </div>
         </form>

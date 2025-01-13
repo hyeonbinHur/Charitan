@@ -1,36 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './EditProject.css';
-import { loadProjects, updateProject} from '../../utils/AdminAPI/ProjectAPI/projectData';
+import { fetchAllProjects, updateProjectByAdminRole} from '../../utils/AdminAPI/ProjectAPI/projectData';
 
 const EditProjectPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [projects, setProjects] = useState(loadProjects);
-  const project = projects.find((p) => p.id === parseInt(id));
+  const [projects, setProjects] = useState([]);
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+          const data = await fetchAllProjects();
+          setProjects(data);
+      } catch (error) {
+          console.error("Error fetching projects list:", error);
+      }
+    };
+    fetch();
+  }, [])
 
-  const [name, setName] = useState(project?.name || '');
+  const project = projects.find((p) => p.projectId === parseInt(id));
+
+  const [title, setName] = useState(project?.title || '');
   const [description, setDescription] = useState(project?.description || '');
-  const [managerName, setManager] = useState(project?.managerName || '');
+  const [charityName, setManager] = useState(project?.charityName || '');
   const [managerEmail, setEmail] = useState(project?.managerEmail || '');
   const [endDate, setEndDate] = useState(project?.endDate || '');
-  const [paymentMethod, setPaymentMethod] = useState(project?.paymentMethod || 'Bank Transfer');
-  const [goal, setGoal] = useState(project?.goal || '');
+  const [bankAccount, setPaymentMethod] = useState(project?.bankAccount || 'Bank Transfer');
+  const [targetAmount, setGoal] = useState(project?.targetAmount || '');
 
   if (!project) return <p>Project not found</p>;
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const updatedProject = {
       ...project,
-      name,
+      title,
       description,
-      managerName,
-      managerEmail,
-      endDate,
-      paymentMethod,
-      goal,
+      charityName,
+      bankAccount,
+      targetAmount,
     };
-    navigate(`/admin/project/${id}`);
+    try {
+      await updateProjectByAdminRole(id, updatedProject);
+      alert("Project updated successfully!");
+      navigate(`/admin_role/project/${id}`);
+    } catch (error) {
+      console.error("Failed to update project:", error);
+    }
   };
 
   return (
@@ -39,16 +55,16 @@ const EditProjectPage = () => {
         <h2 className='text-3xl font-fancy'>Edit Project</h2>
         <form>
           <label>Name:</label>
-          <input value={name} onChange={(e) => setName(e.target.value)} />
+          <input value={title} placeholder={project.title} onChange={(e) => setName(e.target.value)} />
 
           <label>Description:</label>
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+          <textarea value={description} placeholder={project.description} onChange={(e) => setDescription(e.target.value)} />
 
           <label>Manager:</label>
-          <input value={managerName} onChange={(e) => setManager(e.target.value)} />
+          <input value={charityName} placeholder={project.charityName} onChange={(e) => setManager(e.target.value)} />
 
           <label>Email:</label>
-          <input value={managerEmail} onChange={(e) => setEmail(e.target.value)} />
+          <input value={managerEmail} placeholder={project.charity.email} onChange={(e) => setEmail(e.target.value)} />
 
           <label>End Date:</label>
           <input
@@ -57,18 +73,14 @@ const EditProjectPage = () => {
             onChange={(e) => setEndDate(e.target.value)}
           />
 
-          <label>Payment Method:</label>
-          <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
-            <option value="Bank Transfer">Bank Transfer</option>
-            <option value="PayPal">PayPal</option>
-            <option value="Cash">Cash</option>
-          </select>
+          <label>Bank Account:</label>
+          <input value={bankAccount} placeholder={project.bankAccount} onChange={(e) => setPaymentMethod(e.target.value)}/>
 
           <label>Goal:</label>
-          <textarea value={goal} onChange={(e) => setGoal(e.target.value)} />
+          <input value={targetAmount} placeholder={`${project.targetAmount} $`} onChange={(e) => setGoal(e.target.value)} />
 
           <button type="button" onClick={handleSave}>Save</button>
-          <button type="button" onClick={()=>navigate(`/admin/project/${id}`)}>Cancel</button>
+          <button type="button" onClick={()=>navigate(`/admin_role/project/${id}`)}>Cancel</button>
         </form>
       </div>
     </div>

@@ -1,11 +1,45 @@
-export default function loadCharityAccountData() {
-    const accounts = [
-        {name: "Charity 1", category: "individual", country: "VietNam", avatar: "img/man.png"},
-        {name: "Charity 2", category: "individual", country: "USA", avatar: "img/woman.png"},
-        {name: "Charity 3", category: "company", country: "South Africa", avatar: "img/man-2.png"},
-        {name: "Charity 4", category: "company", country: "Germany", avatar: "img/woman-2.png"},
-        {name: "Charity 5", category: "non-profit organization", country: "Ukraine", avatar: "img/man-3.png"},
-        {name: "Charity 6", category: "non-profit organization", country: "Israel", avatar: "img/woman-3.png"}
-    ]
-    return accounts;
-}
+import axios from "axios";
+import { API_BASE_URL } from "../APIService"; // Adjust the import path as needed
+
+// Get all charities
+export const getAllCharities = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/charities/get`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching charities:", error);
+    throw error;
+  }
+};
+
+// Create a new charity
+export const createCharityByAdminRole = async (charity) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/charities/create`, charity);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating charity:", error);
+    throw error;
+  }
+};
+
+// Update charity details
+export const updateCharity = async (id, charity) => {
+  try {
+    const response = await axios.put(`${API_BASE_URL}/charities/update/${id}`, charity);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating charity:", error);
+    throw error;
+  }
+};
+
+// Delete charity by ID
+export const deleteCharityByIdByAdminRole = async (id) => {
+  try {
+    await axios.delete(`${API_BASE_URL}/charities/delete/${id}`);
+  } catch (error) {
+    console.error("Error deleting charity:", error);
+    throw error;
+  }
+};

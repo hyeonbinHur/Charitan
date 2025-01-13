@@ -1,6 +1,54 @@
-// src/data/projectData.js
+import axios from "axios";
 
-// Initial Projects Data
+const BASE_URL = "http://localhost:8080/api/projects";
+
+// Fetch all projects
+export const fetchAllProjects = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/get`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    throw error;
+  }
+};
+
+// Create a new project
+export const createProjectAdminRole = async (project) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/create`, project);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating project:", error);
+    throw error;
+  }
+};
+
+// Update a project by ID
+export const updateProjectByAdminRole = async (id, updatedProject) => {
+  try {
+    const response = await axios.put(`${BASE_URL}/update/${id}`, updatedProject);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating project:", error);
+    throw error;
+  }
+};
+
+// Delete a project by ID
+export const deleteProjectByIdByAdminRole = async (id) => {
+  try {
+    await axios.delete(`${BASE_URL}/delete/${id}`);
+  } catch (error) {
+    console.error("Error deleting project:", error);
+    throw error;
+  }
+};
+
+
+
+
+
 export const loadProjects = [
     {
       id: 1,
@@ -131,5 +179,7 @@ export const loadProjects = [
       [type]: [...currentType, id],
     };
   };
+
+
   
   
