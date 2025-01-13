@@ -23,10 +23,12 @@ const ProjectDetail = ({ project }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { project_id } = useParams();
+
   const { mutate: mutateCreateShard } = useMutation({
     mutationFn: ({ newProject }) => createDeletedProject(newProject),
     onSuccess: () => queryClient.invalidateQueries("read-projects"),
   });
+
   const { mutate: mutateDeleteProject } = useMutation({
     mutationFn: ({ projectId }) => deleteProject(projectId),
     onSuccess: () => mutateCreateShard({ newProject: project }),

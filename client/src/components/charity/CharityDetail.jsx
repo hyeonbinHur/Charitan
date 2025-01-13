@@ -2,11 +2,13 @@ import { Separator } from "../ui/separator";
 import { useQuery } from "@tanstack/react-query";
 import { getProjectsByCharity } from "../../utils/api/project";
 import ProjectList from "../project/ProjectList";
+
 const CharityDetail = ({ charity }) => {
   const { data: projects } = useQuery({
     queryKey: [`get-project-by-charity-${charity.charity_id}`],
     queryFn: () => getProjectsByCharity(charity.charity_id),
   });
+
   return (
     <div className="flex flex-col gap-5">
       <div className="max-w-screen-lg mx-auto p-6 bg-white rounded-md">
