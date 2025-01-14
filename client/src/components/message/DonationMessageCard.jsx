@@ -3,7 +3,7 @@ import { Separator } from "../ui/separator";
 
 const DonationMessageCard = ({ message }) => {
   return (
-    <div className="w-full mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-300">
+    <div className="w-full mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-300 text-gray-600">
       {/* Header Section */}
       <div className="flex items-center space-x-4">
         <Avatar className="w-14 h-14">
@@ -14,8 +14,12 @@ const DonationMessageCard = ({ message }) => {
           />
         </Avatar>
         <div>
-          <h2 className="text-lg font-bold text-gray-900">{message.name}</h2>
-          <p className="text-sm text-gray-500">{message.donation_date}</p>
+          <h2 className="text-lg font-semibold text-gray-900">
+            {message.name}
+          </h2>
+          <p className="text-sm text-gray-500">
+            {new Date(message.donation_date).toLocaleDateString()}
+          </p>
         </div>
       </div>
       <Separator className="my-3" />

@@ -6,12 +6,12 @@ import ProjectList from "../project/ProjectList";
 const CharityDetail = ({ charity }) => {
   const { data: projects } = useQuery({
     queryKey: [`get-project-by-charity-${charity.charity_id}`],
-    queryFn: () => getProjectsByCharity(charity.charity_id),
+    queryFn: () => getProjectsByCharity(charity.charity_id, "Active"),
   });
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="max-w-screen-lg mx-auto p-6 bg-white rounded-md">
+    <div className="flex flex-col gap-5 w-[65rem]">
+      <div className="max-w-screen-lg  p-6 bg-white rounded-md">
         {/* Banner Section (Large Avatar / Thumbnail) */}
         <div className="relative mb-8">
           <img

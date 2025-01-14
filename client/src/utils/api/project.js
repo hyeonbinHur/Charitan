@@ -1,9 +1,9 @@
 import { axiosInstance } from "./axiosUtils";
 
-const getProjects = async (status, category) => {
+const getProjects = async (status, category, country) => {
   try {
     const response = await axiosInstance.get(
-      `project/search/status?status=${status}&category=${category}`
+      `project/search/status?status=${status}&category=${category}&country=${country}`
     );
     return response.data;
   } catch (err) {

@@ -1,11 +1,11 @@
 import projectRepository from "../repository/project_repository.js";
 import charityRepository from "../repository/charity_repository.js";
-// import {
-//   setProjectFromCache,
-//   getProjectFromCache,
-//   deleteProjectFromCache,
-//   updateProjectFromCache,
-// } from "../generator/redis_generator.js";
+import {
+  setProjectFromCache,
+  getProjectFromCache,
+  deleteProjectFromCache,
+  updateProjectFromCache,
+} from "../generator/redis_generator.js";
 
 const readAllProjects = async () => {
   try {
@@ -17,15 +17,15 @@ const readAllProjects = async () => {
 };
 const readProject = async (id) => {
   try {
-    // const cacheVal = await getProjectFromCache(id);
-    // if (Object.keys(cacheVal).length === 0) {
-    const tests = await projectRepository.findOne(id);
-    console.log("try to store data in cache");
-    // await setProjectFromCache(tests[0].project_id, tests[0]);
-    return tests;
-    // } else {
-    //   return [cacheVal];
-    // }
+    const cacheVal = await getProjectFromCache(id);
+    if (Object.keys(cacheVal).length === 0) {
+      const tests = await projectRepository.findOne(id);
+      console.log("try to store data in cache");
+      await setProjectFromCache(tests[0].project_id, tests[0]);
+      return tests;
+    } else {
+      return [cacheVal];
+    }
   } catch (err) {
     console.log(err);
     throw new Error("Failed to read data");
@@ -55,10 +55,20 @@ const readProjectByOnlyStatus = async (status) => {
     throw new Error("Failed to read data");
   }
 };
-const readProjectByStatus = async (status, category) => {
+const readProjectByStatus = async (status, category, country) => {
   try {
-    const tests = await projectRepository.findOneByStatus(status, category);
-    return tests;
+    const charities = await charityRepository.findManyByCountry(country);
+    if (charities.length > 0) {
+      const charitiesId = charities.map((item) => item.charity_id);
+      const tests = await projectRepository.findOneByStatus(
+        status,
+        category,
+        charitiesId
+      );
+      return tests;
+    } else {
+      return [];
+    }
   } catch (err) {
     throw new Error("Failed to read data");
   }
@@ -96,6 +106,7 @@ const readProjectByProjectName = async (
 ) => {
   try {
     const charities = await charityRepository.findManyByCountry(country);
+    console.log(charities);
     if (charities.length > 0) {
       const charitiesId = charities.map((item) => item.charity_id);
       const tests = await projectRepository.findOneByProjectName(
@@ -150,7 +161,7 @@ const createProject = async (newProject) => {
 const updateProject = async (id, updatedProject) => {
   try {
     const tests = await projectRepository.updateOne(id, updatedProject);
-    // await updateProjectFromCache(id, updatedProject);
+    await updateProjectFromCache(id, updatedProject);
     return tests;
   } catch (err) {
     throw new Error("Failed to read data");

@@ -65,10 +65,11 @@ const findMayByStatus = (status) => {
   });
 };
 
-const findOneByStatus = (status, category) => {
+const findOneByStatus = (status, category, charitiesId) => {
   return new Promise((resolve, reject) => {
-    let query = "SELECT * FROM Charity_Project WHERE status = ?";
-    let values = [status];
+    let query =
+      "SELECT * FROM Charity_Project WHERE status = ? AND charity_id IN (?)";
+    let values = [status, charitiesId];
     if (category !== "All Categories") {
       values.push(category);
       query += " AND category = ?";

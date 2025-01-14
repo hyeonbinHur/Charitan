@@ -1,5 +1,7 @@
 import { useState } from "react";
 import StripePaymentWrapper from "../payment/StripePayment";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
 const DonationForm = ({
   newDonation,
@@ -51,7 +53,7 @@ const DonationForm = ({
     <form className="flex flex-col gap-4">
       <div>
         <label htmlFor="name">Name:</label>
-        <input
+        <Input
           type="text"
           id="name"
           name="name"
@@ -71,7 +73,7 @@ const DonationForm = ({
       </div>
       <div>
         <label htmlFor="amount">Amount:</label>
-        <input
+        <Input
           type="number"
           id="amount"
           name="amount"
@@ -91,7 +93,7 @@ const DonationForm = ({
       </div>
       <div>
         <label htmlFor="message">Message:</label>
-        <textarea
+        <Textarea
           id="message"
           name="message"
           placeholder="Message"
@@ -115,7 +117,7 @@ const DonationForm = ({
         <select
           id="action"
           name="action"
-          className="border p-2 rounded w-full"
+          className="border bg-transparent p-2 rounded w-full"
           value={editingDonation ? editingDonation.action : newDonation.action}
           onChange={
             editingDonation

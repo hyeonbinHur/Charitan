@@ -7,7 +7,7 @@ import CharityItem from "./CharityItem";
 //Read Charities
 const CharityList = () => {
   const { data: charities } = useQuery({
-    queryKey: ["getCharities"],
+    queryKey: ["get-all-charities"],
     queryFn: () => getCharities(),
   });
   const navigate = useNavigate();

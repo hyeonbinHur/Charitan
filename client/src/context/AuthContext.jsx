@@ -1,7 +1,6 @@
 import { createContext, useEffect, useReducer } from "react";
 import Cookies from "js-cookie";
 import { signinCharity, signinAdmin, signinDonor } from "../utils/api/auth";
-
 export const UserContext = createContext();
 export const authReducer = (state, action) => {
   switch (action.type) {

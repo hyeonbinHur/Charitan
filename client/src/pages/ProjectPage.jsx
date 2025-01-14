@@ -78,6 +78,12 @@ const ProjectPage = () => {
       } else if (lan.languageCode === "de") {
         dispatch(updateCountry({ country: "Germany" }));
         setSelectedCountry("Germany");
+      } else if (lan.languageCode === "fr") {
+        dispatch(updateCountry({ country: "Cameroon" }));
+        setSelectedCountry("Cameroon");
+      } else if (lan.languageCode === "ar") {
+        dispatch(updateCountry({ country: "Qatar" }));
+        setSelectedCountry("Qatar");
       } else {
         dispatch(updateCountry({ country: "USA" }));
         setSelectedCountry("USA");
@@ -111,7 +117,7 @@ const ProjectPage = () => {
     ],
     queryFn: () => {
       if (!searchQuery) {
-        return getProjects(selectedStatus, selectedCategory);
+        return getProjects(selectedStatus, selectedCategory, selectedCountry);
       } else if (searchTypeQuery === "Project") {
         return getProjectsByProjectTitle(
           searchQuery,

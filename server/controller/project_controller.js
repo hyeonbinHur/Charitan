@@ -22,7 +22,6 @@ const get_project_by_charity_id = async (req, res) => {
   try {
     const id = req.params.id;
     const { status } = req.query;
-
     const tests = await projectService.readProjectByCharityId(id, status);
     res.json(tests);
   } catch (err) {
@@ -37,7 +36,6 @@ const get_halted_project = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
-
 const get_projects_by_only_status = async (req, res) => {
   try {
     const { status } = req.query;
@@ -47,12 +45,16 @@ const get_projects_by_only_status = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
-
 const get_projects_by_status = async (req, res) => {
   try {
     const { status } = req.query;
     const { category } = req.query;
-    const tests = await projectService.readProjectByStatus(status, category);
+    const { country } = req.query;
+    const tests = await projectService.readProjectByStatus(
+      status,
+      category,
+      country
+    );
     res.json(tests);
   } catch (err) {
     res.status(500).send(err.message);
@@ -81,7 +83,7 @@ const get_projects_by_project_name = async (req, res) => {
     const { status } = req.query;
     const { category } = req.query;
     const { country } = req.query;
-
+    console.log(projectName);
     const tests = await projectService.readProjectByProjectName(
       projectName,
       status,

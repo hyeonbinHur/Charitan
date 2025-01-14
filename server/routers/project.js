@@ -8,6 +8,7 @@ router.get("/project/admin/halted", api.get_halted_project);
 router.get("/project/only/status", api.get_projects_by_only_status);
 router.get("/project/search/status", api.get_projects_by_status);
 router.get("/project/search/charity", api.get_projects_by_charity_name); // read a specific post
+
 router.get("/project/search/project", api.get_projects_by_project_name); // read a specific post
 router.get("/project/search/country", api.get_projects_by_country); // read a specific post
 router.get("/project/user/:id", api.get_projects_by_charity); // read all posts which written by an user

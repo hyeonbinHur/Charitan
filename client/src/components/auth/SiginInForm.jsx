@@ -5,13 +5,37 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useAuth } from "../../hooks/useAuth";
 import LoadingSpinner from "../../../public/LoadingSpinner.svg";
+import {
+  isInputLess,
+  isInputIncludes,
+  isInputEmpty,
+} from "../../helper/inputHelper";
 
 const SignInForm = ({ close, toggleForm }) => {
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userType, setUserType] = useState("Donor");
   const [isLoading, setIsLoading] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(true);
+
   const { signIn } = useAuth();
+  const onChangeEmail = (e) => {
+    setUserEmail(e.target.value);
+    if (isInputEmpty(e.target.value)) {
+      setIsEmailValid(true);
+      return;
+    }
+    if (isInputLess(e.target.value, 7)) {
+      setIsEmailValid(false);
+      return;
+    }
+    if (isInputIncludes(e.target.value, "@")) {
+      setIsEmailValid(true);
+      return;
+    }
+    setIsEmailValid(false);
+  };
+
   const onSubmitSignin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -29,7 +53,7 @@ const SignInForm = ({ close, toggleForm }) => {
         </div>
       ) : (
         <div>
-          <h2 className="text-2xl font-bold mb-4">Sign In to Charitan</h2>
+          <h2 className="text-2xl font-semibold mb-4">Sign In to Charitan</h2>
           <form onSubmit={onSubmitSignin}>
             <Input
               type="text"
@@ -37,9 +61,14 @@ const SignInForm = ({ close, toggleForm }) => {
               id="username"
               placeholder="Username"
               value={userEmail}
-              onChange={(e) => setUserEmail(e.target.value)}
+              onChange={onChangeEmail}
             />
-            <Label>Username must be longer than 5 letters</Label>
+            {!isEmailValid && (
+              <Label className="text-red-500">
+                Email must be longer than 7 letters and includes &apos;@&apos;
+              </Label>
+            )}
+
             <Input
               type="password"
               name="password"

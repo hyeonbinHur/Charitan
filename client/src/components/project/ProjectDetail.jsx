@@ -31,7 +31,10 @@ const ProjectDetail = ({ project }) => {
 
   const { mutate: mutateDeleteProject } = useMutation({
     mutationFn: ({ projectId }) => deleteProject(projectId),
-    onSuccess: () => mutateCreateShard({ newProject: project }),
+    onSuccess: () => {
+      mutateCreateShard({ newProject: project });
+      navigate("/admin");
+    },
   });
 
   const onClickDeleteProject = () => {
@@ -47,7 +50,7 @@ const ProjectDetail = ({ project }) => {
   };
 
   return (
-    <div className="p-6 rounded-lg shadow-lg text-gray-200">
+    <div className="w-[60rem] p-6 rounded-lg shadow-lg text-gray-200">
       {/* Edit and Delete Buttons */}
       <div className="flex gap-4 mb-6">
         {user &&

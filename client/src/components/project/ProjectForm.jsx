@@ -94,7 +94,6 @@ const ProjectForm = ({ project = {} }) => {
     },
     onError: (err) => {
       console.error(err);
-      alert("err");
     },
   });
 
@@ -109,7 +108,7 @@ const ProjectForm = ({ project = {} }) => {
         status: "UNREAD",
         receiver_type: "Charity",
         receiver_id: user.charity_id,
-        receiver_email: "uncle_hb@gmail.com",
+        receiver_email: "hhb7201@naver.com",
         sender: "Admin",
         created_at: new Date(),
       };
@@ -124,13 +123,16 @@ const ProjectForm = ({ project = {} }) => {
       return updateProject(updatedProject, project.project_id);
     },
     onSuccess: () => {
+      console.log("here");
       queryClient.invalidateQueries("read-projects");
-      console.log("success");
+      navigate(`/charity/project/${project.charity_id}`);
     },
   });
+
   /**
    * Event Handler
    */
+
   const onChangeThumbnail = async (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -331,7 +333,9 @@ const ProjectForm = ({ project = {} }) => {
           />
         </div>
         <div>
-          <ProjectVideoForm addVideoOnParents={onChangeAddVideo} />
+          {!project.title && (
+            <ProjectVideoForm addVideoOnParents={onChangeAddVideo} />
+          )}
         </div>
 
         <div className="flex justify-between gap-10">
