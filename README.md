@@ -6,12 +6,7 @@ This project is developed as part of **Assignment 3** for **RMIT University**.
 ---
 
 ## .env location
-Charitan/
-    ├── client/
-    │   └── src/
-    │       └── .env
-    └── server/
-        └── .env
+<img width="218" alt="image" src="https://github.com/user-attachments/assets/fe9c903e-39c7-4134-b135-5699c3710c1a" />
 
 .env File must be included in the project to run it.
 
