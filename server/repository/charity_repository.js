@@ -13,6 +13,22 @@ const findAll = () => {
   });
 };
 
+const findManyByName = (charityName) => {
+  return new Promise((resolve, reject) => {
+    const query =
+      "SELECT charity_id FROM Charity WHERE organization_name LIKE ?";
+    const values = [`%${charityName}%`];
+    // @ts-ignore
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
+
 const findManyByCountry = (country) => {
   return new Promise((resolve, reject) => {
     const query = "SELECT charity_id FROM Charity WHERE country = ?";
@@ -149,6 +165,7 @@ const getTopCharitiesByDonation = () => {
 
 export default {
   findAll,
+  findManyByName,
   findOne,
   findManyByCountry,
   deleteOne,
@@ -156,5 +173,4 @@ export default {
   updateOne,
   findOneByEmail,
   getTopCharitiesByDonation,
-
 };

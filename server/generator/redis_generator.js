@@ -53,19 +53,19 @@ async function deleteProjectFromCache(project_id) {
 }
 async function updateProjectFromCache(project_id, project) {
   await client.hSet(`project_id:${project_id}`, {
-    project_id: project.project_id,
-    charity_id: project.charity_id,
-    title: project.title,
-    description: project.description,
-    category: project.category,
-    target_amount: project.target_amount,
-    current_funding: project.current_funding,
-    status: project.status,
+    project_id: String(project.project_id),
+    charity_id: String(project.charity_id),
+    title: project.title || "",
+    description: project.description || "",
+    category: project.category || "",
+    target_amount: String(project.target_amount),
+    current_funding: String(project.current_funding),
+    status: project.status || "",
     created_at: String(project.created_at),
-    updated_at: String(project.updated_at),
-    bankaccount: project.bankaccount,
-    charity_name: project.charity_name,
-    thumbnail: project.thumbnail,
+    updated_at: String(project.updated_at) || "",
+    bankaccount: project.bankaccount || "",
+    charity_name: project.charity_name || "",
+    thumbnail: project.thumbnail || "",
   });
 }
 

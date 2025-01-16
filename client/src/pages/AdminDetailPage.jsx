@@ -4,6 +4,7 @@ import { getDeletedProject } from "../utils/api/delete_shard";
 import { getProjectsByStatus } from "../utils/api/project";
 import ProjectList from "../components/project/ProjectList";
 import DeletedProjectList from "../components/project/DeletedProjectList";
+
 const AdminDetailPage = () => {
   const { data: haltedProject } = useQuery({
     queryKey: ["getHaltedProject"],
