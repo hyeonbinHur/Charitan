@@ -13,18 +13,19 @@ const signin_donor = async (req, res) => {
 };
 
 // Subscribe a donor to a new project with category and region preferences
+// donor_controller.js
 const subscribeToNewProjects = async (req, res) => {
   try {
-    const { donor_id, category, region, donation_id } = req.body;
+    const { donor_id, category, region } = req.body; // Removed donation_id from body
 
-    if (!donor_id || !category || !region || !donation_id) {
+    if (!donor_id || !category || !region) {
       return res.status(400).json({
-        message: "Donor ID, category, region, and donation ID are required.",
+        message: "Donor ID, category, and region are required.",
       });
     }
 
     // Subscribe the donor using the service layer
-    const result = await donorService.subscribeToNewProjects(donor_id, category, region, donation_id);
+    const result = await donorService.subscribeToNewProjects(donor_id, category, region);
     res.status(200).json({ message: "Subscription successful.", data: result });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -33,7 +34,7 @@ const subscribeToNewProjects = async (req, res) => {
 
 
 
-// Process monthly donations
+
 // Process monthly donations
 const processMonthlyDonation = async (req, res) => {
   try {

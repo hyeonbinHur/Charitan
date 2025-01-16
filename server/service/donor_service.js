@@ -47,50 +47,39 @@
     };
 
     // Subscribe a donor to a new project
-    const subscribeToNewProjects = async (
-      donor_id,
-      category,
-      region,
-      donation_id
-    ) => {
-      try {
-        // Ensure the donation exists for the donor
-        const [donations] = await donationRepository.getDonationsByDonor(
-          donor_id
-        );
+   // donor_service.js
+   const subscribeToNewProjects = async (
+     donor_id,
+     category,
+     region
+   ) => {
+     try {
+       // Create subscription without donation_id
+       const subscription = {
+         donor_id,
+         category,
+         region,
+         created_at: new Date(),
+       };
 
-        if (!donations || donations.length === 0) {
-          throw new Error("No donation found for this donor.");
-        }
+       // Save subscription
+       const result = await subscriptionRepository.createSubscription(subscription);
 
-        // Create subscription if valid donation exists
-        const subscription = {
-          donor_id,
-          category,
-          region,
-          created_at: new Date(),
-          donation_id, // Use the donation_id from the Donation table
-        };
+       // Send email notification to donor
+       const donor = await donorRepository.findDonorById(donor_id);
+       const subject = "New Project Subscription Notification";
+       const message = `Hello ${donor.name},\n\nYou have successfully subscribed to receive notifications for new projects in the ${region} region and ${category} category. You will be notified when a new project matching your preferences is published.\n\nThank you for your support!`;
 
-        // Save subscription
-        const result = await subscriptionRepository.createSubscription(
-          subscription
-        );
+       // Call send_email function
+       await send_email(donor.email, subject, message);
 
-        // Send email notification to donor
-        const donor = await donorRepository.findDonorById(donor_id);
-        const subject = "New Project Subscription Notification";
-        const message = `Hello ${donor.name},\n\nYou have successfully subscribed to receive notifications for new projects in the ${region} region and ${category} category. You will be notified when a new project matching your preferences is published.\n\nThank you for your support!`;
+       return result;
+     } catch (err) {
+       console.error(err);
+       throw new Error("Error subscribing to project: " + err.message);
+     }
+   };
 
-        // Call send_email function
-        await send_email(donor.email, subject, message);
-
-        return result;
-      } catch (err) {
-        console.error(err);
-        throw new Error("Error subscribing to project: " + err.message);
-      }
-    };
 
     // Process monthly donations for all donors who have opted in
     const processMonthlyDonations = async () => {
