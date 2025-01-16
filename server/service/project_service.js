@@ -1,11 +1,11 @@
 import projectRepository from "../repository/project_repository.js";
 import charityRepository from "../repository/charity_repository.js";
-// import {
-//   setProjectFromCache,
-//   getProjectFromCache,
-//   deleteProjectFromCache,
-//   updateProjectFromCache,
-// } from "../generator/redis_generator.js";
+import {
+  setProjectFromCache,
+  getProjectFromCache,
+  deleteProjectFromCache,
+  updateProjectFromCache,
+} from "../generator/redis_generator.js";
 
 const readAllProjects = async () => {
   try {
@@ -17,17 +17,17 @@ const readAllProjects = async () => {
 };
 const readProject = async (id) => {
   try {
-    // const cacheVal = await getProjectFromCache(id);
+    const cacheVal = await getProjectFromCache(id);
     const tests = await projectRepository.findOne(id);
-    // if (Object.keys(cacheVal).length === 0) {
-    //   console.log("try to store data in cache");
-    //   await setProjectFromCache(tests[0].project_id, tests[0]);
-    //   console.log(tests);
-    //   return tests;
-    // } else {
-    //   console.log(tests);
-    //   return [cacheVal];
-    // }
+    if (Object.keys(cacheVal).length === 0) {
+      console.log("try to store data in cache");
+      await setProjectFromCache(tests[0].project_id, tests[0]);
+      console.log(tests);
+      return tests;
+    } else {
+      console.log(tests);
+      return [cacheVal];
+    }
     return tests;
   } catch (err) {
     console.log(err);
@@ -91,7 +91,6 @@ const readProjectByCharityName = async (
         category,
         charitiesId
       );
-
       return tests;
     } else {
       return [];
@@ -163,7 +162,7 @@ const createProject = async (newProject) => {
 const updateProject = async (id, updatedProject) => {
   try {
     const tests = await projectRepository.updateOne(id, updatedProject);
-    // await updateProjectFromCache(id, updatedProject);
+    await deleteProjectFromCache(id);
     return tests;
   } catch (err) {
     throw new Error("Failed to read data");
@@ -177,6 +176,7 @@ const deleteProject = async (id) => {
     throw new Error("Failed to read data");
   }
 };
+
 const updateProjectComplete = async (id) => {
   try {
     const test = await projectRepository.updateCompleteOne(id);
@@ -185,6 +185,7 @@ const updateProjectComplete = async (id) => {
     throw new Error("Failed while update project to completed");
   }
 };
+
 const updateProjectDonation = async (id, funding, is_completed) => {
   try {
     const test = await projectRepository.updateOneDonation(
@@ -194,8 +195,7 @@ const updateProjectDonation = async (id, funding, is_completed) => {
     );
 
     const cache = await projectRepository.findOne(id);
-    // await setProjectFromCache(cache[0].project_id, cache[0]);
-
+    await deleteProjectFromCache(id);
     return test;
   } catch (err) {
     throw new Error("Failed while update project to complete2d");

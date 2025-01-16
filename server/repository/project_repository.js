@@ -228,7 +228,7 @@ const updateOneDonation = (id, funding, is_completed) => {
   return new Promise((resolve, reject) => {
     let query = `UPDATE Charity_Project SET current_funding = ? WHERE project_id = ?`;
     let values = [funding, id];
-
+    console.log(funding);
     if (is_completed) {
       query = `UPDATE Charity_Project SET current_funding = ?, status = ? WHERE project_id = ?`;
       values = [funding, "Completed", id];

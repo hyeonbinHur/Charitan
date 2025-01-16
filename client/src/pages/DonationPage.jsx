@@ -28,6 +28,7 @@ const DonationPage = () => {
     queryKey: [`get-projects-${project_id}`],
     queryFn: () => getProject(project_id),
   });
+
   const fetchDonations = async () => {
     try {
       console.log("Fetching donations for project_id:", project_id);

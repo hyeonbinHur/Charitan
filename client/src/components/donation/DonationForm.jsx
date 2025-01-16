@@ -12,7 +12,6 @@ const DonationForm = ({
   setEditingDonation,
 }) => {
   const [showStripePayment, setShowStripePayment] = useState(false);
-
   const handleDonateClick = () => {
     if (newDonation.amount <= 0) {
       alert("Donation amount must be greater than 0");
@@ -20,7 +19,6 @@ const DonationForm = ({
     }
     setShowStripePayment(true);
   };
-
   const handlePaymentSuccess = async () => {
     try {
       await handleCreate();

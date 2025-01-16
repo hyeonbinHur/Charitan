@@ -54,8 +54,8 @@ const ProjectDetail = ({ project }) => {
       {/* Edit and Delete Buttons */}
       <div className="flex gap-4 mb-6">
         {user &&
-          user.user_type === "Charity" &&
-          user.charity_id === project.charity_id && (
+          user.user_type == "Charity" &&
+          user.charity_id == project.charity_id && (
             <Button
               onClick={onClickEditButton}
               className="bg-blue-600 text-white hover:bg-blue-900 px-4 py-2 rounded-md"
@@ -64,9 +64,9 @@ const ProjectDetail = ({ project }) => {
             </Button>
           )}
 
-        {project.status === "Halted" &&
-          (user.user_type === "Admin" ||
-            (user.user_type === "Charity" &&
+        {project.status == "Halted" &&
+          (user.user_type == "Admin" ||
+            (user.user_type == "Charity" &&
               user.charity_id === project.charity_id)) && (
             <Button
               onClick={onClickDeleteProject}
