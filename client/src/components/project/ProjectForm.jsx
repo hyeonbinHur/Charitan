@@ -5,7 +5,7 @@ import { Input } from "../ui/input";
 import { Editor } from "@tinymce/tinymce-react";
 import { editorConfig } from "../../lib/editorOption";
 import { Controller, useForm } from "react-hook-form";
-
+import { getCharity } from "../../utils/api/charity";
 import {
   Select,
   SelectContent,
@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/select";
 import { useEffect, useRef, useState, useContext } from "react";
 import { optimizeHTMLImage, resizePostImage } from "../../helper/imageHelper";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { createProject, updateProject } from "../../utils/api/project";
 import { uploadFileToS3, uploadVideoToS3 } from "../../lib/s3Option";
 import { sendEmail } from "../../utils/api/email";
@@ -33,11 +33,13 @@ const ProjectForm = ({ project = {} }) => {
   /**
    * Variable Declaration
    */
+
   const params = useParams();
   const { title = "", description = "", status = "Active" } = project;
   const [projectStatus, setProjectStatus] = useState("Active");
   const [projectCategory, setProjectCategory] = useState("Food");
   // const [title, setTitle] = useState("");
+
   const [targetAmount, setTargetAmount] = useState("");
   const [thumbnailFile, setThumbnailFile] = useState("");
   const [thumbnatilImg, setThumbnailImg] = useState(null);
@@ -48,6 +50,7 @@ const ProjectForm = ({ project = {} }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(UserContext);
   const [videos, setVideos] = useState([]);
+
   const onChangeAddVideo = (newVideo) => {
     if (videos.length < 4) {
       setVideos((prevVideos) => [...prevVideos, newVideo]); // 새로운 비디오 추가
@@ -73,6 +76,10 @@ const ProjectForm = ({ project = {} }) => {
             description: "",
           }),
     },
+  });
+  const { data: charity } = useQuery({
+    queryKey: [`getCharity-${user.charity_id}`],
+    queryFn: () => getCharity(user.charity_id),
   });
   /**
    * useEffect for edit project
@@ -176,7 +183,7 @@ const ProjectForm = ({ project = {} }) => {
         created_at: new Date(),
         updated_at: "",
         bankaccount: "234-567-890",
-        charity_name: "asd",
+        charity_name: charity.organization_name,
         video_1: "",
         video_2: "",
         video_3: "",

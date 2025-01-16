@@ -1,5 +1,4 @@
 import connection from "../lib/db_info.js";
-
 const findAll = () => {
   return new Promise((resolve, reject) => {
     const query = "SELECT * FROM Charity";
@@ -12,12 +11,12 @@ const findAll = () => {
     });
   });
 };
-
 const findManyByName = (charityName) => {
   return new Promise((resolve, reject) => {
     const query =
       "SELECT charity_id FROM Charity WHERE organization_name LIKE ?";
     const values = [`%${charityName}%`];
+    console.log(values);
     // @ts-ignore
     connection.query(query, values, (err, results) => {
       if (err) {
@@ -155,9 +154,9 @@ const getTopCharitiesByDonation = () => {
 
     connection.query(query, (err, results) => {
       if (err) {
-        reject(new Error("Failed to fetch top charities: " + err.message));  // Reject on error
+        reject(new Error("Failed to fetch top charities: " + err.message)); // Reject on error
       } else {
-        resolve(results);  // Resolve with query results (name, logo, donation amount)
+        resolve(results); // Resolve with query results (name, logo, donation amount)
       }
     });
   });

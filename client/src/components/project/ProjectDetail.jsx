@@ -67,7 +67,7 @@ const ProjectDetail = ({ project }) => {
         {project.status == "Halted" &&
           (user.user_type == "Admin" ||
             (user.user_type == "Charity" &&
-              user.charity_id === project.charity_id)) && (
+              user.charity_id == project.charity_id)) && (
             <Button
               onClick={onClickDeleteProject}
               className="bg-red-600 text-white hover:bg-red-700 px-4 py-2 rounded-md"
